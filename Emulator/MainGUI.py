@@ -118,7 +118,7 @@ class Option:
 class MainLoop:
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((900,1000))
+        self.screen = pygame.display.set_mode((800,800))
         environ['SDL_VIDEO_CENTERED'] = '1'
 
     def run(self):

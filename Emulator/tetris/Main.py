@@ -11,12 +11,12 @@ PURPLE = (182, 0, 251)
 YELLOW = (251, 247, 5)
 GREY = (160, 160, 160)
 
+WALL_SIZE = 20
 FPS = 60
 
 class Main:
 
     def __init__(self, screen):
-        #pygame.init()
         self.run_game = False
         self.screen = screen
         self.board_width = self.screen.get_size()[0]
@@ -33,7 +33,7 @@ class Main:
         self.background = self.ScaleImage(self.background, self.board_width)
         self.logo = pygame.image.load(path.abspath("tetris\\Estetris_logo.png")).convert_alpha()
         self.logo = self.ScaleImage(self.logo, self.board_width)
-        
+
     def GetHighScore(self):
         file = open("tetris\\high_score.txt", "r")
         lst = [l.split() for l in file.readlines()]
@@ -96,12 +96,12 @@ class Main:
             self.clock.tick(FPS)
 
         if(one_player):
-            self.board_width = 1000
-            self.screen = pygame.display.set_mode((self.board_width, self.board_height))
+            #self.board_width = 1000
+            #self.screen = pygame.display.set_mode((self.board_width, self.board_height))
             return 1
         else:
-            self.board_width = 1010
-            self.screen = pygame.display.set_mode((self.board_width, self.board_height))
+            #self.board_width = 1010
+            #self.screen = pygame.display.set_mode((self.board_width, self.board_height))
             return 2
 
     def KeyDown(self, event, p1, p2 = 0):
@@ -193,9 +193,9 @@ class Main:
 
             self.SetIntroScreen(self.logo,screen_center)
             if(self.run_game and players > 0):
-                p1_ss = self.screen.subsurface(pygame.Rect((self.board_width / 2) + 5,0,(self.board_width / 2) - 5,self.board_height))
-                p2_ss = self.screen.subsurface(pygame.Rect(0,0,(self.board_width / 2) - 5,self.board_height))
                 if players == 2:
+                    p1_ss = self.screen.subsurface(pygame.Rect((self.board_width / 2) + WALL_SIZE / 2, 0, (self.board_width / 2) - WALL_SIZE / 2, self.board_height))
+                    p2_ss = self.screen.subsurface(pygame.Rect(0, 0, (self.board_width / 2) - WALL_SIZE / 2, self.board_height))
                     block_number = 10
                     p1 = Player(self.clock,1,self.logo,p1_ss, block_number)
                     p2 = Player(self.clock,2,self.logo,p2_ss, block_number)
@@ -257,7 +257,7 @@ class Main:
             pygame.display.flip()
             self.screen.fill(BLACK)
             self.clock.tick(FPS)
-
+        pygame.mixer.music.stop()
         return
 
 class RunTetris:
