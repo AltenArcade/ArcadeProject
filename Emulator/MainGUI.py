@@ -2,6 +2,7 @@ import pygame
 from os import path
 from os import environ
 from tetris.Main import RunTetris
+from Achtung.Achtung import AchtungMain
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -53,6 +54,9 @@ class MainGUI:
                     elif event.key == pygame.K_RETURN:
                         if self.options[idx].text == "Tetris":
                             ret_val = "tetris"
+                            done = True
+                        elif self.options[idx].text == "Snake":
+                            ret_val = "Snake"
                             done = True
                         else:
                             idx = self.SetOptions(self.options[idx].text)
@@ -131,6 +135,9 @@ class MainLoop:
             elif ret == "tetris":
                 tetris = RunTetris(self.screen)
                 tetris.run_tetris()
+            elif ret == "Snake":
+                pass
+                #AchtungMain(self.screen)
 
 main = MainLoop()
 main.run()

@@ -177,7 +177,6 @@ class Main:
         self.exit_game = False
         players = 0
         while not self.exit_game:
-
             self.screen.blit(self.background, (0, self.board_height - self.background.get_height()))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -192,73 +191,86 @@ class Main:
                         self.run_game = True
 
             self.SetIntroScreen(self.logo,screen_center)
+
             if(self.run_game and players > 0):
                 if players == 2:
-                    p1_ss = self.screen.subsurface(pygame.Rect((self.board_width / 2) + WALL_SIZE / 2, 0, (self.board_width / 2) - WALL_SIZE / 2, self.board_height))
-                    p2_ss = self.screen.subsurface(pygame.Rect(0, 0, (self.board_width / 2) - WALL_SIZE / 2, self.board_height))
-                    block_number = 10
-                    p1 = Player(self.clock,1,self.logo,p1_ss, block_number)
-                    p2 = Player(self.clock,2,self.logo,p2_ss, block_number)
-                    while self.run_game:
-                        for event in pygame.event.get():
-                            if event.type == pygame.QUIT:
-                                self.run_game = False
-                                self.exit_game = True
-                            elif event.type == pygame.KEYDOWN:
-                                self.KeyDown(event, p1, p2)
-
-                        if p1.CheckGameOver():
-                            p1.GameOver()
-                        else:
-                            p1.move()
-
-                        if p2.CheckGameOver():
-                            p2.GameOver()
-                        else:
-                            p2.move()
-                        if p1.CheckGameOver() and p2.CheckGameOver():
-                            self.run_game = False
-
-                        pygame.display.flip()
-                        self.screen.fill(GREY)
-
-                        p1_ss.fill(BLACK)
-                        p2_ss.fill(BLACK)
-                        self.clock.tick(FPS)
-                    if p1.CheckIfHighScore(self.high_score):
-                        p1.GetPlayerName()
-                    if p2.CheckIfHighScore(self.high_score):
-                        p2.GetPlayerName()
-                    self.SetHighScore(p1,p2)
+                    self.TwoPlayer()
                 else:
-                    block_number = 20
-                    p = Player(self.clock,1,self.logo,self.screen, block_number)
-                    while self.run_game:
-                        for event in pygame.event.get():
-                            if event.type == pygame.QUIT:
-                                self.run_game = False
-                                self.exit_game = True
-                            elif event.type == pygame.KEYDOWN:
-                                self.KeyDown(event, p)
-
-                        if p.CheckGameOver():
-                            p.GameOver()
-                            self.run_game = False
-                        else:
-                            p.move()
-
-                        pygame.display.flip()
-                        self.screen.fill(BLACK)
-                        self.clock.tick(FPS)
-                    if p.CheckIfHighScore(self.high_score):
-                        p.GetPlayerName()
-                    self.SetHighScore(p)
+                    self.OnePlayer()
                 self.SaveScore()
             pygame.display.flip()
             self.screen.fill(BLACK)
             self.clock.tick(FPS)
         pygame.mixer.music.stop()
         return
+
+    def OnePlayer(self):
+        block_number = 10
+        p_ss = self.screen.subsurface(pygame.Rect(((self.board_width - 400) / 2), 0, 400, self.board_height))
+        self.screen.fill(GREY)
+        p_ss.fill(BLACK)
+        p = Player(self.clock, 1, self.logo, p_ss, block_number)
+        while self.run_game:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.run_game = False
+                    self.exit_game = True
+                elif event.type == pygame.KEYDOWN:
+                    self.KeyDown(event, p)
+
+            if p.CheckGameOver():
+                p.GameOver()
+                self.run_game = False
+            else:
+                p.move()
+
+            pygame.display.flip()
+            self.screen.fill(GREY)
+            p_ss.fill(BLACK)
+            self.clock.tick(FPS)
+        if p.CheckIfHighScore(self.high_score):
+            p.GetPlayerName()
+        self.SetHighScore(p)
+
+    def TwoPlayer(self):
+        block_number = 10
+        subscreen_width = (self.board_width / 2) - (WALL_SIZE / 2)
+        bottom_wall = self.board_height % (subscreen_width / block_number)
+        p1_ss = self.screen.subsurface(pygame.Rect(subscreen_width + WALL_SIZE, 0, (self.board_width / 2) - WALL_SIZE / 2, self.board_height - bottom_wall))
+        p2_ss = self.screen.subsurface(pygame.Rect(0, 0, subscreen_width, self.board_height - bottom_wall))
+        p1 = Player(self.clock, 1, self.logo, p1_ss, block_number)
+        p2 = Player(self.clock, 2, self.logo, p2_ss, block_number)
+        while self.run_game:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.run_game = False
+                    self.exit_game = True
+                elif event.type == pygame.KEYDOWN:
+                    self.KeyDown(event, p1, p2)
+
+            if p1.CheckGameOver():
+                p1.GameOver()
+            else:
+                p1.move()
+
+            if p2.CheckGameOver():
+                p2.GameOver()
+            else:
+                p2.move()
+            if p1.CheckGameOver() and p2.CheckGameOver():
+                self.run_game = False
+
+            pygame.display.flip()
+            self.screen.fill(GREY)
+
+            p1_ss.fill(BLACK)
+            p2_ss.fill(BLACK)
+            self.clock.tick(FPS)
+        if p1.CheckIfHighScore(self.high_score):
+            p1.GetPlayerName()
+        if p2.CheckIfHighScore(self.high_score):
+            p2.GetPlayerName()
+        self.SetHighScore(p1, p2)
 
 class RunTetris:
     def __init__(self, screen):

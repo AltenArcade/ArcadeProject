@@ -21,7 +21,7 @@ class Player:
         self.board_width = screen.get_size()[0]
         self.board_height = screen.get_size()[1]
         self.full_row = blocks
-        self.block_size = self.board_width / blocks
+        self.block_size = (self.board_width / blocks)
         self.logo = logo
         self.score = 0
         self.font = pygame.font.Font(path.abspath("font.ttf"), 20)
