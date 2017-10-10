@@ -4,6 +4,7 @@
     <list default="true" id="5222cc2e-a2dc-40ca-9502-7351619d68f8" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/high_score.txt" afterPath="$PROJECT_DIR$/high_score.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tetris/Main.py" afterPath="$PROJECT_DIR$/tetris/Main.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -29,8 +30,8 @@
       <file leaf-file-name="Main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tetris/Main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="64" column="42" lean-forward="true" selection-start-line="64" selection-start-column="42" selection-end-line="64" selection-end-column="42" />
+            <state relative-caret-position="572">
+              <caret line="184" column="43" lean-forward="true" selection-start-line="184" selection-start-column="43" selection-end-line="184" selection-end-column="43" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -98,8 +99,8 @@
         <option value="$PROJECT_DIR$/tetris/Player.py" />
         <option value="$PROJECT_DIR$/Achtung/Achtung.py" />
         <option value="$PROJECT_DIR$/Achtung/GameMaster.py" />
-        <option value="$PROJECT_DIR$/tetris/Main.py" />
         <option value="$PROJECT_DIR$/MainGUI.py" />
+        <option value="$PROJECT_DIR$/tetris/Main.py" />
       </list>
     </option>
   </component>
@@ -441,8 +442,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/tetris/Main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="64" column="42" lean-forward="true" selection-start-line="64" selection-start-column="42" selection-end-line="64" selection-end-column="42" />
+        <state relative-caret-position="572">
+          <caret line="184" column="43" lean-forward="true" selection-start-line="184" selection-start-column="43" selection-end-line="184" selection-end-column="43" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>

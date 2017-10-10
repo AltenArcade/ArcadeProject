@@ -1,4 +1,5 @@
 import pygame
+from pygame import joystick
 from os import path
 from tetris.Player import Player
 
