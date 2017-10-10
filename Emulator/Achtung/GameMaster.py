@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 import os, sys
-from Snake import *
+from Achtung.Snake import *
 from random import randint
 from math import *
 
@@ -13,7 +13,7 @@ class GameMaster:
     def __init__(self, width = 640, height = 480, screen = None):
 
         """ Initialize PyGame """
-        pygame.init()
+        #pygame.init()
         self.width = width
         self.height = height
         if screen == None:
@@ -29,9 +29,9 @@ class GameMaster:
         self.font2 = pygame.font.SysFont('monospace', 16)
         self.font3 = pygame.font.SysFont('monospace', 20)
         self.versionFont = pygame.font.SysFont('monospace', 16)
-        self.arcadeFont = pygame.font.Font('ARCADE_I.ttf', 20)
-        self.arcadeFontSmall = pygame.font.Font('ARCADE_I.ttf', 18)
-        self.arcadeFontNormal = pygame.font.Font('ARCADE_N.ttf', 14)
+        self.arcadeFont = pygame.font.Font('Actung\ARCADE_I.ttf', 20)
+        self.arcadeFontSmall = pygame.font.Font('Achtung\ARCADE_I.ttf', 18)
+        self.arcadeFontNormal = pygame.font.Font('Achtung\ARCADE_N.ttf', 14)
         self.gameIsOver = False
         self.gamePaused = False
         self.score = 0

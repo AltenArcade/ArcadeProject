@@ -1,14 +1,14 @@
 import os, sys
 import pygame
 from pygame.locals import *
-from GameMaster import GameMaster
+from Achtung.GameMaster import GameMaster
 
 if not pygame.font:
     print('Warning, fonts disabled')
 if not pygame.mixer:
     print('Warning, sound disabled')
 
-def main(screen = None):
+def AchtungMain(screen = None):
     running = True
     play = True
     firstPlay = True
@@ -16,7 +16,7 @@ def main(screen = None):
 
     while running:
         if (screen != None):
-            MainWindow = GameMaster(screen)
+            MainWindow = GameMaster(screen.get_size()[0],screen.get_size()[1], screen)
         else:
             MainWindow = GameMaster()
         if(firstPlay):
@@ -52,7 +52,7 @@ def main(screen = None):
                 firstPlay = True
 
 if __name__ == '__main__':
-    main()
+    AchtungMain()
     """
     running = True
     play = True
@@ -96,4 +96,4 @@ if __name__ == '__main__':
 
 
 if __name__ == 'Achtung':
-    main()
+    AchtungMain()
