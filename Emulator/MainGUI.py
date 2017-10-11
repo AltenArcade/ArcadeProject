@@ -73,8 +73,13 @@ class MainGUI:
         self.options.clear()
         if case == "start":
             intro_text = ["Select Game", "Settings", "Exit"]
+            self.DrawOptions(intro_text)
         elif case == "Select Game":
             intro_text = ["Tetris", "Pong", "Snake"]
+            self.DrawOptions(intro_text)
+        return 0
+
+    def DrawOptions(self,intro_text):
 
         pixel_offset = 70
         logo = pygame.image.load(path.abspath("AltenArcadeLogo.png")).convert_alpha()
@@ -84,7 +89,6 @@ class MainGUI:
         for i in range(len(intro_text)):
             self.options.append(Option(intro_text[i],((self.board_width - self.font.size(intro_text[i])[0]) / 2,pos_y + (i * pixel_offset)),self.option_screen,self.font))
         self.screen.blit(logo, (screen_center, self.board_height * 0.1))
-        return 0
 
     def ScaleImage(self,img,width):
         img_ratio = img.get_rect().size[1] / img.get_rect().size[0]
@@ -122,7 +126,7 @@ class Option:
 class MainLoop:
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((800,800))
+        self.screen = pygame.display.set_mode((600,600))
         environ['SDL_VIDEO_CENTERED'] = '1'
 
     def run(self):
