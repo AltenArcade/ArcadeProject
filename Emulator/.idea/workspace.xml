@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5222cc2e-a2dc-40ca-9502-7351619d68f8" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/high_score.txt" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MainGUI.py" afterPath="$PROJECT_DIR$/MainGUI.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/high_score.txt" afterPath="$PROJECT_DIR$/high_score.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tetris/Main.py" afterPath="$PROJECT_DIR$/tetris/Main.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tetris/high_score.txt" afterPath="$PROJECT_DIR$/tetris/high_score.txt" />
     </list>
@@ -20,8 +20,8 @@
       <file leaf-file-name="MainGUI.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/MainGUI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="445">
-              <caret line="72" column="28" lean-forward="true" selection-start-line="72" selection-start-column="28" selection-end-line="72" selection-end-column="28" />
+            <state relative-caret-position="479">
+              <caret line="74" column="60" lean-forward="true" selection-start-line="74" selection-start-column="60" selection-end-line="74" selection-end-column="60" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -110,7 +110,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="140" />
     <option name="y" value="-14" />
     <option name="width" value="1400" />
@@ -209,7 +209,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -636,8 +636,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/MainGUI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="445">
-          <caret line="72" column="28" lean-forward="true" selection-start-line="72" selection-start-column="28" selection-end-line="72" selection-end-column="28" />
+        <state relative-caret-position="479">
+          <caret line="74" column="60" lean-forward="true" selection-start-line="74" selection-start-column="60" selection-end-line="74" selection-end-column="60" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
