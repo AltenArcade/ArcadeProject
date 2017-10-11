@@ -27,7 +27,7 @@ class Main:
         self.restart = False
         self.clock = pygame.time.Clock()
         self.font = pygame.font.Font(path.abspath("font.ttf"), 20)
-        self.high_score = self.GetHighScore()
+        self.high_score = []
 
         pygame.mixer.music.load(path.abspath("tetris\\tetris-sound.mp3"))
         self.background = pygame.image.load(path.abspath("tetris\\tetris_background.png"))
@@ -44,6 +44,7 @@ class Main:
             except ValueError:
                 print("Error can not be integer")
         s = sorted(lst, key=lambda score: score[1])[::-1]
+        file.close()
         return s
 
     def SetIntroScreen(self, logo, screen_center):
@@ -165,13 +166,15 @@ class Main:
                     return
 
     def SaveScore(self):
-        file = open("high_score.txt", "w")
+        file = open("tetris\\high_score.txt", "w")
         for item in self.high_score:
             file.write(item[0] + " " + str(item[1]) + "\n")
+        file.close()
 
 
 
     def start(self):
+        self.high_score = self.GetHighScore()
         pygame.mixer.music.play(-1)
         pygame.display.set_caption("Tetris")
         screen_center = (self.board_width - self.logo.get_size()[0])/ 2
