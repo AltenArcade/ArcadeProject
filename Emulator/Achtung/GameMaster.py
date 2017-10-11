@@ -19,7 +19,6 @@ class GameMaster:
         if screen == None:
             self.screen = pygame.display.set_mode([self.width, self.height])
             pygame.display.set_caption('SNEK 0.1')
-            print('Testing')
         else:
             self.screen = screen
         self.background_color = (0, 0, 0)
@@ -29,7 +28,7 @@ class GameMaster:
         self.font2 = pygame.font.SysFont('monospace', 16)
         self.font3 = pygame.font.SysFont('monospace', 20)
         self.versionFont = pygame.font.SysFont('monospace', 16)
-        self.arcadeFont = pygame.font.Font('Actung\ARCADE_I.ttf', 20)
+        self.arcadeFont = pygame.font.Font('Achtung\ARCADE_I.ttf', 20)
         self.arcadeFontSmall = pygame.font.Font('Achtung\ARCADE_I.ttf', 18)
         self.arcadeFontNormal = pygame.font.Font('Achtung\ARCADE_N.ttf', 14)
         self.gameIsOver = False
@@ -44,7 +43,7 @@ class GameMaster:
         self.PINK = (255, 0, 255)
         self.version = 0.1
         self.score_margin = 48
-        self.score_file = 'hs.txt'
+        self.score_file = 'Achtung\hs.txt'
         self.currentHighScore = self.getHighScore()
         self.wall_rects = []
         self.snakes = 1
@@ -57,10 +56,10 @@ class GameMaster:
         self.winner = None
         self.winningScore = 150
         #pygame.mixer.init()
-        self.slamSound = pygame.mixer.Sound('explosion.wav')
-        self.coinSound = pygame.mixer.Sound('collision.wav')
+        self.slamSound = pygame.mixer.Sound('Achtung\explosion.wav')
+        self.coinSound = pygame.mixer.Sound('Achtung\collision.wav')
         #self.highScoreSound = pygame.mixer.Sound('jingle_win.wav')
-        self.gameOverSound = pygame.mixer.Sound('game_over2.wav')
+        self.gameOverSound = pygame.mixer.Sound('Achtung\game_over2.wav')
 
 
     def checkPelletCollision(self, snake, pellets):
@@ -114,9 +113,9 @@ class GameMaster:
     def mainLoop(self):
         """ Main loop of the game """
         if(self.snakes == 1):
-            pygame.mixer.music.load('cosmic.mp3')
+            pygame.mixer.music.load('Achtung\cosmic.mp3')
         else:
-            pygame.mixer.music.load('twoplayer.mp3')
+            pygame.mixer.music.load('Achtung\\twoplayer.mp3')
         pygame.mixer.music.play(-1)
 
         self.loadSprites()
@@ -357,9 +356,9 @@ class GameMaster:
         selectablePos = [15, 16]
         selectPosIndex = 0
         fontColor = self.RED
-        pygame.mixer.music.load('game_over_loop.mp3')
+        pygame.mixer.music.load('Achtung\game_over_loop.mp3')
         self.gameOverSound.play()
-        pygame.mixer.music.queue('game_over_loop.mp3')
+        pygame.mixer.music.queue('Achtung\game_over_loop.mp3')
         pygame.mixer.music.play(-1)
         if(self.snakes == 1):
             self.highScore()
@@ -379,7 +378,7 @@ class GameMaster:
         retryText = self.arcadeFont.render('Play again?', True, fontColor)
         yesText = self.arcadeFont.render('Yes', True, fontColor)
         noText = self.arcadeFont.render('No', True, fontColor)
-        gameOverImage = pygame.image.load('erik400.png')
+        gameOverImage = pygame.image.load('Achtung\erik400.png')
         gameOverImage = pygame.transform.scale(gameOverImage, (round(256 * 1.5), round(226 * 1.5)))
         selectSquare = pygame.Surface((60, 30))
 
@@ -392,18 +391,18 @@ class GameMaster:
                 elif event.type == KEYDOWN:
                     if(event.key == K_RETURN):
                         if(selectPosIndex == 0):
+                            pygame.mixer.music.stop()
                             return True
                         if(selectPosIndex == 1):
+                            pygame.mixer.music.stop()
                             return False
-                    if(event.key == K_RIGHT):
+                    elif(event.key == K_RIGHT):
                         if(selectPosIndex + 1 < len(selectablePos)):
                             selectPosIndex += 1
-                    if(event.key == K_LEFT):
+                    elif(event.key == K_LEFT):
                         if(selectPosIndex - 1 >= 0):
                             selectPosIndex -= 1
-                    if(event.key == K_y):
-                        return True
-                    if(event.key == K_q):
+                    elif(event.key == K_q):
                         sys.exit()
 
             """ Render objects """
@@ -429,7 +428,7 @@ class GameMaster:
         selectPosIndexStartGame = 0
         selectablePosStartGame = [9, 10]
         startGame = False
-        pygame.mixer.music.load('right_back_into_you.mp3')
+        pygame.mixer.music.load('Achtung\\right_back_into_you.mp3')
         pygame.mixer.music.play(-1)
 
         while 1:
@@ -456,6 +455,7 @@ class GameMaster:
                             if(selectPosIndex == 1):
                                 self.showTop10()
                             if(selectPosIndex == 2):
+                                pygame.mixer.music.stop()
                                 return False
                     if(event.key == K_DOWN):
                         if(startGame):
@@ -472,6 +472,7 @@ class GameMaster:
                             if(selectPosIndex - 1 >= 0):
                                 selectPosIndex -= 1
                     if(event.key == K_ESCAPE):
+                        pygame.mixer.music.stop()
                         return False
 
             menuTextColor = self.BLUE
@@ -479,7 +480,7 @@ class GameMaster:
             """ Define objects to be rendered """
             selectSquare = pygame.Surface((220, 30))
             selectSquareStartGame = pygame.Surface((50, 30))
-            logoImage = pygame.image.load('SNEK_logo1.png')
+            logoImage = pygame.image.load('Achtung\SNEK_logo1.png')
             logoImage = pygame.transform.scale(logoImage, (400, 240))
             startGameText = self.arcadeFont.render('Start game', True, menuTextColor)
             optionsText = self.arcadeFont.render('High score', True, menuTextColor)

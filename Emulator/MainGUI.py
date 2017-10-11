@@ -2,7 +2,7 @@ import pygame
 from os import path
 from os import environ
 from tetris.Main import RunTetris
-from Achtung.Achtung import AchtungMain
+from Achtung.Achtung import *
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -136,7 +136,7 @@ class MainLoop:
                 tetris = RunTetris(self.screen)
                 tetris.run_tetris()
             elif ret == "Snake":
-                pass
+                AchtungMain(self.screen)
                 #AchtungMain(self.screen)
 
 main = MainLoop()
