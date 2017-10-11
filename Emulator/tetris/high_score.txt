@@ -1,5 +1,4 @@
-tftyf 8
-sven 6
 per 6
- 5
+sven 6
+hej 5
 vik 4
