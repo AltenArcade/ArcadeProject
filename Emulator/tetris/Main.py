@@ -113,6 +113,8 @@ class Main:
             p1.right()
         elif event.key == pygame.K_DOWN:
             p1.down()
+        elif event.key == pygame.K_RETURN:
+            p1.down_fast()
         if p2 != 0:
             if event.key == pygame.K_w:
                 p2.flip()

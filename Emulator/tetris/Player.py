@@ -24,7 +24,7 @@ class Player:
         self.block_size = (self.board_width / blocks)
         self.logo = logo
         self.score = 0
-        self.font = pygame.font.Font(path.abspath("font.ttf"), 20)
+        self.font = pygame.font.Font(path.abspath("font.ttf"), 17)
         self.clock = clk
         self.player_number = nr
 
@@ -90,14 +90,14 @@ class Player:
                 for i in range(0,10):
                     self.collision_list.draw(self.screen)
                     pygame.draw.rect(self.screen,BLACK,[i*self.block_size,y_coord,self.block_size,self.block_size])
-            pygame.display.flip()
-            pygame.time.delay(100)
+            pygame.display.update([self.screen.get_offset()[0],y_coords[0],10 * self.block_size, len(y_coords) * self.block_size])
+            pygame.time.delay(5)
             for y_coord in y_coords:
                 for i in range(0,10):
                     self.collision_list.draw(self.screen)
                     pygame.draw.rect(self.screen,WHITE,[i*self.block_size,y_coord,self.block_size,self.block_size])
-            pygame.display.flip()
-            pygame.time.delay(100)
+            pygame.display.update([self.screen.get_offset()[0], y_coords[0], 10 * self.block_size, len(y_coords) * self.block_size])
+            pygame.time.delay(5)
             ctr += 1
 
     def CheckIfGameOver(self,figure):
@@ -192,6 +192,10 @@ class Player:
 
     def down(self):
         if self.current_figure.CheckCollision(self.collision_list, "down"):
+            self.current_figure.move_down()
+
+    def down_fast(self):
+        while self.current_figure.CheckCollision(self.collision_list, "down"):
             self.current_figure.move_down()
 
     def CheckGameOver(self):
