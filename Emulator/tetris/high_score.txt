@@ -1,4 +1,5 @@
-per 6
-sven 6
-hej 5
-vik 4
+VIktor 22
+viktor 19
+Emil 17
+viktor 17
+viktor 15

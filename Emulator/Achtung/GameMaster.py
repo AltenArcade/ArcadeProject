@@ -5,7 +5,15 @@ from Achtung.Snake import *
 from random import randint
 from math import *
 
+BLUE = (51, 51, 255)
+WHITE = (255, 255, 255)
+YELLOW = (255, 255, 102)
+BLACK = (0, 0, 0)
+RED = (255, 51, 51)
+PINK = (255, 0, 255)
+
 class GameMaster:
+
     """ The main class of the game,
     handles initialization and running of the game """
 
@@ -35,12 +43,6 @@ class GameMaster:
         self.gamePaused = False
         self.score = 0
         self.score_tick = 0
-        self.BLUE = (51, 51, 255)
-        self.WHITE = (255, 255, 255)
-        self.YELLOW = (255, 255, 102)
-        self.BLACK = (0, 0, 0)
-        self.RED = (255, 51, 51)
-        self.PINK = (255, 0, 255)
         self.version = 0.1
         self.score_margin = 48
         self.score_file = 'Achtung\hs.txt'
@@ -52,21 +54,19 @@ class GameMaster:
         self.pellet_height = 8
         self.snake_width = 16
         self.snake_height = 16
-        self.colors = [self.RED, self.BLUE]
+        self.colors = [RED, BLUE]
         self.winner = None
         self.winningScore = 150
-        #pygame.mixer.init()
-        self.slamSound = pygame.mixer.Sound('Achtung\explosion.wav')
-        self.coinSound = pygame.mixer.Sound('Achtung\collision.wav')
-        #self.highScoreSound = pygame.mixer.Sound('jingle_win.wav')
-        self.gameOverSound = pygame.mixer.Sound('Achtung\game_over2.wav')
+        self.DJ = DJ()
+        self.Painter = Painter()
 
 
     def checkPelletCollision(self, snake, pellets):
         pelletCols = pygame.sprite.spritecollide(snake, pellets, True)
         snake.pellets = snake.pellets + len(pelletCols)
         if (len(pelletCols) == 1):
-            self.coinSound.play()
+            #self.coinSound.play()
+            self.DJ.playPickUpSound()
             pellets.add(Pellet(
                 pygame.Rect(randint(1, self.width / snake.width - 2) * snake.width + snake.width / 4,
                             randint(10,
@@ -111,14 +111,18 @@ class GameMaster:
         return snake.score >= winningScore
 
     def mainLoop(self):
-        """ Main loop of the game """
-        if(self.snakes == 1):
-            pygame.mixer.music.load('Achtung\cosmic.mp3')
-        else:
-            pygame.mixer.music.load('Achtung\\twoplayer.mp3')
-        pygame.mixer.music.play(-1)
+        '''
+        Main loop of the game.
+        :return: True/False if game is over.
+        '''
 
         self.loadSprites()
+
+        if(self.snakes == 1):
+            self.DJ.playGameMusic(1)
+        else:
+            self.DJ.playGameMusic(2)
+
         while not self.gameIsOver:
             for snake in range(self.snakes):
                 self.snake[snake].key_registered = False
@@ -166,7 +170,7 @@ class GameMaster:
                     if(self.snake[snake].checkTailCollision()):
                         self.winner = (-1 * snake) + 2
                         self.gameIsOver = True
-                        pygame.mixer.music.stop()
+                        self.DJ.stopMusic()
                         return True
 
                     if(self.snakes == 2):
@@ -174,12 +178,12 @@ class GameMaster:
                         """ Check if there is a winner """
                         if (self.checkScore(self.snake[snake], self.winningScore)):
                             self.gameIsOver = True
-                            pygame.mixer.music.stop()
+                            self.DJ.stopMusic()
                             return True
 
                         """ Snake collision detection """
                         if(self.snake[snake].checkSnakeCollision(self.snake[(-1 * snake) + 1])):
-                            self.slamSound.play()
+                            self.DJ.playCollisionSound()
                             self.snake[snake].stunned = self.snake[snake].stun_time
                             self.snake[snake].stun_time += 5
 
@@ -221,19 +225,27 @@ class GameMaster:
                                            self.height - self.score_margin - 2 * wall_thickness))
         self.wall_rects.append(pygame.Rect(0, self.height - wall_thickness, self.width, wall_thickness))
 
+
     def drawObjects(self):
-        """ Render objects """
-        self.screen.fill(self.YELLOW)  # Background
-        self.pellet_sprites.draw(self.screen)  # Pellet
-        self.snake_sprites.draw(self.screen)  # Snake heads
-        # if(self.snake[snake].tailRect):
-        for snake in range(len(self.snake)):  # Snake tails
+
+        # Background
+        self.screen.fill(YELLOW)
+
+        # Pellets
+        self.pellet_sprites.draw(self.screen)
+
+        # Snake heads
+        self.snake_sprites.draw(self.screen)
+
+        # Snake tails
+        for snake in range(len(self.snake)):
             for i in range(len(self.snake[snake].tailRect), -1, -1):
                 pygame.draw.rect(self.screen, self.snake[snake].color, self.snake[snake].tailRect[i - 1])
         for j in range(len(self.wall_rects)):  # Walls
-            pygame.draw.rect(self.screen, self.RED, self.wall_rects[j - 1])
+            pygame.draw.rect(self.screen, RED, self.wall_rects[j - 1])
 
-        pygame.draw.rect(self.screen, self.YELLOW, self.score_margin_bg)
+        # Score window
+        pygame.draw.rect(self.screen, YELLOW, self.score_margin_bg)
         # pygame.draw.rect(self.screen, (255, 0, 255), self.snake.next_move)
 
         for snake in range(self.snakes):
@@ -245,9 +257,9 @@ class GameMaster:
         if (self.snakes == 1):
             # Highscore
             highScoreText = self.arcadeFontNormal.render('Highscore: {0}'.format(self.currentHighScore[1]), 1,
-                                                         self.BLUE)
+                                                         BLUE)
             highScoreText2 = self.arcadeFontNormal.render('Set by: {0}'.format(self.currentHighScore[0]), 1,
-                                                          self.BLUE)
+                                                          BLUE)
             highScoreText_rect = highScoreText.get_rect()
             highScoreText2_rect = highScoreText2.get_rect()
             self.screen.blit(highScoreText, (self.width - highScoreText_rect.width - 10, 10))
@@ -295,10 +307,10 @@ class GameMaster:
             surface_x = 2 * columnWidth - surface_rect.width / 2
             surface_y = 9 * rowHeight + rowHeight / 2 - surface_rect.height / 2
         if(screenPos == 9):
-            surface_x = 3 * columnWidth + columnWidth / 2 - surface_rect.width / 2
+            surface_x = 3 * columnWidth + columnWidth / 2 - surface_rect.width / 2 - columnWidth / 2
             surface_y = 6*rowHeight + rowHeight / 2 - surface_rect.height / 2
         if(screenPos == 10):
-            surface_x = 3 * columnWidth + columnWidth / 2 - surface_rect.width / 2
+            surface_x = 3 * columnWidth + columnWidth / 2 - surface_rect.width / 2 - columnWidth / 2
             surface_y = 7*rowHeight + rowHeight / 2 - surface_rect.height / 2
         """ Select rectangle """
         if(screenPos == 13 and tempPos != None):
@@ -321,10 +333,10 @@ class GameMaster:
         if(screenPos == 16):
             surface_x = 2 * columnWidth + columnWidth / 2 - surface_rect.width / 2
             surface_y = 8 * rowHeight + rowHeight / 2 - surface_rect.height / 2
-        """ temppos 0 or 1 """
+        """ Select rectangle 1P / 2P """
         if(screenPos == 17 and tempPos != None):
             tempPos = tempPos - 9
-            surface_x = 3 * columnWidth + columnWidth / 2 - surface_rect.width / 2
+            surface_x = 3 * columnWidth + columnWidth / 2 - surface_rect.width / 2 - columnWidth / 2
             surface_y = (tempPos + 6) * rowHeight + rowHeight / 2 - surface_rect.height / 2
         if(screenPos == 18):
             surface_x = 5
@@ -336,8 +348,6 @@ class GameMaster:
             surface_x = self.width - surface_rect.width - 5
             surface_y = 10 + surface_rect.height
 
-            #self.screen.blit(winnerText,
-            #                 (self.width - winnerText.get_rect().width - 10, 10 + winnerText.get_rect().height))
 
         """ Transparency """
         if(alpha != None and color != None):
@@ -350,16 +360,17 @@ class GameMaster:
 
 
     def gameOver(self):
+
         """ Triggers game over screen with play again prompt """
 
         """ Define choosable screen positions """
         selectablePos = [15, 16]
         selectPosIndex = 0
-        fontColor = self.RED
-        pygame.mixer.music.load('Achtung\game_over_loop.mp3')
-        self.gameOverSound.play()
-        pygame.mixer.music.queue('Achtung\game_over_loop.mp3')
-        pygame.mixer.music.play(-1)
+        fontColor = RED
+
+        # Play game over music
+        self.DJ.playGameOverMusic()
+
         if(self.snakes == 1):
             self.highScore()
         else:
@@ -391,10 +402,10 @@ class GameMaster:
                 elif event.type == KEYDOWN:
                     if(event.key == K_RETURN):
                         if(selectPosIndex == 0):
-                            pygame.mixer.music.stop()
+                            self.DJ.stopMusic()
                             return True
                         if(selectPosIndex == 1):
-                            pygame.mixer.music.stop()
+                            self.DJ.stopMusic()
                             return False
                     elif(event.key == K_RIGHT):
                         if(selectPosIndex + 1 < len(selectablePos)):
@@ -413,14 +424,16 @@ class GameMaster:
             self.drawSurface(gameOverImage, 0)
             if (self.snakes == 2):
                 self.drawSurface(winnerText, 18 + (self.winner - 1) * 2)
-                #self.screen.blit(winnerText,
-                #                 (self.width - winnerText.get_rect().width - 10, 10 + winnerText.get_rect().height))
             self.drawSurface(selectSquare, 15, 128, selectablePos[selectPosIndex], fontColor)
             pygame.display.flip()
 
 
     def startScreen(self):
-        """ Player chooses mode and controllers """
+
+        '''
+        Welcome screen where the user chooses mode and can check highscore.
+        :return: True/False if game is ready to start.
+        '''
 
         """ Define choosable screen positions """
         selectPosIndex = 0
@@ -428,8 +441,9 @@ class GameMaster:
         selectPosIndexStartGame = 0
         selectablePosStartGame = [9, 10]
         startGame = False
-        pygame.mixer.music.load('Achtung\\right_back_into_you.mp3')
-        pygame.mixer.music.play(-1)
+
+        # Play intro music
+        self.DJ.playIntroMusic()
 
         while 1:
 
@@ -443,11 +457,11 @@ class GameMaster:
                     if(event.key == K_RETURN):
                         if(startGame):
                             if(selectPosIndexStartGame == 0):
-                                pygame.mixer.music.stop()
+                                self.DJ.stopMusic()
                                 return True
                             if(selectPosIndexStartGame == 1):
                                 self.snakes = 2
-                                pygame.mixer.music.stop()
+                                self.DJ.stopMusic()
                                 return True
                         else:
                             if(selectPosIndex == 0):
@@ -455,7 +469,7 @@ class GameMaster:
                             if(selectPosIndex == 1):
                                 self.showTop10()
                             if(selectPosIndex == 2):
-                                pygame.mixer.music.stop()
+                                self.DJ.stopMusic()
                                 return False
                     if(event.key == K_DOWN):
                         if(startGame):
@@ -472,10 +486,12 @@ class GameMaster:
                             if(selectPosIndex - 1 >= 0):
                                 selectPosIndex -= 1
                     if(event.key == K_ESCAPE):
-                        pygame.mixer.music.stop()
+                        self.DJ.stopMusic()
                         return False
 
-            menuTextColor = self.BLUE
+            self.Painter.drawStartScreen(self.screen, startGame, selectablePos, selectPosIndex, selectablePosStartGame, selectPosIndexStartGame)
+            '''
+            menuTextColor = BLUE
 
             """ Define objects to be rendered """
             selectSquare = pygame.Surface((220, 30))
@@ -485,14 +501,12 @@ class GameMaster:
             startGameText = self.arcadeFont.render('Start game', True, menuTextColor)
             optionsText = self.arcadeFont.render('High score', True, menuTextColor)
             quitText = self.arcadeFont.render('Quit', True, menuTextColor)
-            versionText = self.versionFont.render('Version ' + str(self.version), True, self.RED)
+            versionText = self.versionFont.render('Version ' + str(self.version), True, RED)
             onePlayerText = self.arcadeFont.render('1P', True, menuTextColor)
             twoPlayerText = self.arcadeFont.render('2P', True, menuTextColor)
-            #altenLogoImage = pygame.image.load('alten_logo.png')
-            #altenLogoImage = pygame.transform.scale(altenLogoImage, (round(40*1.2), round(60*1.2)))
 
             """ Render objects """
-            self.screen.fill(self.YELLOW)
+            self.screen.fill(YELLOW)
             self.drawSurface(versionText, 2)
             self.drawSurface(startGameText, 4)
             self.drawSurface(optionsText, 5)
@@ -506,6 +520,7 @@ class GameMaster:
                 self.drawSurface(selectSquare, 13, 128, selectablePos[selectPosIndex], menuTextColor)
 
             pygame.display.flip()
+            '''
 
     def getHighScore(self):
         score_file = open(self.score_file, 'r')
@@ -534,8 +549,8 @@ class GameMaster:
         windowWidth = round(self.width * 0.7)#450
         windowHeight = round(self.height * 0.85)#400
         entry_spacing = 30
-        fontColor = self.WHITE
-        backgroundColor = self.BLUE
+        fontColor = WHITE
+        backgroundColor = BLUE
         all_score = []
 
         """ Get top 10 """
@@ -553,7 +568,7 @@ class GameMaster:
         """ Create high score window and render text"""
         box = pygame.Surface((windowWidth, windowHeight))
         box.fill(backgroundColor)
-        pygame.draw.rect(box, self.BLACK, (0, 0, windowWidth, windowHeight), 1)
+        pygame.draw.rect(box, BLACK, (0, 0, windowWidth, windowHeight), 1)
         txt_surf = self.arcadeFont.render("HIGHSCORE", True, fontColor)
         txt_rect = txt_surf.get_rect(center = (windowWidth // 2, round(0.075 * windowHeight)))
         box.blit(txt_surf, txt_rect)
@@ -654,8 +669,8 @@ class GameMaster:
 
         windowWidth = self.width / 2
         windowHeight = self.height / 2
-        backgroundColor = self.BLUE
-        fontColor = self.WHITE
+        backgroundColor = BLUE
+        fontColor = WHITE
         nameFont = self.arcadeFont
 
         """ Function for showing the typed name """
@@ -681,7 +696,7 @@ class GameMaster:
 
         while True:
             box.fill(backgroundColor) # Background
-            pygame.draw.rect(box, self.BLACK, (0, 0, windowWidth, windowHeight), 1)  # Black edge
+            pygame.draw.rect(box, BLACK, (0, 0, windowWidth, windowHeight), 1)  # Black edge
             box.blit(txt_surf, txt_rect) # Congratulation text
             self.drawText(box, txt2, fontColor, txt2_rect, self.arcadeFontNormal)
             #box.blit(txt2_surf, txt2_rect)
