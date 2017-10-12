@@ -26,3 +26,6 @@ class Block(pygame.sprite.Sprite):
             self.rect.x -= self.block_size
         if action == "reset left":
             self.rect.x += self.block_size
+
+    def Draw(self, color):
+        pygame.draw.rect(self.image, color, [0, 0, self.block_size, self.block_size])

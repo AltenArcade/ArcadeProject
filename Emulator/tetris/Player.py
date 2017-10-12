@@ -59,26 +59,46 @@ class Player:
         y_coords.sort()
         y_coords_unique = list(set(y_coords))
         for element in y_coords_unique:
-            if y_coords.count(element) > self.full_row:
-                print("FAIL")
             if y_coords.count(element) == self.full_row:
-                self.speed_control += 1
+                self.speed_control += 0.3
                 delete_rows.append(element)
         self.score += len(delete_rows)
+
         for row in delete_rows:
             for block in blocklist:
                 if block.rect.y == row:
+                    block.Draw(WHITE)
                     blocklist.remove(block)
 
         delete_rows.sort()
+        if len(delete_rows) > 0:
+            self.FullRowEffect(delete_rows)
         while(len(delete_rows) != 0):
             sound.play()
             for block in blocklist:
                 if block.rect.y < delete_rows[0]:
                     block.rect.y += self.block_size
+
             delete_rows = delete_rows[1:len(delete_rows)]
 
         return blocklist
+
+    def FullRowEffect(self, y_coords):
+        ctr = 0
+        while ctr < 4:
+            for y_coord in y_coords:
+                for i in range(0,10):
+                    self.collision_list.draw(self.screen)
+                    pygame.draw.rect(self.screen,BLACK,[i*self.block_size,y_coord,self.block_size,self.block_size])
+            pygame.display.flip()
+            pygame.time.delay(100)
+            for y_coord in y_coords:
+                for i in range(0,10):
+                    self.collision_list.draw(self.screen)
+                    pygame.draw.rect(self.screen,WHITE,[i*self.block_size,y_coord,self.block_size,self.block_size])
+            pygame.display.flip()
+            pygame.time.delay(100)
+            ctr += 1
 
     def CheckIfGameOver(self,figure):
         for block in figure.block_list:
@@ -179,6 +199,6 @@ class Player:
 
     def CheckIfHighScore(self,high_score):
         for score in high_score:
-            if self.score > score[1]:
+            if self.score > score[1] or len(high_score) < 5:
                 return True
         return False

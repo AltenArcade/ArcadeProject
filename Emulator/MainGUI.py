@@ -137,11 +137,9 @@ class MainLoop:
             if ret == "quit":
                 run = False
             elif ret == "tetris":
-                tetris = RunTetris(self.screen)
-                tetris.run_tetris()
+                RunTetris(self.screen)
             elif ret == "Snake":
                 AchtungMain(self.screen)
-                #AchtungMain(self.screen)
 
 main = MainLoop()
 main.run()

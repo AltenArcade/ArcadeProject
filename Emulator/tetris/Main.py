@@ -98,12 +98,8 @@ class Main:
             self.clock.tick(FPS)
 
         if(one_player):
-            #self.board_width = 1000
-            #self.screen = pygame.display.set_mode((self.board_width, self.board_height))
             return 1
         else:
-            #self.board_width = 1010
-            #self.screen = pygame.display.set_mode((self.board_width, self.board_height))
             return 2
 
     def KeyDown(self, event, p1, p2 = 0):
@@ -276,10 +272,7 @@ class Main:
             p2.GetPlayerName()
         self.SetHighScore(p1, p2)
 
-class RunTetris:
-    def __init__(self, screen):
-        self.main = Main(screen)
-
-    def run_tetris(self):
-        self.main.start()
-        return
+def RunTetris(screen):
+    main = Main(screen)
+    main.start()
+    return
