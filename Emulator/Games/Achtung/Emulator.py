@@ -1,4 +1,4 @@
-import Achtung
+import Games.Achtung
 import pygame
 
 if __name__ == '__main__':
@@ -6,4 +6,4 @@ if __name__ == '__main__':
     width = 640
     height = 480
     screen = pygame.display.set_mode([width, height])
-    Achtung.main(screen)
+    Games.Achtung.main(screen)

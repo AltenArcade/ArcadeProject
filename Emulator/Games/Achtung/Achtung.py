@@ -1,7 +1,7 @@
 import os, sys
 import pygame
 from pygame.locals import *
-from Achtung.GameMaster import GameMaster
+from Games.Achtung.GameMaster import GameMaster
 
 if not pygame.font:
     print('Warning, fonts disabled')

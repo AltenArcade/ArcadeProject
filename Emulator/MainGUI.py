@@ -1,8 +1,9 @@
-import pygame
-from os import path
 from os import environ
-from tetris.Main import RunTetris
-from Achtung.Achtung import *
+from os import path
+
+from Games.Achtung.Achtung import *
+from Games.Tetris.Main import RunTetris
+from Option import Option
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -25,6 +26,8 @@ class MainGUI:
         self.screen.fill(WHITE)
         self.option_screen = self.screen.subsurface(0, self.board_height / 2, self.board_width, self.board_height / 2)
         self.options = []
+        self.games = [name for name in os.listdir("Games")]
+        print(self.games)
 
     def Start(self):
         self.screen.fill(WHITE)
@@ -52,11 +55,8 @@ class MainGUI:
                             idx = len(self.options) - 1
                         self.options[idx].hovered = True
                     elif event.key == pygame.K_RETURN:
-                        if self.options[idx].text == "Tetris":
-                            ret_val = "tetris"
-                            done = True
-                        elif self.options[idx].text == "Snake":
-                            ret_val = "Snake"
+                        if self.options[idx].text in self.games:
+                            ret_val = self.options[idx].text
                             done = True
                         else:
                             idx = self.SetOptions(self.options[idx].text)
@@ -75,8 +75,7 @@ class MainGUI:
             intro_text = ["Select Game", "Settings", "Exit"]
             self.DrawOptions(intro_text)
         elif case == "Select Game":
-            intro_text = ["Tetris", "Pong", "Snake"]
-            self.DrawOptions(intro_text)
+            self.DrawOptions(self.games)
         return 0
 
     def DrawOptions(self,intro_text):
@@ -87,46 +86,17 @@ class MainGUI:
         screen_center = (self.board_width - logo.get_size()[0])/ 2
         pos_y = (self.option_screen.get_size()[1] - (3 * self.font.size(intro_text[0])[1] + 2 * pixel_offset)) / 2
         for i in range(len(intro_text)):
-            self.options.append(Option(intro_text[i],((self.board_width - self.font.size(intro_text[i])[0]) / 2,pos_y + (i * pixel_offset)),self.option_screen,self.font))
+            self.options.append(Option(intro_text[i],((self.board_width - self.font.size(intro_text[i])[0]) / 2,pos_y + (i * pixel_offset)),self.option_screen,self.font, RED, BLACK))
         self.screen.blit(logo, (screen_center, self.board_height * 0.1))
 
     def ScaleImage(self,img,width):
         img_ratio = img.get_rect().size[1] / img.get_rect().size[0]
         return pygame.transform.scale(img,(width,int(width * img_ratio)))
 
-class Option:
-    hovered = False
-
-    def __init__(self, text, pos, screen, font):
-        self.screen = screen
-        self.font = font
-        self.text = text
-        self.pos = pos
-        self.set_rect()
-        self.draw()
-
-    def draw(self):
-        self.set_rend()
-        self.screen.blit(self.rend, self.rect)
-
-    def set_rend(self):
-        self.rend = self.font.render(self.text, True, self.get_color())
-
-    def get_color(self):
-        if self.hovered:
-            return RED
-        else:
-            return BLACK
-
-    def set_rect(self):
-        self.set_rend()
-        self.rect = self.rend.get_rect()
-        self.rect.topleft = self.pos
-
 class MainLoop:
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((800,800))
+        self.screen = pygame.display.set_mode((1280,800))
         environ['SDL_VIDEO_CENTERED'] = '1'
 
     def run(self):
@@ -136,9 +106,9 @@ class MainLoop:
             ret = main.Start()
             if ret == "quit":
                 run = False
-            elif ret == "tetris":
+            elif ret == "Tetris":
                 RunTetris(self.screen)
-            elif ret == "Snake":
+            elif ret == "Achtung":
                 AchtungMain(self.screen)
 
 main = MainLoop()
