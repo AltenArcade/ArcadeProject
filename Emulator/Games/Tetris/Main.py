@@ -236,7 +236,8 @@ class Main:
     def OnePlayer(self):
         block_number = 10
         subscreen_width = 400
-        p_ss = self.screen.subsurface(pygame.Rect(((self.board_width - subscreen_width) / 2), 0, subscreen_width, self.board_height))
+        bottom_wall = self.board_height % (subscreen_width / block_number)
+        p_ss = self.screen.subsurface(pygame.Rect(((self.board_width - subscreen_width) / 2), 0, subscreen_width, self.board_height - bottom_wall))
         figure_prediction = p_ss.subsurface(pygame.Rect(0,0,p_ss.get_size()[0] / 5, p_ss.get_size()[1] / 10))
         p = Player(self.clock, 1, self.logo, p_ss, figure_prediction, block_number)
         while self.run_game:
