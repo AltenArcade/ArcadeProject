@@ -1,5 +1,6 @@
 import pygame
 from pygame import joystick
+from platform import system
 from os import path
 from Games.Tetris.Player import Player
 from Option import Option
@@ -19,27 +20,30 @@ FPS = 60
 class Main:
 
     def __init__(self, screen):
-        self.path = str(path.dirname(path.realpath(__file__)))
+        if system() == "Windows":
+            self.path = str(path.dirname(path.realpath(__file__))) + "\\"
+        if system() == "Linux":
+            self.path = str(path.dirname(path.realpath(__file__))) + "/"
         self.run_game = False
         self.screen = screen
         self.board_width = self.screen.get_size()[0]
         self.board_height  = self.screen.get_size()[1]
-        self.logo = pygame.image.load(self.path + "/Estetris_logo.png").convert_alpha()
+        self.logo = pygame.image.load(self.path + "Estetris_logo.png").convert_alpha()
         self.logo = self.ScaleImage(self.logo, self.board_width)
         self.screen_center = (self.board_width - self.logo.get_size()[0]) / 2
         self.score = 0
         self.exit_game = False
         self.restart = False
         self.clock = pygame.time.Clock()
-        self.font = pygame.font.Font(self.path + "/font.ttf"), 20)
+        self.font = pygame.font.Font(self.path + "font.ttf", 20)
         self.high_score = []
         self.options = []
-        pygame.mixer.music.load(self.path + "/tetris-sound.mp3")
-        self.background = pygame.image.load(self.path + "/tetris_background.png")
+        pygame.mixer.music.load(self.path + "tetris-sound.mp3")
+        self.background = pygame.image.load(self.path + "tetris_background.png")
         self.background = self.ScaleImage(self.background, self.board_width)
 
     def GetHighScore(self):
-        file = open(self.path + "/high_score.txt", "r")
+        file = open(self.path + "high_score.txt", "r")
         lst = [l.split(":") for l in file.readlines()]
         for t in lst:
             try:
@@ -57,7 +61,7 @@ class Main:
 
     def GetPlayers(self,logo,background,screen_center):
         done = False
-        selection_font = pygame.font.Font(self.path + "font.ttf"), 20)
+        selection_font = pygame.font.Font(self.path + "font.ttf", 20)
         selection_font.set_underline(True)
 
         one_player = True

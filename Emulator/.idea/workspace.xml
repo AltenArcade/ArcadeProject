@@ -2,57 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5222cc2e-a2dc-40ca-9502-7351619d68f8" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Option.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/.idea/Achtung.iml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/.idea/misc.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/.idea/modules.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/.idea/workspace.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/ARCADE_I.TTF" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/ARCADE_N.TTF" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/ARCADE_R.TTF" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/Achtung.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/Emulator.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/GameMaster.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/SNEK_logo.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/SNEK_logo1.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/Snake.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/alten_logo.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/coin.wav" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/collision.wav" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/cosmic.mp3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/death.wav" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/erik.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/erik400.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/explosion.wav" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/game_over.wav" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/game_over2.wav" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/game_over_loop.mp3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/hs.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/jingle_achievement.wav" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/jingle_win.wav" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/lounge.mp3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/lounge2.mp3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/right_back_into_you.mp3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/slam.mp3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/snake.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Achtung/twoplayer.mp3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Tetris/.idea/misc.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Tetris/.idea/modules.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Tetris/.idea/tetris.iml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Tetris/.idea/workspace.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Tetris/Block.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Tetris/Estetris_logo.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Tetris/Figure.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Tetris/Laser_Shoot5.wav" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Tetris/Main.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Tetris/Player.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Tetris/Sweep5.wav" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Tetris/font.ttf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Tetris/high_score.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Tetris/laser.wav" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Tetris/tetris-sound.mp3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Tetris/tetris_background.png" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Games/Achtung/GameMaster.py" afterPath="$PROJECT_DIR$/Games/Achtung/GameMaster.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Games/Tetris/Main.py" afterPath="$PROJECT_DIR$/Games/Tetris/Main.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Games/Tetris/Player.py" afterPath="$PROJECT_DIR$/Games/Tetris/Player.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MainGUI.py" afterPath="$PROJECT_DIR$/MainGUI.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -67,13 +19,49 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="MainGUI.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MainGUI.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MainGUI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="275">
-              <caret line="106" column="29" lean-forward="true" selection-start-line="106" selection-start-column="29" selection-end-line="106" selection-end-column="29" />
+            <state relative-caret-position="323">
+              <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="22" selection-end-column="72" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Emulator.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Games/Achtung/Emulator.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="8" column="30" lean-forward="false" selection-start-line="8" selection-start-column="30" selection-end-line="8" selection-end-column="30" />
+              <folding>
+                <element signature="e#0#20#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GameMaster.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Games/Achtung/GameMaster.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="8126">
+              <caret line="487" column="55" lean-forward="false" selection-start-line="487" selection-start-column="55" selection-end-line="487" selection-end-column="55" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Snake.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Games/Achtung/Snake.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-668">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#14#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -92,25 +80,61 @@
       <file leaf-file-name="Main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Games/Tetris/Main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="55" column="73" lean-forward="true" selection-start-line="55" selection-start-column="73" selection-end-line="55" selection-end-column="73" />
+            <state relative-caret-position="-2615">
+              <caret line="63" column="56" lean-forward="true" selection-start-line="63" selection-start-column="56" selection-end-line="63" selection-end-column="56" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
-                <element signature="e#377#1302#0" expanded="false" />
-                <element signature="e#1340#1692#0" expanded="false" />
-                <element signature="e#1739#1872#0" expanded="false" />
-                <element signature="e#1938#3757#0" expanded="false" />
-                <element signature="e#3809#4488#0" expanded="false" />
-                <element signature="e#4545#4911#0" expanded="false" />
-                <element signature="e#4968#5510#0" expanded="false" />
-                <element signature="e#5549#6107#0" expanded="false" />
-                <element signature="e#6142#6308#0" expanded="false" />
-                <element signature="e#6350#6515#0" expanded="false" />
-                <element signature="e#6564#6817#0" expanded="false" />
-                <element signature="e#6848#9086#0" expanded="false" />
-                <element signature="e#9121#10220#0" expanded="false" />
-                <element signature="e#10255#12178#0" expanded="false" />
+                <marker date="1508503916891" expanded="false" signature="9374:10482" ph="..." />
+                <marker date="1508503916891" expanded="false" signature="10508:12440" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Player.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Games/Tetris/Player.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="357">
+              <caret line="21" column="31" lean-forward="true" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+                <element signature="e#1610#1918#0" expanded="false" />
+                <element signature="e#1974#2987#0" expanded="false" />
+                <element signature="e#3036#3915#0" expanded="false" />
+                <element signature="e#3963#4078#0" expanded="false" />
+                <element signature="e#4115#4304#0" expanded="false" />
+                <element signature="e#4338#4724#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Achtung.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Games/Achtung/Achtung.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1195">
+              <caret line="2" column="27" lean-forward="true" selection-start-line="2" selection-start-column="27" selection-end-line="2" selection-end-column="27" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Block.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Games/Tetris/Block.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Figure.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Games/Tetris/Figure.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1331">
+              <caret line="1" column="11" lean-forward="false" selection-start-line="1" selection-start-column="11" selection-end-line="1" selection-end-column="11" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -126,7 +150,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>sweep</find>
       <find>pygame.display.qui</find>
       <find>pygame.dis</find>
       <find>swee</find>
@@ -156,6 +179,7 @@
       <find>self.logo</find>
       <find>ShowHighScore</find>
       <find>option</find>
+      <find>abspath</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -175,13 +199,13 @@
         <option value="$PROJECT_DIR$/Games/Achtung/Achtung.py" />
         <option value="$PROJECT_DIR$/Games/Tetris/Figure.py" />
         <option value="$PROJECT_DIR$/Games/Achtung/Emulator.py" />
-        <option value="$PROJECT_DIR$/Games/Achtung/GameMaster.py" />
         <option value="$PROJECT_DIR$/Games/Tetris/high_score.txt" />
-        <option value="$PROJECT_DIR$/Games/Tetris/Player.py" />
         <option value="$PROJECT_DIR$/Games/Options.py" />
-        <option value="$PROJECT_DIR$/MainGUI.py" />
         <option value="$PROJECT_DIR$/Option.py" />
         <option value="$PROJECT_DIR$/Games/Tetris/Main.py" />
+        <option value="$PROJECT_DIR$/MainGUI.py" />
+        <option value="$PROJECT_DIR$/Games/Tetris/Player.py" />
+        <option value="$PROJECT_DIR$/Games/Achtung/GameMaster.py" />
       </list>
     </option>
   </component>
@@ -223,7 +247,7 @@
               <item name="Emulator" type="b2602c69:ProjectViewProjectNode" />
               <item name="Emulator" type="462c0819:PsiDirectoryNode" />
               <item name="Games" type="462c0819:PsiDirectoryNode" />
-              <item name="Tetris" type="462c0819:PsiDirectoryNode" />
+              <item name="Achtung" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -315,7 +339,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11510417" sideWeight="0.49423394" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -327,14 +350,26 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.11510417" sideWeight="0.50576603" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35835096" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35835096" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3372093" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11510417" sideWeight="0.49423394" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.11510417" sideWeight="0.50576603" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35835096" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -513,13 +548,80 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Games/Achtung/Snake.py">
+    <entry file="file://$PROJECT_DIR$/Games/Tetris/high_score.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1535">
+        <state relative-caret-position="68">
+          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Option.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="10" lean-forward="false" selection-start-line="13" selection-start-column="10" selection-end-line="13" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Games/Tetris/Block.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MainGUI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="22" selection-end-column="72" />
           <folding>
-            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#0#22#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Games/Tetris/Figure.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1331">
+          <caret line="1" column="11" lean-forward="false" selection-start-line="1" selection-start-column="11" selection-end-line="1" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Games/Tetris/Main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2615">
+          <caret line="63" column="56" lean-forward="true" selection-start-line="63" selection-start-column="56" selection-end-line="63" selection-end-column="56" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+            <marker date="1508503916891" expanded="false" signature="9374:10482" ph="..." />
+            <marker date="1508503916891" expanded="false" signature="10508:12440" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Games/Tetris/Player.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="31" lean-forward="true" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#1610#1918#0" expanded="false" />
+            <element signature="e#1974#2987#0" expanded="false" />
+            <element signature="e#3036#3915#0" expanded="false" />
+            <element signature="e#3963#4078#0" expanded="false" />
+            <element signature="e#4115#4304#0" expanded="false" />
+            <element signature="e#4338#4724#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Games/Achtung/Achtung.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1195">
+          <caret line="2" column="27" lean-forward="true" selection-start-line="2" selection-start-column="27" selection-end-line="2" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -533,96 +635,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Games/Achtung/Achtung.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="2" column="27" lean-forward="true" selection-start-line="2" selection-start-column="27" selection-end-line="2" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Games/Achtung/GameMaster.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="8" lean-forward="true" selection-start-line="15" selection-start-column="8" selection-end-line="15" selection-end-column="68" />
+        <state relative-caret-position="8126">
+          <caret line="487" column="55" lean-forward="false" selection-start-line="487" selection-start-column="55" selection-end-line="487" selection-end-column="55" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Games/Tetris/Figure.py">
+    <entry file="file://$PROJECT_DIR$/Games/Achtung/Snake.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1076">
-          <caret line="1" column="11" lean-forward="false" selection-start-line="1" selection-start-column="11" selection-end-line="1" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Games/Tetris/high_score.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Games/Tetris/Player.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="23" column="48" lean-forward="true" selection-start-line="23" selection-start-column="48" selection-end-line="23" selection-end-column="48" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Games/Tetris/Block.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
+        <state relative-caret-position="-668">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Option.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="10" lean-forward="false" selection-start-line="13" selection-start-column="10" selection-end-line="13" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Games/Tetris/Main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="55" column="73" lean-forward="true" selection-start-line="55" selection-start-column="73" selection-end-line="55" selection-end-column="73" />
           <folding>
-            <element signature="e#0#13#0" expanded="true" />
-            <element signature="e#377#1302#0" expanded="false" />
-            <element signature="e#1340#1692#0" expanded="false" />
-            <element signature="e#1739#1872#0" expanded="false" />
-            <element signature="e#1938#3757#0" expanded="false" />
-            <element signature="e#3809#4488#0" expanded="false" />
-            <element signature="e#4545#4911#0" expanded="false" />
-            <element signature="e#4968#5510#0" expanded="false" />
-            <element signature="e#5549#6107#0" expanded="false" />
-            <element signature="e#6142#6308#0" expanded="false" />
-            <element signature="e#6350#6515#0" expanded="false" />
-            <element signature="e#6564#6817#0" expanded="false" />
-            <element signature="e#6848#9086#0" expanded="false" />
-            <element signature="e#9121#10220#0" expanded="false" />
-            <element signature="e#10255#12178#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MainGUI.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="106" column="29" lean-forward="true" selection-start-line="106" selection-start-column="29" selection-end-line="106" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
+            <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>

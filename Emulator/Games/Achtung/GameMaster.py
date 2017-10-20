@@ -1,6 +1,8 @@
 import pygame
 from pygame.locals import *
 import os, sys
+from os import path
+from platform import system
 from Games.Achtung.Snake import *
 from random import randint
 from math import *
@@ -13,7 +15,10 @@ class GameMaster:
     def __init__(self, width = 640, height = 480, screen = None):
 
         """ Initialize PyGame """
-        self.path = str(os.path.dirname(os.path.realpath(__file__)))
+        if system() == "Windows":
+            self.path = str(path.dirname(path.realpath(__file__))) + "\\"
+        if system() == "Linux":
+            self.path = str(path.dirname(path.realpath(__file__))) + "/"
         self.width = width
         self.height = height
         if screen == None:
@@ -28,9 +33,9 @@ class GameMaster:
         self.font2 = pygame.font.SysFont('monospace', 16)
         self.font3 = pygame.font.SysFont('monospace', 20)
         self.versionFont = pygame.font.SysFont('monospace', 16)
-        self.arcadeFont = pygame.font.Font(self.path + "/ARCADE_I.TTF", 20)
-        self.arcadeFontSmall = pygame.font.Font(self.path + "/ARCADE_I.TTF", 18)
-        self.arcadeFontNormal = pygame.font.Font(self.path + "/ARCADE_N.TTF", 14)
+        self.arcadeFont = pygame.font.Font(self.path + "ARCADE_I.TTF", 20)
+        self.arcadeFontSmall = pygame.font.Font(self.path + "ARCADE_I.TTF", 18)
+        self.arcadeFontNormal = pygame.font.Font(self.path + "ARCADE_N.TTF", 14)
         self.gameIsOver = False
         self.gamePaused = False
         self.score = 0
@@ -43,7 +48,7 @@ class GameMaster:
         self.PINK = (255, 0, 255)
         self.version = 0.1
         self.score_margin = 48
-        self.score_file = self.path + '/hs.txt'
+        self.score_file = self.path + 'hs.txt'
         self.currentHighScore = self.getHighScore()
         self.wall_rects = []
         self.snakes = 1
@@ -56,10 +61,10 @@ class GameMaster:
         self.winner = None
         self.winningScore = 150
         #pygame.mixer.init()
-        self.slamSound = pygame.mixer.Sound(self.path + '/explosion.wav')
-        self.coinSound = pygame.mixer.Sound(self.path + '/collision.wav')
+        self.slamSound = pygame.mixer.Sound(self.path + 'explosion.wav')
+        self.coinSound = pygame.mixer.Sound(self.path + 'collision.wav')
         #self.highScoreSound = pygame.mixer.Sound('jingle_win.wav')
-        self.gameOverSound = pygame.mixer.Sound(self.path + '/game_over2.wav')
+        self.gameOverSound = pygame.mixer.Sound(self.path + 'game_over2.wav')
 
 
     def checkPelletCollision(self, snake, pellets):
@@ -113,9 +118,9 @@ class GameMaster:
     def mainLoop(self):
         """ Main loop of the game """
         if(self.snakes == 1):
-            pygame.mixer.music.load(self.path + '/cosmic.mp3')
+            pygame.mixer.music.load(self.path + 'cosmic.mp3')
         else:
-            pygame.mixer.music.load(self.path + '/twoplayer.mp3')
+            pygame.mixer.music.load(self.path + 'twoplayer.mp3')
         pygame.mixer.music.play(-1)
 
         self.loadSprites()
@@ -356,9 +361,9 @@ class GameMaster:
         selectablePos = [15, 16]
         selectPosIndex = 0
         fontColor = self.RED
-        pygame.mixer.music.load(self.path + '/game_over_loop.mp3')
+        pygame.mixer.music.load(self.path + 'game_over_loop.mp3')
         self.gameOverSound.play()
-        pygame.mixer.music.queue(self.path + '/game_over_loop.mp3')
+        pygame.mixer.music.queue(self.path + 'game_over_loop.mp3')
         pygame.mixer.music.play(-1)
         if(self.snakes == 1):
             self.highScore()
@@ -378,7 +383,7 @@ class GameMaster:
         retryText = self.arcadeFont.render('Play again?', True, fontColor)
         yesText = self.arcadeFont.render('Yes', True, fontColor)
         noText = self.arcadeFont.render('No', True, fontColor)
-        gameOverImage = pygame.image.load(self.path + '/erik400.png')
+        gameOverImage = pygame.image.load(self.path + 'erik400.png')
         gameOverImage = pygame.transform.scale(gameOverImage, (round(256 * 1.5), round(226 * 1.5)))
         selectSquare = pygame.Surface((60, 30))
 
@@ -428,7 +433,7 @@ class GameMaster:
         selectPosIndexStartGame = 0
         selectablePosStartGame = [9, 10]
         startGame = False
-        pygame.mixer.music.load(self.path + '/right_back_into_you.mp3')
+        pygame.mixer.music.load(self.path + 'right_back_into_you.mp3')
         pygame.mixer.music.play(-1)
 
         while 1:
@@ -480,7 +485,7 @@ class GameMaster:
             """ Define objects to be rendered """
             selectSquare = pygame.Surface((220, 30))
             selectSquareStartGame = pygame.Surface((50, 30))
-            logoImage = pygame.image.load(self.path + '/SNEK_logo1.png')
+            logoImage = pygame.image.load(self.path + 'SNEK_logo1.png')
             logoImage = pygame.transform.scale(logoImage, (400, 240))
             startGameText = self.arcadeFont.render('Start game', True, menuTextColor)
             optionsText = self.arcadeFont.render('High score', True, menuTextColor)
