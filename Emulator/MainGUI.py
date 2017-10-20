@@ -101,7 +101,7 @@ class MainGUI:
 class MainLoop:
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((1280,800))
+        self.screen = pygame.display.set_mode((0,0),FULLSCREEN)
         environ['SDL_VIDEO_CENTERED'] = '1'
 
     def run(self):
