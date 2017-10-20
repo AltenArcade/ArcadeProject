@@ -4,6 +4,7 @@ import os, sys
 from Achtung.Snake import *
 from random import randint
 from math import *
+from Achtung.InputReader import *
 
 BLUE = (51, 51, 255)
 WHITE = (255, 255, 255)
@@ -11,6 +12,12 @@ YELLOW = (255, 255, 102)
 BLACK = (0, 0, 0)
 RED = (255, 51, 51)
 PINK = (255, 0, 255)
+
+BUTTON_DOWN = 1
+DOWN = [0 , 1]
+UP = [0, -1]
+LEFT = [-1, 0]
+RIGHT = [1, 0]
 
 class GameMaster:
 
@@ -22,62 +29,40 @@ class GameMaster:
 
         """ Initialize PyGame """
         #pygame.init()
-        self.width = width
-        self.height = height
+        pygame.joystick.init()
         if screen == None:
+            self.width = width
+            self.height = height
             self.screen = pygame.display.set_mode([self.width, self.height])
             pygame.display.set_caption('SNEK 0.1')
         else:
             self.screen = screen
-        self.background_color = (0, 0, 0)
+            self.width = screen.get_width()
+            self.height = screen.get_height()
+        print(f'Screen size is {[self.width, self.height]}')
         self.clock = pygame.time.Clock()
         self.tick = 10
-        self.font = pygame.font.Font(None, 46)
-        self.font2 = pygame.font.SysFont('monospace', 16)
-        self.font3 = pygame.font.SysFont('monospace', 20)
-        self.versionFont = pygame.font.SysFont('monospace', 16)
-        self.arcadeFont = pygame.font.Font('Achtung\ARCADE_I.ttf', 20)
-        self.arcadeFontSmall = pygame.font.Font('Achtung\ARCADE_I.ttf', 18)
-        self.arcadeFontNormal = pygame.font.Font('Achtung\ARCADE_N.ttf', 14)
         self.gameIsOver = False
         self.gamePaused = False
-        self.score = 0
         self.score_tick = 0
         self.version = 0.1
-        self.score_margin = 48
         self.score_file = 'Achtung\hs.txt'
         self.currentHighScore = self.getHighScore()
-        self.wall_rects = []
+        self.walls = []
         self.snakes = 1
         self.snake = []
-        self.pellet_width = 8
-        self.pellet_height = 8
-        self.snake_width = 16
-        self.snake_height = 16
+        self.nx = 40
+        self.ny = 25
+        self.snake_size = self.width / self.nx # 32
+        self.pellet_size = self.snake_size / 2 # 16
+        self.score_margin =  2 * self.snake_size #48
         self.colors = [RED, BLUE]
         self.winner = None
         self.winningScore = 150
         self.DJ = DJ()
-        self.Painter = Painter()
-
-
-    def checkPelletCollision(self, snake, pellets):
-        pelletCols = pygame.sprite.spritecollide(snake, pellets, True)
-        snake.pellets = snake.pellets + len(pelletCols)
-        if (len(pelletCols) == 1):
-            #self.coinSound.play()
-            self.DJ.playPickUpSound()
-            pellets.add(Pellet(
-                pygame.Rect(randint(1, self.width / snake.width - 2) * snake.width + snake.width / 4,
-                            randint(10,
-                                    self.height / snake.height - 2) * snake.height + snake.height / 4,
-                            snake.pellet_width, snake.pellet_height)))
-            snake.length = snake.length + 1
-            snake.tailImage.append(pygame.Surface((snake.width, snake.height)))
-            snake.tailRect.append(snake.tailImage[-1].get_rect())
-            snake.score += 10
-            self.score_tick += 1
-            self.tick = 10 * exp(self.score_tick / 40)
+        self.Painter = Painter([self.screen.get_width(), self.screen.get_height()])
+        self.drawNextMove = False
+        self.InputReader = InputReader()
 
     def updateNextMove(self, snake):
         if (snake.current_dir == 'left'):
@@ -93,29 +78,40 @@ class GameMaster:
             snake.next_move.x = snake.rect.x
             snake.next_move.y = snake.rect.y + snake.height
 
-    def checkWallCollision(self, snake, walls):
-        snake.banned_move = None
-        wallCols = snake.next_move.collidelist(walls)
-
-        if (wallCols != -1):
-            if (wallCols == 0):
-                snake.banned_move = 'left'
-            elif (wallCols == 2):
-                snake.banned_move = 'right'
-            elif (wallCols == 1):
-                snake.banned_move = 'up'
-            elif (wallCols == 3):
-                snake.banned_move = 'down'
-
     def checkScore(self, snake, winningScore):
         return snake.score >= winningScore
+
+    def addPellet(self):
+        self.pellet_sprites.add(Pellet(randint(1, self.width / self.snake_size - 2) * self.snake_size + self.snake_size / 2 - self.pellet_size / 2,
+                                       randint(10, self.height / self.snake_size - 2) * self.snake_size + self.snake_size / 2 - self.pellet_size / 2,
+                                       self.pellet_size, self.Painter.pellet_color))
+
+
+    def increaseUpdateFreq(self):
+        self.score_tick += 1
+        self.tick = 10 * exp(self.score_tick / 40)
+
+    def mapAction(self, snake_and_action):
+
+        snake = self.snake[int(snake_and_action[0])]
+        action = snake_and_action[1]
+        if action in ['left', 'right', 'up', 'down'] and not snake.key_registered:
+            snake.setDirection(action)
+            snake.key_registered = True
+            return True
+        elif action == 'back':
+            return False
+        else:
+            return True
+
 
     def mainLoop(self):
         '''
         Main loop of the game.
         :return: True/False if game is over.
         '''
-
+        joystick = pygame.joystick.Joystick(1)
+        joystick.init()
         self.loadSprites()
 
         if(self.snakes == 1):
@@ -127,250 +123,138 @@ class GameMaster:
             for snake in range(self.snakes):
                 self.snake[snake].key_registered = False
 
-            """ Loop events """
+            # Loop events
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
-                elif event.type == KEYDOWN:
-                    if ((event.key == K_RIGHT)
-                        or (event.key == K_LEFT)
-                        or (event.key == K_UP)
-                        or (event.key == K_DOWN)):
-                        if not self.snake[0].key_registered and self.snake[0].stunned == 0:
-                            self.snake[0].setDirection(event.key)
-                            self.snake[0].key_registered = True
-                    if ((event.key == K_d)
-                          or (event.key == K_a)
-                          or (event.key == K_w)
-                          or (event.key == K_s)):
-                        if not self.snake[1].key_registered and self.snake[1].stunned == 0:
-                            self.snake[1].setDirection(event.key)
-                            self.snake[1].key_registered = True
-                    if (event.key == K_p):
-                        if(self.gamePaused):
-                            self.gamePaused = False
-                        else:
-                            self.gamePaused = True
-                    elif (event.key == K_q):
-                        sys.exit()
-                    elif (event.key == K_ESCAPE):
+
+                # Translate input to action
+                action = self.InputReader.readInput(event)
+                if action != None:
+                    if not self.mapAction(action):
                         return False
 
+            # Manage actions
             if not self.gamePaused:
+
+                # Check each snake
                 for snake in range(self.snakes):
 
-                    """ Pellet collision detection """
-                    self.checkPelletCollision(self.snake[snake], self.pellet_sprites)
+                    # Pellet collision detection
+                    if(self.snake[snake].checkPelletCollision(self.pellet_sprites)):
+                        self.DJ.playPickUpSound()
+                        self.snake[snake].increasePelletCount()
+                        self.addPellet()
+                        self.snake[snake].grow()
+                        self.increaseUpdateFreq()
 
-                    """ Wall collision detection """
-                    self.updateNextMove(self.snake[snake])
-                    self.checkWallCollision(self.snake[snake], self.wall_rects)
+                    # Wall collision detection
+                    self.snake[snake].checkWallCollision(self.walls)
 
-                    """ Tail collision detection """
+                    # Tail collision detection
                     if(self.snake[snake].checkTailCollision()):
-                        self.winner = (-1 * snake) + 2
+                        if(self.snakes == 2):
+                            self.winner = (-1 * snake) + 2
                         self.gameIsOver = True
                         self.DJ.stopMusic()
                         return True
 
                     if(self.snakes == 2):
 
-                        """ Check if there is a winner """
+                        # Check if there is a winner
                         if (self.checkScore(self.snake[snake], self.winningScore)):
                             self.gameIsOver = True
                             self.DJ.stopMusic()
                             return True
 
-                        """ Snake collision detection """
-                        if(self.snake[snake].checkSnakeCollision(self.snake[(-1 * snake) + 1])):
+                        # Snake collision detection
+                        if(self.snake[snake].checkSnakeCollision(self.snake[(-1 * snake) + 1]) and self.snake[snake].stunned == 0):
                             self.DJ.playCollisionSound()
                             self.snake[snake].stunned = self.snake[snake].stun_time
                             self.snake[snake].stun_time += 5
 
-                    """ Auto movement """
+                    # Auto movement
                     self.snake[snake].move()
+                    self.snake[snake].updateNextMove()
 
-            """ Render objects """
-            self.drawObjects()
+            # Render objects
+            self.Painter.drawGameObjects(self.screen, [self.snake_sprites, self.pellet_sprites, self.wall_sprites], self.snake, self.score_window, self.currentHighScore)
+            if(self.Painter.draw_next_move):
+                self.Painter.drawNextMove(self.screen, self.snake[0])
+                if(self.snakes == 2):
+                    self.Painter.drawNextMove(self.screen, self.snake[1])
             pygame.display.flip()
             self.clock.tick(self.tick)
 
 
     def loadSprites(self):
+
         # Snake
+        directions = ['right', 'left']
+        start_positions = [(10, 10), (self.nx - 10, self.ny - 10)]
         self.snake_sprites = pygame.sprite.Group()
         for i in range(self.snakes):
-            self.snake.append(Snake((i+1) * 10 * 16, (i+1) * 10 * 16, self.colors[i]))
+            self.snake.append(
+                Snake(start_positions[i][0] * self.snake_size,
+                      start_positions[i][1] * self.snake_size,
+                      self.colors[i],
+                      self.snake_size,
+                      directions[i]))
             self.snake_sprites.add(self.snake[i])
-            #self.snake_sprites = pygame.sprite.RenderPlain((self.snake))
 
         # Pellet
         self.pellet_sprites = pygame.sprite.Group()
-        self.pellet_sprites.add(Pellet(
-                pygame.Rect(randint(1, self.width / self.snake_width - 2) * self.snake_width + self.snake_width / 4,
-                            randint(10,
-                                    self.height / self.snake_height - 2) * self.snake_height + self.snake_height / 4,
-                            self.pellet_width, self.pellet_height)))
-
-        self.score_margin_bg = pygame.Rect(0, 0, self.width, self.score_margin)
+        self.addPellet()
 
         # Walls
-        wall_thickness = self.snake[0].width
-        self.wall_rects.append(
-            pygame.Rect(0, self.score_margin + wall_thickness, wall_thickness,
-                        self.height - self.score_margin - 2 * wall_thickness))
-        self.wall_rects.append(
-            pygame.Rect(0, self.score_margin, self.width, wall_thickness))
-        self.wall_rects.append(pygame.Rect(self.width - wall_thickness, self.score_margin + wall_thickness, wall_thickness,
-                                           self.height - self.score_margin - 2 * wall_thickness))
-        self.wall_rects.append(pygame.Rect(0, self.height - wall_thickness, self.width, wall_thickness))
+        wall_thickness = self.snake_size
 
+        self.walls.append(Wall(0,
+                               self.score_margin + wall_thickness,
+                               wall_thickness,
+                               self.height - self.score_margin - 2 * wall_thickness,
+                               self.Painter.wall_color))
+        self.walls.append(Wall(0,
+                               self.score_margin,
+                               self.width,
+                               wall_thickness,
+                               self.Painter.wall_color))
+        self.walls.append(Wall(self.width - wall_thickness,
+                               self.score_margin + wall_thickness,
+                               wall_thickness,
+                               self.height - self.score_margin - 2 * wall_thickness,
+                               self.Painter.wall_color))
+        self.walls.append(Wall(0,
+                               self.height - wall_thickness,
+                               self.width,
+                               wall_thickness,
+                               self.Painter.wall_color))
 
-    def drawObjects(self):
+        self.wall_sprites = pygame.sprite.Group()
+        for wall in range(len(self.walls)):
+            self.wall_sprites.add(self.walls[wall])
 
-        # Background
-        self.screen.fill(YELLOW)
-
-        # Pellets
-        self.pellet_sprites.draw(self.screen)
-
-        # Snake heads
-        self.snake_sprites.draw(self.screen)
-
-        # Snake tails
-        for snake in range(len(self.snake)):
-            for i in range(len(self.snake[snake].tailRect), -1, -1):
-                pygame.draw.rect(self.screen, self.snake[snake].color, self.snake[snake].tailRect[i - 1])
-        for j in range(len(self.wall_rects)):  # Walls
-            pygame.draw.rect(self.screen, RED, self.wall_rects[j - 1])
 
         # Score window
-        pygame.draw.rect(self.screen, YELLOW, self.score_margin_bg)
-        # pygame.draw.rect(self.screen, (255, 0, 255), self.snake.next_move)
-
-        for snake in range(self.snakes):
-            # Score
-            scoretext = self.arcadeFontNormal.render("Score: {0}".format(self.snake[snake].score), 1,
-                                                     self.colors[snake])
-            self.screen.blit(scoretext, (5 + snake * (self.width - scoretext.get_rect().width - 10), 10))
-
-        if (self.snakes == 1):
-            # Highscore
-            highScoreText = self.arcadeFontNormal.render('Highscore: {0}'.format(self.currentHighScore[1]), 1,
-                                                         BLUE)
-            highScoreText2 = self.arcadeFontNormal.render('Set by: {0}'.format(self.currentHighScore[0]), 1,
-                                                          BLUE)
-            highScoreText_rect = highScoreText.get_rect()
-            highScoreText2_rect = highScoreText2.get_rect()
-            self.screen.blit(highScoreText, (self.width - highScoreText_rect.width - 10, 10))
-            self.screen.blit(highScoreText2,
-                             (self.width - highScoreText2_rect.width - 10, 10 + highScoreText_rect.height))
-
-    def drawSurface(self, surface, screenPos, alpha = None, tempPos = None, color = None):
-        """ Draws a surface at defined logical screen position """
-
-        rowHeight = round(self.height/10)
-        columnWidth = round(self.width/4)
-        surface_x = 0
-        surface_y = 0
-        surface_rect = surface.get_rect()
-        logoMargin = 20
-
-        """ Check for screen positions """
-
-        """ Version text """
-        if(screenPos == 0):
-            surface_x = self.screen.get_width() / 2 - surface_rect.width / 2
-            surface_y = 1*rowHeight
-        """ Game logo """
-        if(screenPos == 1):
-            surface_x = self.screen.get_width() / 2 - surface_rect.width / 2
-            surface_y = 2*rowHeight
-        """ Version text """
-        if(screenPos == 2):
-            surface_x = self.screen.get_width() / 2 - surface_rect.width / 2
-            surface_y = self.screen.get_height() / 2 + surface_rect.height
-        """ Menu position 2 """
-        if(screenPos == 4):
-            surface_x = 2*columnWidth - surface_rect.width / 2
-            surface_y = 6*rowHeight + rowHeight / 2 - surface_rect.height / 2
-        """ Menu position 3 """
-        if(screenPos == 5):
-            surface_x = 2*columnWidth - surface_rect.width / 2
-            surface_y = 7*rowHeight + rowHeight / 2 - surface_rect.height / 2
-        """ Menu position 4 """
-        if(screenPos == 6):
-            surface_x = 2*columnWidth - surface_rect.width / 2
-            surface_y = 8*rowHeight + rowHeight / 2 - surface_rect.height / 2
-        """ Menu position 5 """
-        if(screenPos == 7):
-            surface_x = 2 * columnWidth - surface_rect.width / 2
-            surface_y = 9 * rowHeight + rowHeight / 2 - surface_rect.height / 2
-        if(screenPos == 9):
-            surface_x = 3 * columnWidth + columnWidth / 2 - surface_rect.width / 2 - columnWidth / 2
-            surface_y = 6*rowHeight + rowHeight / 2 - surface_rect.height / 2
-        if(screenPos == 10):
-            surface_x = 3 * columnWidth + columnWidth / 2 - surface_rect.width / 2 - columnWidth / 2
-            surface_y = 7*rowHeight + rowHeight / 2 - surface_rect.height / 2
-        """ Select rectangle """
-        if(screenPos == 13 and tempPos != None):
-            surface_x = self.screen.get_width() / 2 - surface_rect.width / 2
-            surface_y = (2 + tempPos) * rowHeight + rowHeight / 2 - surface_rect.height / 2
-        """ Alten logo (top right corner) """
-        if(screenPos == 14):
-            surface_x = self.screen.get_width() - logoMargin - surface_rect.width
-            surface_y = logoMargin
-        """ Menu position 5a """
-        if(screenPos == 15):
-            if(tempPos != None):
-                tempPos = tempPos - 14
-                surface_x = tempPos * columnWidth + columnWidth / 2 - surface_rect.width / 2
-                surface_y = 8 * rowHeight + rowHeight / 2 - surface_rect.height / 2
-            else:
-                surface_x = columnWidth + columnWidth / 2 - surface_rect.width / 2
-                surface_y = 8 * rowHeight + rowHeight / 2 - surface_rect.height / 2
-        """ Menu position 5b """
-        if(screenPos == 16):
-            surface_x = 2 * columnWidth + columnWidth / 2 - surface_rect.width / 2
-            surface_y = 8 * rowHeight + rowHeight / 2 - surface_rect.height / 2
-        """ Select rectangle 1P / 2P """
-        if(screenPos == 17 and tempPos != None):
-            tempPos = tempPos - 9
-            surface_x = 3 * columnWidth + columnWidth / 2 - surface_rect.width / 2 - columnWidth / 2
-            surface_y = (tempPos + 6) * rowHeight + rowHeight / 2 - surface_rect.height / 2
-        if(screenPos == 18):
-            surface_x = 5
-            surface_y = 10 + surface_rect.height
-        if(screenPos == 19):
-            surface_x = self.width / 2 - surface_rect.width / 2
-            surface_y = 10 + surface_rect.height
-        if(screenPos == 20):
-            surface_x = self.width - surface_rect.width - 5
-            surface_y = 10 + surface_rect.height
-
-
-        """ Transparency """
-        if(alpha != None and color != None):
-            #surface.fill((255, 255, 255, alpha))
-            surface.set_alpha(alpha)
-            surface.fill(color)
-
-        """ Render surface """
-        self.screen.blit(surface, [surface_x, surface_y])
-
+        self.score_window = pygame.Surface((self.width, self.score_margin))
 
     def gameOver(self):
+        '''
+        Game over screen with play again prompt
+        :return: None
+        '''
 
-        """ Triggers game over screen with play again prompt """
-
-        """ Define choosable screen positions """
+        # Define selectable screen positions
         selectablePos = [15, 16]
         selectPosIndex = 0
         fontColor = RED
+        joystick = pygame.joystick.Joystick(1)
+        joystick.init()
 
         # Play game over music
         self.DJ.playGameOverMusic()
 
+        winnerText = None
         if(self.snakes == 1):
             self.highScore()
         else:
@@ -383,49 +267,40 @@ class GameMaster:
                     fontColor = self.colors[1]
             else:
                 fontColor = self.colors[self.winner - 1]
-            winnerText = self.arcadeFontNormal.render('Player ' + str(self.winner) + ' wins!', True, fontColor)
-
-        """ Define objects to be rendered """
-        retryText = self.arcadeFont.render('Play again?', True, fontColor)
-        yesText = self.arcadeFont.render('Yes', True, fontColor)
-        noText = self.arcadeFont.render('No', True, fontColor)
-        gameOverImage = pygame.image.load('Achtung\erik400.png')
-        gameOverImage = pygame.transform.scale(gameOverImage, (round(256 * 1.5), round(226 * 1.5)))
-        selectSquare = pygame.Surface((60, 30))
 
         while 1:
 
-            """ Loop events """
+            # Loop events
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
-                elif event.type == KEYDOWN:
-                    if(event.key == K_RETURN):
-                        if(selectPosIndex == 0):
+
+                action = self.InputReader.readInput(event)
+                if action != None:
+                    action = action[1]
+                    if action == 'execute':
+                        if (selectPosIndex == 0):
                             self.DJ.stopMusic()
                             return True
-                        if(selectPosIndex == 1):
+                        if (selectPosIndex == 1):
                             self.DJ.stopMusic()
                             return False
-                    elif(event.key == K_RIGHT):
-                        if(selectPosIndex + 1 < len(selectablePos)):
+                    if action == 'right':
+                        if (selectPosIndex + 1 < len(selectablePos)):
                             selectPosIndex += 1
-                    elif(event.key == K_LEFT):
-                        if(selectPosIndex - 1 >= 0):
+                    if action == 'left':
+                        if (selectPosIndex - 1 >= 0):
                             selectPosIndex -= 1
-                    elif(event.key == K_q):
-                        sys.exit()
+                    if action == 'back':
+                        self.DJ.stopMusic()
+                        return False
 
-            """ Render objects """
-            self.drawObjects()
-            self.drawSurface(retryText, 5)
-            self.drawSurface(yesText, 15)
-            self.drawSurface(noText, 16)
-            self.drawSurface(gameOverImage, 0)
-            if (self.snakes == 2):
-                self.drawSurface(winnerText, 18 + (self.winner - 1) * 2)
-            self.drawSurface(selectSquare, 15, 128, selectablePos[selectPosIndex], fontColor)
-            pygame.display.flip()
+            # Draw game objects
+            self.Painter.drawGameObjects(self.screen, [self.snake_sprites, self.pellet_sprites, self.wall_sprites],
+                                         self.snake, self.score_window, self.currentHighScore)
+
+            # Draw game over screen
+            self.Painter.drawGameOverScreen(self.screen, selectablePos, selectPosIndex, fontColor, self.winner)
 
 
     def startScreen(self):
@@ -435,92 +310,65 @@ class GameMaster:
         :return: True/False if game is ready to start.
         '''
 
-        """ Define choosable screen positions """
+        # Define choosable screen positions
         selectPosIndex = 0
         selectablePos = [4, 5, 6]
         selectPosIndexStartGame = 0
         selectablePosStartGame = [9, 10]
         startGame = False
+        joystick = pygame.joystick.Joystick(1)
+        joystick.init()
 
         # Play intro music
         self.DJ.playIntroMusic()
 
         while 1:
 
-            """ Loop events """
+            # Loop events
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
-                elif event.type == KEYDOWN:
-                    if(event.key == K_q):
-                        return False
-                    if(event.key == K_RETURN):
-                        if(startGame):
-                            if(selectPosIndexStartGame == 0):
+
+                action = self.InputReader.readInput(event)
+                if action != None:
+                    action = action[1]
+                    if action == 'execute':
+                        if (startGame):
+                            if (selectPosIndexStartGame == 0):
                                 self.DJ.stopMusic()
                                 return True
-                            if(selectPosIndexStartGame == 1):
+                            if (selectPosIndexStartGame == 1):
                                 self.snakes = 2
                                 self.DJ.stopMusic()
                                 return True
                         else:
-                            if(selectPosIndex == 0):
+                            if (selectPosIndex == 0):
                                 startGame = True
-                            if(selectPosIndex == 1):
+                            if (selectPosIndex == 1):
                                 self.showTop10()
-                            if(selectPosIndex == 2):
+                            if (selectPosIndex == 2):
                                 self.DJ.stopMusic()
                                 return False
-                    if(event.key == K_DOWN):
-                        if(startGame):
-                            if(selectPosIndexStartGame + 1 < len(selectablePosStartGame)):
+                    if action == 'down':
+                        if (startGame):
+                            if (selectPosIndexStartGame + 1 < len(selectablePosStartGame)):
                                 selectPosIndexStartGame += 1
                         else:
-                            if(selectPosIndex + 1 < len(selectablePos)):
+                            if (selectPosIndex + 1 < len(selectablePos)):
                                 selectPosIndex += 1
-                    if(event.key == K_UP):
-                        if(startGame):
+                    if action == 'up':
+                        if (startGame):
                             if (selectPosIndexStartGame - 1 >= 0):
                                 selectPosIndexStartGame -= 1
                         else:
-                            if(selectPosIndex - 1 >= 0):
+                            if (selectPosIndex - 1 >= 0):
                                 selectPosIndex -= 1
-                    if(event.key == K_ESCAPE):
+                    if action == 'back':
                         self.DJ.stopMusic()
                         return False
 
+            # Draw start screen
             self.Painter.drawStartScreen(self.screen, startGame, selectablePos, selectPosIndex, selectablePosStartGame, selectPosIndexStartGame)
-            '''
-            menuTextColor = BLUE
-
-            """ Define objects to be rendered """
-            selectSquare = pygame.Surface((220, 30))
-            selectSquareStartGame = pygame.Surface((50, 30))
-            logoImage = pygame.image.load('Achtung\SNEK_logo1.png')
-            logoImage = pygame.transform.scale(logoImage, (400, 240))
-            startGameText = self.arcadeFont.render('Start game', True, menuTextColor)
-            optionsText = self.arcadeFont.render('High score', True, menuTextColor)
-            quitText = self.arcadeFont.render('Quit', True, menuTextColor)
-            versionText = self.versionFont.render('Version ' + str(self.version), True, RED)
-            onePlayerText = self.arcadeFont.render('1P', True, menuTextColor)
-            twoPlayerText = self.arcadeFont.render('2P', True, menuTextColor)
-
-            """ Render objects """
-            self.screen.fill(YELLOW)
-            self.drawSurface(versionText, 2)
-            self.drawSurface(startGameText, 4)
-            self.drawSurface(optionsText, 5)
-            self.drawSurface(quitText, 6)
-            self.drawSurface(logoImage, 1)
-            if(startGame):
-                self.drawSurface(onePlayerText, 9)
-                self.drawSurface(twoPlayerText, 10)
-                self.drawSurface(selectSquareStartGame, 17, 128, selectablePosStartGame[selectPosIndexStartGame], menuTextColor)
-            else:
-                self.drawSurface(selectSquare, 13, 128, selectablePos[selectPosIndex], menuTextColor)
-
-            pygame.display.flip()
-            '''
 
     def getHighScore(self):
         score_file = open(self.score_file, 'r')
@@ -546,14 +394,11 @@ class GameMaster:
         score_file.close()
 
     def showTop10(self):
-        windowWidth = round(self.width * 0.7)#450
-        windowHeight = round(self.height * 0.85)#400
-        entry_spacing = 30
-        fontColor = WHITE
-        backgroundColor = BLUE
+        windowWidth = round(self.width * 0.5)
+        windowHeight = round(self.height * 0.85)
         all_score = []
 
-        """ Get top 10 """
+        # Get top 10
         score_file = open(self.score_file, 'r')
         lines = score_file.readlines()
         for line in lines:
@@ -565,32 +410,16 @@ class GameMaster:
         all_score.sort(reverse = True)
         top10 = all_score[:10]
 
-        """ Create high score window and render text"""
-        box = pygame.Surface((windowWidth, windowHeight))
-        box.fill(backgroundColor)
-        pygame.draw.rect(box, BLACK, (0, 0, windowWidth, windowHeight), 1)
-        txt_surf = self.arcadeFont.render("HIGHSCORE", True, fontColor)
-        txt_rect = txt_surf.get_rect(center = (windowWidth // 2, round(0.075 * windowHeight)))
-        box.blit(txt_surf, txt_rect)
-        txt_surf = self.arcadeFontSmall.render("Press ENTER to continue", True, fontColor)
-        txt_rect = txt_surf.get_rect(center = (windowWidth // 2, windowHeight - round(0.075 * windowHeight)))
-        box.blit(txt_surf, txt_rect)
+        self.Painter.drawHighscoreWindow(self.screen, [windowWidth, windowHeight], top10)
 
-        """ Render top 10 """
-        for i, entry in enumerate(top10):
-            txt_surf = self.arcadeFontNormal.render(entry[1] + "  " + str(entry[0]), True, fontColor)
-            txt_rect = txt_surf.get_rect(center = (windowWidth // 2, entry_spacing * i + round(windowHeight / 6)))
-            box.blit(txt_surf, txt_rect)
-
-        """ Render the high score window """
-        self.screen.blit(box, (self.width / 2 - windowWidth / 2, self.height / 2 - windowHeight / 2))
-        pygame.display.flip()
-
-        """ Wait for user input to continue """
+        # Wait for user input to continue
         while True:
             for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN and event.key in [pygame.K_RETURN, pygame.K_KP_ENTER]:
-                    return
+                action = self.InputReader.readInput(event)
+                if action != None:
+                    action = action[1]
+                    if action == 'execute':
+                        return
             pygame.time.wait(20)
 
     def getLastTop10(self):
@@ -675,7 +504,6 @@ class GameMaster:
 
         """ Function for showing the typed name """
         def show_name(screen, box, name, color, font):
-            #pygame.draw. rect(box, color, (50, 60, windowWidth-100, 20), 0)
             txt_surf = font.render(name, True, color)
             txt_rect = txt_surf.get_rect(center = (windowWidth / 2, round(windowHeight - windowHeight * 0.2)))
             box.blit(txt_surf, txt_rect)
@@ -686,7 +514,6 @@ class GameMaster:
         txt_surf = self.arcadeFont.render(txt, True, fontColor)
         txt_rect = txt_surf.get_rect(center = (windowWidth / 2, round(0.1 * windowHeight)))
         txt2_surf = self.arcadeFontNormal.render(txt2, True, fontColor)
-        #txt2_rect = txt2_surf.get_rect(center = (windowWidth / 2, round(0.2 * windowHeight)))
         txt2_rect = pygame.Rect(round(windowWidth * 0.15), round(windowHeight * 0.3), round(windowWidth * 0.8), 50)
 
         txt3_surf = self.arcadeFontNormal.render('What is your name?', True, fontColor)
@@ -699,7 +526,6 @@ class GameMaster:
             pygame.draw.rect(box, BLACK, (0, 0, windowWidth, windowHeight), 1)  # Black edge
             box.blit(txt_surf, txt_rect) # Congratulation text
             self.drawText(box, txt2, fontColor, txt2_rect, self.arcadeFontNormal)
-            #box.blit(txt2_surf, txt2_rect)
             box.blit(txt3_surf, txt3_rect)
 
             for event in pygame.event.get():
