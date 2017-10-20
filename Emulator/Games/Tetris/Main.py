@@ -24,22 +24,22 @@ class Main:
         self.screen = screen
         self.board_width = self.screen.get_size()[0]
         self.board_height  = self.screen.get_size()[1]
-        self.logo = pygame.image.load(self.path + "\\Estetris_logo.png").convert_alpha()
+        self.logo = pygame.image.load(self.path + "/Estetris_logo.png").convert_alpha()
         self.logo = self.ScaleImage(self.logo, self.board_width)
         self.screen_center = (self.board_width - self.logo.get_size()[0]) / 2
         self.score = 0
         self.exit_game = False
         self.restart = False
         self.clock = pygame.time.Clock()
-        self.font = pygame.font.Font(path.abspath("font.ttf"), 20)
+        self.font = pygame.font.Font(self.path + "/font.ttf"), 20)
         self.high_score = []
         self.options = []
-        pygame.mixer.music.load(self.path + "\\Tetris-sound.mp3")
-        self.background = pygame.image.load(self.path + "\\tetris_background.png")
+        pygame.mixer.music.load(self.path + "/tetris-sound.mp3")
+        self.background = pygame.image.load(self.path + "/tetris_background.png")
         self.background = self.ScaleImage(self.background, self.board_width)
 
     def GetHighScore(self):
-        file = open(self.path + "\\high_score.txt", "r")
+        file = open(self.path + "/high_score.txt", "r")
         lst = [l.split(":") for l in file.readlines()]
         for t in lst:
             try:
@@ -57,7 +57,7 @@ class Main:
 
     def GetPlayers(self,logo,background,screen_center):
         done = False
-        selection_font = pygame.font.Font(path.abspath("font.ttf"), 20)
+        selection_font = pygame.font.Font(self.path + "font.ttf"), 20)
         selection_font.set_underline(True)
 
         one_player = True
@@ -144,12 +144,13 @@ class Main:
     def ShowHighScore(self):
         pixel_offset = 40
         i = 0
+        self.screen.blit(self.background, (0, self.board_height - self.background.get_height()))
+        self.screen.blit(self.logo, (self.screen_center, 0))
         for score in self.high_score:
             string = score[0] + " " + str(score[1])
             txt = self.font.render(string, 1, WHITE)
             self.screen.blit(txt, ((self.board_width - self.font.size(string)[0]) / 2,self.board_height * 0.4 + (i * pixel_offset)))
             i += 1
-        self.screen.blit(self.logo, (self.screen_center, 0))
         pygame.display.flip()
         while True:
             for event in pygame.event.get():
@@ -157,7 +158,7 @@ class Main:
                     return
 
     def SaveScore(self):
-        file = open(self.path + "\\high_score.txt", "w")
+        file = open(self.path + "/high_score.txt", "w")
         for item in self.high_score:
             file.write(item[0] + ":" + str(item[1]) + "\n")
         file.close()
@@ -185,7 +186,6 @@ class Main:
         self.SetOptions("Start")
         self.options[idx].hovered = True
         while not self.exit_game:
-            self.screen.blit(self.background, (0, self.board_height - self.background.get_height()))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.exit_game = True
@@ -219,9 +219,10 @@ class Main:
                 else:
                     self.OnePlayer()
                 self.SaveScore()
+            self.screen.blit(self.background, (0, self.board_height - self.background.get_height()))
+            self.screen.blit(self.logo, (self.screen_center, 0))
             for option in self.options:
                 option.draw()
-            self.screen.blit(self.logo, (self.screen_center, 0))
             pygame.display.flip()
             self.screen.fill(BLACK)
             self.clock.tick(FPS)

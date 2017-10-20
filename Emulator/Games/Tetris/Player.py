@@ -26,7 +26,7 @@ class Player:
         self.block_size = (self.board_width / blocks)
         self.logo = logo
         self.score = 0
-        self.font = pygame.font.Font(self.path + "\\font.ttf", 17)
+        self.font = pygame.font.Font(self.path + "/font.ttf", 17)
         self.clock = clk
         self.player_number = nr
 
@@ -36,7 +36,7 @@ class Player:
         self.restart = False
         self.frame_ctr = 0
         self.speed_control = 1
-        self.empty_row_effect = pygame.mixer.Sound(self.path + "\\Sweep5.wav")
+        self.empty_row_effect = pygame.mixer.Sound(self.path + "/Sweep5.wav")
         self.current_figure = Figure(self.GetFigureShape(),self.board_width,self.board_height,self.block_size, False)
         self.next_figure = Figure(self.GetFigureShape(),self.figure_prediction.get_size()[0],self.figure_prediction.get_size()[1],self.block_size / 2, True)
 

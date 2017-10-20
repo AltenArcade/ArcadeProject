@@ -16,17 +16,18 @@ GREY = (160, 160, 160)
 
 class MainGUI:
     def __init__(self, screen):
+        self.path = str(path.dirname(path.realpath(__file__)))
         self.state_idx = 0
         self.states = []
         self.clock = pygame.time.Clock()
         self.screen = screen
-        self.font = pygame.font.Font(path.abspath("font.ttf"), 20)
+        self.font = pygame.font.Font(self.path + "/font.ttf", 20)
         self.board_width = self.screen.get_size()[0]
         self.board_height = self.screen.get_size()[1]
         self.screen.fill(WHITE)
         self.option_screen = self.screen.subsurface(0, self.board_height / 2, self.board_width, self.board_height / 2)
         self.options = []
-        self.games = [name for name in os.listdir("Games")]
+        self.games = [name for name in os.listdir(self.path + "/Games")]
         print(self.games)
 
     def Start(self):
@@ -81,7 +82,7 @@ class MainGUI:
     def DrawOptions(self,intro_text):
 
         pixel_offset = 70
-        logo = pygame.image.load(path.abspath("AltenArcadeLogo.png")).convert_alpha()
+        logo = pygame.image.load(self.path + "/AltenArcadeLogo.png").convert_alpha()
         logo = self.ScaleImage(logo, self.board_width)
         screen_center = (self.board_width - logo.get_size()[0])/ 2
         pos_y = (self.option_screen.get_size()[1] - (3 * self.font.size(intro_text[0])[1] + 2 * pixel_offset)) / 2
