@@ -5,6 +5,7 @@ from platform import system
 from Games.Achtung.Achtung import *
 from Games.Tetris.Main import RunTetris
 from Option import Option
+import InputReader
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -32,6 +33,7 @@ class MainGUI:
         self.option_screen = self.screen.subsurface(0, self.board_height / 2, self.board_width, self.board_height / 2)
         self.options = []
         self.games = [name for name in os.listdir(self.path + "Games")]
+        self.InputReader = InputReader.InputReader()
         print(self.games)
 
     def Start(self):
@@ -43,6 +45,8 @@ class MainGUI:
         self.options[idx].hovered = True
         while not done:
             for event in pygame.event.get():
+                action = self.InputReader.readInput(event)
+                '''
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         done = True
@@ -60,6 +64,32 @@ class MainGUI:
                             idx = len(self.options) - 1
                         self.options[idx].hovered = True
                     elif event.key == pygame.K_RETURN:
+                        if self.options[idx].text in self.games:
+                            ret_val = self.options[idx].text
+                            done = True
+                        else:
+                            idx = self.SetOptions(self.options[idx].text)
+                            self.options[idx].hovered = True
+                '''
+                #if event.type == pygame.KEYDOWN:
+                if(action != None):
+                    action = action[1]
+                    if action == 'back':
+                        done = True
+                        ret_val = "quit"
+                    elif action == 'down':
+                        self.options[idx].hovered = False
+                        idx += 1
+                        if idx >= len(self.options):
+                            idx = 0
+                        self.options[idx].hovered = True
+                    elif action == 'up':
+                        self.options[idx].hovered = False
+                        idx -= 1
+                        if idx < 0:
+                            idx = len(self.options) - 1
+                        self.options[idx].hovered = True
+                    elif action == 'execute':
                         if self.options[idx].text in self.games:
                             ret_val = self.options[idx].text
                             done = True
@@ -101,7 +131,10 @@ class MainGUI:
 class MainLoop:
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((0,0),FULLSCREEN)
+        self.screen = pygame.display.set_mode((0,0), FULLSCREEN)
+        if self.screen.get_width() / self.screen.get_height() != 1.6:
+            self.screen = pygame.display.set_mode([1280, 800])
+        print(f'Screen size is {self.screen.get_size()}')
         environ['SDL_VIDEO_CENTERED'] = '1'
 
     def run(self):
