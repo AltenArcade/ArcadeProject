@@ -32,7 +32,6 @@ class MainGUI:
         self.option_screen = self.screen.subsurface(0, self.board_height / 2, self.board_width, self.board_height / 2)
         self.options = []
         self.games = [name for name in os.listdir(self.path + "Games")]
-        print(self.games)
 
     def Start(self):
         self.screen.fill(WHITE)
@@ -101,7 +100,7 @@ class MainGUI:
 class MainLoop:
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((0,0),FULLSCREEN)
+        self.screen = pygame.display.set_mode((1280,800))
         environ['SDL_VIDEO_CENTERED'] = '1'
 
     def run(self):

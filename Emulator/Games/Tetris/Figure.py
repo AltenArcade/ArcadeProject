@@ -64,6 +64,13 @@ class Figure(pygame.sprite.Sprite):
             self.block_list.update("reset " + case)
             return True
 
+    def CheckBottom(self):
+        for block in self.block_list.sprites():
+            if block.rect.y + self.block_size >= self.board_height:
+                self.is_moving = False
+                return False
+        return True
+
     def flip(self):
         old_y = self.block_list.sprites()[0].rect.y
         old_x = self.block_list.sprites()[0].rect.x
@@ -78,14 +85,7 @@ class Figure(pygame.sprite.Sprite):
                     self.block_list.add(block)
 
     def move_down(self):
-        move = True
-        for block in self.block_list.sprites():
-            if block.rect.y + self.block_size >= self.board_height:
-                move = False
-                self.is_moving = False
-                break
-        if move:
-            self.block_list.update("down")
+        self.block_list.update("down")
 
     def move_left(self):
         move = True

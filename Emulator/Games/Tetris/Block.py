@@ -16,15 +16,15 @@ class Block(pygame.sprite.Sprite):
     def update(self, action):
         if action == "down":
             self.rect.y += self.block_size
-        if action == "left":
+        elif action == "left":
             self.rect.x -= self.block_size
-        if action == "right":
+        elif action == "right":
             self.rect.x += self.block_size
-        if action == "reset down":
+        elif action == "reset down":
             self.rect.y -= self.block_size
-        if action == "reset right":
+        elif action == "reset right":
             self.rect.x -= self.block_size
-        if action == "reset left":
+        elif action == "reset left":
             self.rect.x += self.block_size
 
     def Draw(self, color):

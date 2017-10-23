@@ -1,8 +1,11 @@
-import pygame
 from os import path
 from platform import system
 from random import randint
+
+import pygame
+
 from Games.Tetris.Figure import Figure
+from Games.Tetris.InputName import InputName
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -77,8 +80,6 @@ class Player:
                     blocklist.remove(block)
 
         delete_rows.sort()
-        if len(delete_rows) > 0:
-            self.FullRowEffect(delete_rows)
         while(len(delete_rows) != 0):
             sound.play()
             for block in blocklist:
@@ -88,23 +89,6 @@ class Player:
             delete_rows = delete_rows[1:len(delete_rows)]
 
         return blocklist
-
-    def FullRowEffect(self, y_coords):
-        ctr = 0
-        while ctr < 4:
-            for y_coord in y_coords:
-                for i in range(0,10):
-                    self.collision_list.draw(self.screen)
-                    pygame.draw.rect(self.screen,BLACK,[i*self.block_size,y_coord,self.block_size,self.block_size])
-            pygame.display.update([self.screen.get_offset()[0],y_coords[0],10 * self.block_size, len(y_coords) * self.block_size])
-            pygame.time.delay(5)
-            for y_coord in y_coords:
-                for i in range(0,10):
-                    self.collision_list.draw(self.screen)
-                    pygame.draw.rect(self.screen,WHITE,[i*self.block_size,y_coord,self.block_size,self.block_size])
-            pygame.display.update([self.screen.get_offset()[0], y_coords[0], 10 * self.block_size, len(y_coords) * self.block_size])
-            pygame.time.delay(5)
-            ctr += 1
 
     def CheckIfGameOver(self,figure):
         for block in figure.block_list:
@@ -128,37 +112,8 @@ class Player:
             (self.board_height - self.font.size(text[i])[1] - pixel_offset) / 2) + i * pixel_offset))
 
     def GetPlayerName(self):
-        pixel_offset = 70
-        highscore_text = ["New High Score of " + str(self.score), "Type your name: "]
-        done = False
-        while not done:
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_RETURN:
-                        done = True
-                    elif event.key == pygame.K_BACKSPACE:
-                        self.name = self.name[:len(self.name) - 1]
-                    else:
-                        if len(self.name) < 8:
-                            self.name += str(event.unicode)
-
-            self.screen.fill(BLACK)
-
-            for i in range(len(highscore_text)):
-                rect = (((self.board_width - self.font.size(highscore_text[i])[0]) / 2), (
-                    (self.board_height - self.font.size(highscore_text[i])[1] - pixel_offset) / 2) + i * pixel_offset)
-                txt = self.font.render(highscore_text[i], 1, WHITE)
-                self.screen.blit(txt, rect)
-
-            text = self.font.render(self.name, 1, WHITE)
-            box_x = self.font.size(self.name)[0]
-            box_y = self.font.size(self.name)[1]
-            enter_box = pygame.Surface((box_x, box_y))
-            text_position = ((self.board_width - box_x) / 2, rect[1] + pixel_offset)
-            r = text.get_rect()
-            enter_box.blit(text, r)
-            self.screen.blit(enter_box, text_position)
-            pygame.display.flip()
+        name_module = InputName(self.screen,self.score,self.font)
+        self.name = name_module.GetPlayerName()
 
     def EnterName(self):
 
@@ -193,7 +148,7 @@ class Player:
             self.current_figure = Figure(self.next_figure.GetShape(),self.board_width,self.board_height,self.block_size, False)
             self.next_figure = Figure(self.GetFigureShape(),self.figure_prediction.get_size()[0],self.figure_prediction.get_size()[1],self.block_size / 2, True)
 
-        if (self.frame_ctr >= (int(FPS / self.speed_control)) - 1 and self.current_figure.CheckCollision(self.collision_list, "down")):
+        if (self.frame_ctr >= (int(FPS / self.speed_control)) - 1 and self.current_figure.CheckCollision(self.collision_list, "down") and self.current_figure.CheckBottom()):
             self.frame_ctr = 0
             self.current_figure.move_down()
 
@@ -217,12 +172,13 @@ class Player:
             self.current_figure.move_right()
 
     def down(self):
-        if self.current_figure.CheckCollision(self.collision_list, "down"):
+        if self.current_figure.CheckCollision(self.collision_list, "down") and self.current_figure.CheckBottom():
             self.current_figure.move_down()
 
     def down_fast(self):
-        while self.current_figure.CheckCollision(self.collision_list, "down"):
+        while self.current_figure.CheckCollision(self.collision_list, "down") and self.current_figure.CheckBottom():
             self.current_figure.move_down()
+            self.current_figure.block_list.draw(self.screen)
 
     def CheckGameOver(self):
         return self.game_over
