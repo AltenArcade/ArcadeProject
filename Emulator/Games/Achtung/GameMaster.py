@@ -1,6 +1,8 @@
 import pygame
 from pygame.locals import *
 import os, sys
+from os import path
+from platform import system
 from Games.Achtung.Snake import *
 from random import randint
 from math import *
@@ -28,7 +30,10 @@ class GameMaster:
     def __init__(self, width = 640, height = 480, screen = None):
 
         """ Initialize PyGame """
-        self.path = str(os.path.dirname(os.path.realpath(__file__)))
+        if system() == "Windows":
+            self.path = str(path.dirname(path.realpath(__file__))) + "\\"
+        if system() == "Linux":
+            self.path = str(path.dirname(path.realpath(__file__))) + "/"
         if screen == None:
             self.width = width
             self.height = height
@@ -47,7 +52,7 @@ class GameMaster:
         self.version = 0.1
         self.score_margin = 48
         self.score_file = self.path + 'hs.txt'
-        #self.score_file = 'Achtung\hs.txt'
+
         self.currentHighScore = self.getHighScore()
         self.walls = []
         self.snakes = 1
@@ -60,6 +65,7 @@ class GameMaster:
         self.colors = [RED, BLUE]
         self.winner = None
         self.winningScore = 150
+
         self.DJ = DJ()
         self.Painter = Painter([self.screen.get_width(), self.screen.get_height()])
         self.drawNextMove = False
@@ -104,7 +110,6 @@ class GameMaster:
             return False
         else:
             return True
-
 
     def mainLoop(self):
         '''

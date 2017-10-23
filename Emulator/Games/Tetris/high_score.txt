@@ -2,4 +2,4 @@ viktor:20
 viktor:19
 korv:8
 dif:3
-asd:2
+hej:3

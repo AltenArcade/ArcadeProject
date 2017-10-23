@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="5222cc2e-a2dc-40ca-9502-7351619d68f8" name="Default" comment="" />
+=======
+    <list default="true" id="5222cc2e-a2dc-40ca-9502-7351619d68f8" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Games/Tetris/Main.py" afterPath="$PROJECT_DIR$/Games/Tetris/Main.py" />
+    </list>
+>>>>>>> viktor_branch
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,8 +23,13 @@
       <file leaf-file-name="MainGUI.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MainGUI.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="272">
               <caret line="76" column="35" lean-forward="false" selection-start-line="76" selection-start-column="35" selection-end-line="76" selection-end-column="35" />
+=======
+            <state relative-caret-position="357">
+              <caret line="81" column="35" lean-forward="true" selection-start-line="81" selection-start-column="35" selection-end-line="81" selection-end-column="35" />
+>>>>>>> viktor_branch
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
                 <marker date="1508741437018" expanded="true" signature="3781:3826" ph="..." />
@@ -66,6 +77,42 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="Emulator.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Games/Achtung/Emulator.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="8" column="30" lean-forward="false" selection-start-line="8" selection-start-column="30" selection-end-line="8" selection-end-column="30" />
+              <folding>
+                <element signature="e#0#20#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GameMaster.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Games/Achtung/GameMaster.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="8126">
+              <caret line="487" column="55" lean-forward="false" selection-start-line="487" selection-start-column="55" selection-end-line="487" selection-end-column="55" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Snake.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Games/Achtung/Snake.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="918">
+              <caret line="54" column="53" lean-forward="false" selection-start-line="54" selection-start-column="53" selection-end-line="54" selection-end-column="53" />
+              <folding>
+                <element signature="e#0#14#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Option.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Option.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -76,9 +123,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Games/Tetris/Main.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="225">
               <caret line="261" column="29" lean-forward="false" selection-start-line="261" selection-start-column="29" selection-end-line="261" selection-end-column="29" />
               <folding>
@@ -94,6 +142,13 @@
                 <marker date="1508741436955" expanded="true" signature="11188:11417" ph="..." />
                 <marker date="1508741436955" expanded="true" signature="11234:11318" ph="..." />
                 <marker date="1508741436955" expanded="true" signature="12202:12254" ph="..." />
+=======
+            <state relative-caret-position="157">
+              <caret line="235" column="24" lean-forward="false" selection-start-line="235" selection-start-column="24" selection-end-line="235" selection-end-column="24" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+                <element signature="e#9383#10571#0" expanded="false" />
+>>>>>>> viktor_branch
               </folding>
             </state>
           </provider>
@@ -102,6 +157,7 @@
       <file leaf-file-name="Player.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Games/Tetris/Player.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="323">
               <caret line="19" column="22" lean-forward="false" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
               <folding>
@@ -165,11 +221,36 @@
               <caret line="2" column="27" lean-forward="false" selection-start-line="2" selection-start-column="27" selection-end-line="2" selection-end-column="27" />
               <folding>
                 <marker date="1508741249443" expanded="true" signature="1594:1613" ph="..." />
+=======
+            <state relative-caret-position="357">
+              <caret line="21" column="31" lean-forward="true" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+                <element signature="e#1610#1918#0" expanded="false" />
+                <element signature="e#1974#2987#0" expanded="false" />
+                <element signature="e#3036#3915#0" expanded="false" />
+                <element signature="e#3963#4078#0" expanded="false" />
+                <element signature="e#4115#4304#0" expanded="false" />
+                <element signature="e#4338#4724#0" expanded="false" />
+>>>>>>> viktor_branch
               </folding>
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
+=======
+      <file leaf-file-name="Achtung.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Games/Achtung/Achtung.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1195">
+              <caret line="2" column="27" lean-forward="true" selection-start-line="2" selection-start-column="27" selection-end-line="2" selection-end-column="27" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+>>>>>>> viktor_branch
       <file leaf-file-name="Block.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Games/Tetris/Block.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -201,7 +282,10 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
+<<<<<<< HEAD
       <find>pygame.display.qui</find>
+=======
+>>>>>>> viktor_branch
       <find>pygame.dis</find>
       <find>swee</find>
       <find>pygame.qui</find>
@@ -230,7 +314,12 @@
       <find>self.logo</find>
       <find>ShowHighScore</find>
       <find>option</find>
+<<<<<<< HEAD
       <find>&lt;&lt;&lt;&lt;&lt;</find>
+=======
+      <find>abspath</find>
+      <find>two</find>
+>>>>>>> viktor_branch
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -251,10 +340,11 @@
         <option value="$PROJECT_DIR$/Games/Tetris/Figure.py" />
         <option value="$PROJECT_DIR$/Games/Achtung/Emulator.py" />
         <option value="$PROJECT_DIR$/Games/Tetris/high_score.txt" />
-        <option value="$PROJECT_DIR$/Games/Tetris/Player.py" />
         <option value="$PROJECT_DIR$/Games/Options.py" />
-        <option value="$PROJECT_DIR$/MainGUI.py" />
         <option value="$PROJECT_DIR$/Option.py" />
+        <option value="$PROJECT_DIR$/Games/Tetris/Player.py" />
+        <option value="$PROJECT_DIR$/Games/Achtung/GameMaster.py" />
+        <option value="$PROJECT_DIR$/MainGUI.py" />
         <option value="$PROJECT_DIR$/Games/Tetris/Main.py" />
         <option value="$PROJECT_DIR$/Games/Achtung/GameMaster.py" />
       </list>
@@ -294,12 +384,15 @@
               <item name="Emulator" type="462c0819:PsiDirectoryNode" />
               <item name="Games" type="462c0819:PsiDirectoryNode" />
             </path>
+<<<<<<< HEAD
             <path>
               <item name="Emulator" type="b2602c69:ProjectViewProjectNode" />
               <item name="Emulator" type="462c0819:PsiDirectoryNode" />
               <item name="Games" type="462c0819:PsiDirectoryNode" />
               <item name="Achtung" type="462c0819:PsiDirectoryNode" />
             </path>
+=======
+>>>>>>> viktor_branch
           </expand>
           <select />
         </subPane>
@@ -389,8 +482,12 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
+<<<<<<< HEAD
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
+=======
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+>>>>>>> viktor_branch
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11510417" sideWeight="0.49423394" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -402,7 +499,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.11510417" sideWeight="0.50576603" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35835096" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35835096" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -415,12 +512,20 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3372093" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+<<<<<<< HEAD
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.11510417" sideWeight="0.49423394" order="0" side_tool="false" content_ui="combo" />
+=======
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11510417" sideWeight="0.49423394" order="0" side_tool="false" content_ui="combo" />
+>>>>>>> viktor_branch
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.11510417" sideWeight="0.50576603" order="2" side_tool="true" content_ui="tabs" />
+<<<<<<< HEAD
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35835096" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+=======
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35835096" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+>>>>>>> viktor_branch
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -582,24 +687,46 @@
     <entry file="file://$PROJECT_DIR$/Tetris/Player.py" />
     <entry file="file://$PROJECT_DIR$/tetris/high_score.txt" />
     <entry file="file://$PROJECT_DIR$/Achtung/Achtung.py" />
+<<<<<<< HEAD
     <entry file="file://C:/Program Files/Python36/Lib/ntpath.py" />
     <entry file="file://$PROJECT_DIR$/Games/Achtung/Emulator.py">
+=======
+    <entry file="file://C:/Program Files/Python36/Lib/ntpath.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="30" lean-forward="false" selection-start-line="8" selection-start-column="30" selection-end-line="8" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="338">
+          <caret line="148" column="0" lean-forward="false" selection-start-line="148" selection-start-column="0" selection-end-line="148" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Games/Achtung/Achtung.py">
+    <entry file="file://$PROJECT_DIR$/Games/Tetris/high_score.txt">
+>>>>>>> viktor_branch
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Option.py">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="-1077">
           <caret line="2" column="27" lean-forward="false" selection-start-line="2" selection-start-column="27" selection-end-line="2" selection-end-column="27" />
           <folding>
             <marker date="1508741249443" expanded="true" signature="1594:1613" ph="..." />
           </folding>
+=======
+        <state relative-caret-position="221">
+          <caret line="13" column="10" lean-forward="false" selection-start-line="13" selection-start-column="10" selection-end-line="13" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Games/Tetris/Block.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+>>>>>>> viktor_branch
         </state>
       </provider>
     </entry>
@@ -611,6 +738,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/Games/Tetris/high_score.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -671,18 +799,33 @@
             <marker date="1508741436971" expanded="true" signature="8712:8742" ph="..." />
             <marker date="1508741436971" expanded="true" signature="8786:8929" ph="..." />
             <marker date="1508741436971" expanded="true" signature="8819:8908" ph="..." />
+=======
+    <entry file="file://$PROJECT_DIR$/Games/Tetris/Player.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="31" lean-forward="true" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#1610#1918#0" expanded="false" />
+            <element signature="e#1974#2987#0" expanded="false" />
+            <element signature="e#3036#3915#0" expanded="false" />
+            <element signature="e#3963#4078#0" expanded="false" />
+            <element signature="e#4115#4304#0" expanded="false" />
+            <element signature="e#4338#4724#0" expanded="false" />
+>>>>>>> viktor_branch
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Games/Tetris/Block.py">
+    <entry file="file://$PROJECT_DIR$/Games/Achtung/Achtung.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="-1195">
+          <caret line="2" column="27" lean-forward="true" selection-start-line="2" selection-start-column="27" selection-end-line="2" selection-end-column="27" />
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/MainGUI.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
@@ -698,15 +841,21 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Option.py">
+=======
+    <entry file="file://$PROJECT_DIR$/Games/Achtung/Emulator.py">
+>>>>>>> viktor_branch
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="10" lean-forward="false" selection-start-line="13" selection-start-column="10" selection-end-line="13" selection-end-column="10" />
-          <folding />
+        <state relative-caret-position="136">
+          <caret line="8" column="30" lean-forward="false" selection-start-line="8" selection-start-column="30" selection-end-line="8" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Games/Tetris/Main.py">
+    <entry file="file://$PROJECT_DIR$/Games/Achtung/GameMaster.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="225">
           <caret line="261" column="29" lean-forward="false" selection-start-line="261" selection-start-column="29" selection-end-line="261" selection-end-column="29" />
           <folding>
@@ -722,14 +871,35 @@
             <marker date="1508741436955" expanded="true" signature="11188:11417" ph="..." />
             <marker date="1508741436955" expanded="true" signature="11234:11318" ph="..." />
             <marker date="1508741436955" expanded="true" signature="12202:12254" ph="..." />
+=======
+        <state relative-caret-position="8126">
+          <caret line="487" column="55" lean-forward="false" selection-start-line="487" selection-start-column="55" selection-end-line="487" selection-end-column="55" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Games/Achtung/Snake.py">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="918">
+          <caret line="54" column="53" lean-forward="false" selection-start-line="54" selection-start-column="53" selection-end-line="54" selection-end-column="53" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+>>>>>>> viktor_branch
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Games/Achtung/Snake.py">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="1003">
           <caret line="59" column="53" lean-forward="false" selection-start-line="59" selection-start-column="53" selection-end-line="59" selection-end-column="53" />
+=======
+        <state relative-caret-position="357">
+          <caret line="81" column="35" lean-forward="true" selection-start-line="81" selection-start-column="35" selection-end-line="81" selection-end-column="35" />
+>>>>>>> viktor_branch
           <folding>
             <marker date="1508741249490" expanded="true" signature="0:7" ph="import ..." />
           </folding>
@@ -742,6 +912,17 @@
           <caret line="30" column="68" lean-forward="true" selection-start-line="30" selection-start-column="68" selection-end-line="30" selection-end-column="68" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Games/Tetris/Main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="235" column="24" lean-forward="false" selection-start-line="235" selection-start-column="24" selection-end-line="235" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#9383#10571#0" expanded="false" />
           </folding>
         </state>
       </provider>
