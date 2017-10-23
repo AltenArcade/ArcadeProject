@@ -234,8 +234,6 @@ class GameMaster:
         selectablePos = [15, 16]
         selectPosIndex = 0
         fontColor = RED
-        joystick = pygame.joystick.Joystick(1)
-        joystick.init()
 
         # Play game over music
         self.DJ.playGameOverMusic()
@@ -302,8 +300,6 @@ class GameMaster:
         selectPosIndexStartGame = 0
         selectablePosStartGame = [9, 10]
         startGame = False
-        joystick = pygame.joystick.Joystick(1)
-        joystick.init()
 
         # Play intro music
         self.DJ.playIntroMusic()
