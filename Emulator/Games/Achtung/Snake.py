@@ -194,18 +194,23 @@ class DJ():
     Class for playing music and sound effects.
     '''
 
-    def __init__(self):
+    def __init__(self, path):
 
         # Define music songs
-        self.introMusic = 'Achtung\\right_back_into_you.mp3'
-        self.gameOverMusic = 'Achtung\game_over_loop.mp3'
-        self.onePlayerMusic = 'Achtung\cosmic.mp3'
-        self.twoPlayerMusic = 'Achtung\\twoplayer.mp3'
+        self.path = path
+        #self.introMusic = 'Achtung\\right_back_into_you.mp3'
+        self.introMusic = self.path + 'right_back_into_you.mp3'
+        #self.gameOverMusic = 'Achtung\game_over_loop.mp3'
+        self.gameOverMusic = self.path + 'game_over_loop.mp3'
+        #self.onePlayerMusic = 'Achtung\cosmic.mp3'
+        self.onePlayerMusic = self.path + 'cosmic.mp3'
+        #self.twoPlayerMusic = 'Achtung\\twoplayer.mp3'
+        self.twoPlayerMusic = self.path + 'twoplayer.mp3'
 
         # Define sound effects
-        self.gameOverSound = pygame.mixer.Sound('Achtung\game_over2.wav')
-        self.collisionSound = pygame.mixer.Sound('Achtung\explosion.wav')
-        self.pickUpSound = pygame.mixer.Sound('Achtung\collision.wav')
+        self.gameOverSound = pygame.mixer.Sound(self.path + 'game_over2.wav')
+        self.collisionSound = pygame.mixer.Sound(self.path + 'explosion.wav')
+        self.pickUpSound = pygame.mixer.Sound(self.path + 'collision.wav')
 
     def playIntroMusic(self):
         pygame.mixer.music.load(self.introMusic)
@@ -238,22 +243,23 @@ class Painter:
     Renders everything onto a screen.
     '''
 
-    def __init__(self, screen_size):
+    def __init__(self, screen_size, path):
+        self.path = path
         self.screen_width = screen_size[0]
         self.screen_height = screen_size[1]
         self.font = pygame.font.Font(None, 46)
         self.font2 = pygame.font.SysFont('monospace', 16)
         self.font3 = pygame.font.SysFont('monospace', 20)
         self.versionFont = pygame.font.SysFont('monospace', 16)
-        self.arcadeFont = pygame.font.Font('Achtung\ARCADE_I.ttf', 20)
-        self.arcadeFontSmall = pygame.font.Font('Achtung\ARCADE_I.ttf', 18)
-        self.arcadeFontNormal = pygame.font.Font('Achtung\ARCADE_N.ttf', 14)
+        self.arcadeFont = pygame.font.Font(self.path + 'ARCADE_I.ttf', 20)
+        self.arcadeFontSmall = pygame.font.Font(self.path + 'ARCADE_I.ttf', 18)
+        self.arcadeFontNormal = pygame.font.Font(self.path + 'ARCADE_N.ttf', 14)
 
         # Start screen
         self.startMenuTextColor = BLUE
         self.selectSquare = pygame.Surface((220, 30))
         self.selectSquareStartGame = pygame.Surface((50, 30))
-        logoImage = pygame.image.load('Achtung\SNEK_logo1.png')
+        logoImage = pygame.image.load(self.path + 'SNEK_logo1.png')
         self.logoImage = pygame.transform.scale(logoImage,
                                                 (round(self.screen_width / 3.2), round(self.screen_height / 3.3)))
         self.startGameText = self.arcadeFont.render('Start game', True, self.startMenuTextColor)
@@ -268,7 +274,7 @@ class Painter:
         self.retryText = self.arcadeFont.render('Play again?', True, fontColor)
         self.yesText = self.arcadeFont.render('Yes', True, fontColor)
         self.noText = self.arcadeFont.render('No', True, fontColor)
-        gameOverImage = pygame.image.load('Achtung\erik400.png')
+        gameOverImage = pygame.image.load(self.path + 'erik400.png')
         self.gameOverImage = pygame.transform.scale(gameOverImage, (round(self.screen_width / 3), round(self.screen_height / 2.2)))
         self.selectSquareGameOver = pygame.Surface((60, 30))
 
@@ -284,6 +290,8 @@ class Painter:
 
     def drawNextMove(self, screen, snake):
         pygame.draw.rect(screen, [0, 255, 0], snake.next_move)
+
+    #def drawPromptBox(self):
 
     def drawStartScreen(self, screen, start_game, selectable_positions, selectable_position_index, selectable_positions_start_game, selectable_position_index_start_game):
         '''

@@ -1,25 +1,16 @@
-import pygame
-from pygame.locals import *
-import os, sys
 from os import path
 from platform import system
 from Games.Achtung.Snake import *
 from random import randint
 from math import *
-from Achtung.InputReader import *
+from InputReader import *
 
-BLUE = (51, 51, 255)
-WHITE = (255, 255, 255)
-YELLOW = (255, 255, 102)
-BLACK = (0, 0, 0)
-RED = (255, 51, 51)
-PINK = (255, 0, 255)
-
-BUTTON_DOWN = 1
-DOWN = [0 , 1]
-UP = [0, -1]
-LEFT = [-1, 0]
-RIGHT = [1, 0]
+#BLUE = (51, 51, 255)
+#WHITE = (255, 255, 255)
+#YELLOW = (255, 255, 102)
+#BLACK = (0, 0, 0)
+#RED = (255, 51, 51)
+#PINK = (255, 0, 255)
 
 class GameMaster:
 
@@ -27,23 +18,20 @@ class GameMaster:
     handles initialization and running of the game """
 
 
-    def __init__(self, width = 640, height = 480, screen = None):
+    def __init__(self, width = 1280, height = 800, screen = None):
 
-        """ Initialize PyGame """
         if system() == "Windows":
             self.path = str(path.dirname(path.realpath(__file__))) + "\\"
-        if system() == "Linux":
+        elif system() == "Linux":
             self.path = str(path.dirname(path.realpath(__file__))) + "/"
         if screen == None:
             self.width = width
             self.height = height
             self.screen = pygame.display.set_mode([self.width, self.height])
-            pygame.display.set_caption('SNEK 0.1')
         else:
             self.screen = screen
             self.width = screen.get_width()
             self.height = screen.get_height()
-        print(f'Screen size is {[self.width, self.height]}')
         self.clock = pygame.time.Clock()
         self.tick = 10
         self.gameIsOver = False
@@ -52,7 +40,6 @@ class GameMaster:
         self.version = 0.1
         self.score_margin = 48
         self.score_file = self.path + 'hs.txt'
-
         self.currentHighScore = self.getHighScore()
         self.walls = []
         self.snakes = 1
@@ -65,9 +52,8 @@ class GameMaster:
         self.colors = [RED, BLUE]
         self.winner = None
         self.winningScore = 150
-
-        self.DJ = DJ()
-        self.Painter = Painter([self.screen.get_width(), self.screen.get_height()])
+        self.DJ = DJ(self.path)
+        self.Painter = Painter([self.screen.get_width(), self.screen.get_height()], self.path)
         self.drawNextMove = False
         self.InputReader = InputReader()
 
@@ -93,7 +79,6 @@ class GameMaster:
                                        randint(10, self.height / self.snake_size - 2) * self.snake_size + self.snake_size / 2 - self.pellet_size / 2,
                                        self.pellet_size, self.Painter.pellet_color))
 
-
     def increaseUpdateFreq(self):
         self.score_tick += 1
         self.tick = 10 * exp(self.score_tick / 40)
@@ -116,14 +101,8 @@ class GameMaster:
         Main loop of the game.
         :return: True/False if game is over.
         '''
-        joystick = pygame.joystick.Joystick(1)
-        joystick.init()
-        self.loadSprites()
 
-        #if(self.snakes == 1):
-        #    self.DJ.playGameMusic(1)
-        #else:
-        #    self.DJ.playGameMusic(2)
+        self.loadSprites()
         self.DJ.playGameMusic(self.snakes)
 
         while not self.gameIsOver:
@@ -452,15 +431,12 @@ class GameMaster:
         high_name, high_score = self.getHighScore()
 
         if(self.snake[0].score > high_score):
-            #self.highScoreSound.play()
             name = self.promptBox('WOW!!', 'You have beaten the highscore!')
             self.writeScore(name)
         elif(self.snake[0].score == high_score):
-            #self.highScoreSound.play()
             name = self.promptBox('Great job!', 'You equalised the highscore!')
             self.writeScore(name)
         elif(self.snake[0].score > self.getLastTop10()):
-            #self.highScoreSound.play()
             name = self.promptBox('Well played!', 'You have made it into the top 10!')
             self.writeScore(name)
 
@@ -508,7 +484,7 @@ class GameMaster:
         windowHeight = self.height / 2
         backgroundColor = BLUE
         fontColor = WHITE
-        nameFont = self.arcadeFont
+        nameFont = self.Painter.arcadeFont
 
         """ Function for showing the typed name """
         def show_name(screen, box, name, color, font):
@@ -519,12 +495,12 @@ class GameMaster:
             pygame.display.flip()
 
         box = pygame.Surface((windowWidth, windowHeight))
-        txt_surf = self.arcadeFont.render(txt, True, fontColor)
+        txt_surf = self.Painter.arcadeFont.render(txt, True, fontColor)
         txt_rect = txt_surf.get_rect(center = (windowWidth / 2, round(0.1 * windowHeight)))
-        txt2_surf = self.arcadeFontNormal.render(txt2, True, fontColor)
+        txt2_surf = self.Painter.arcadeFontNormal.render(txt2, True, fontColor)
         txt2_rect = pygame.Rect(round(windowWidth * 0.15), round(windowHeight * 0.3), round(windowWidth * 0.8), 50)
 
-        txt3_surf = self.arcadeFontNormal.render('What is your name?', True, fontColor)
+        txt3_surf = self.Painter.arcadeFontNormal.render('Enter your name:', True, fontColor)
         txt3_rect = txt3_surf.get_rect(center = (windowWidth / 2, round(0.6 * windowHeight)))
 
         name = ''
@@ -533,7 +509,7 @@ class GameMaster:
             box.fill(backgroundColor) # Background
             pygame.draw.rect(box, BLACK, (0, 0, windowWidth, windowHeight), 1)  # Black edge
             box.blit(txt_surf, txt_rect) # Congratulation text
-            self.drawText(box, txt2, fontColor, txt2_rect, self.arcadeFontNormal)
+            self.drawText(box, txt2, fontColor, txt2_rect, self.Painter.arcadeFontNormal)
             box.blit(txt3_surf, txt3_rect)
 
             for event in pygame.event.get():
