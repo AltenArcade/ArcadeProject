@@ -28,14 +28,7 @@ class GameMaster:
     def __init__(self, width = 640, height = 480, screen = None):
 
         """ Initialize PyGame """
-<<<<<<< HEAD:Emulator/Games/Achtung/GameMaster.py
         self.path = str(os.path.dirname(os.path.realpath(__file__)))
-        self.width = width
-        self.height = height
-=======
-        #pygame.init()
-        pygame.joystick.init()
->>>>>>> emilsbranch:Emulator/Achtung/GameMaster.py
         if screen == None:
             self.width = width
             self.height = height
@@ -48,26 +41,13 @@ class GameMaster:
         print(f'Screen size is {[self.width, self.height]}')
         self.clock = pygame.time.Clock()
         self.tick = 10
-<<<<<<< HEAD:Emulator/Games/Achtung/GameMaster.py
-        self.font = pygame.font.Font(None, 46)
-        self.font2 = pygame.font.SysFont('monospace', 16)
-        self.font3 = pygame.font.SysFont('monospace', 20)
-        self.versionFont = pygame.font.SysFont('monospace', 16)
-        self.arcadeFont = pygame.font.Font(self.path + "\ARCADE_I.ttf", 20)
-        self.arcadeFontSmall = pygame.font.Font(self.path + "\ARCADE_I.ttf", 18)
-        self.arcadeFontNormal = pygame.font.Font(self.path + "\ARCADE_N.ttf", 14)
-=======
->>>>>>> emilsbranch:Emulator/Achtung/GameMaster.py
         self.gameIsOver = False
         self.gamePaused = False
         self.score_tick = 0
         self.version = 0.1
-<<<<<<< HEAD:Emulator/Games/Achtung/GameMaster.py
         self.score_margin = 48
-        self.score_file = self.path + '\hs.txt'
-=======
-        self.score_file = 'Achtung\hs.txt'
->>>>>>> emilsbranch:Emulator/Achtung/GameMaster.py
+        self.score_file = self.path + 'hs.txt'
+        #self.score_file = 'Achtung\hs.txt'
         self.currentHighScore = self.getHighScore()
         self.walls = []
         self.snakes = 1
@@ -80,36 +60,10 @@ class GameMaster:
         self.colors = [RED, BLUE]
         self.winner = None
         self.winningScore = 150
-<<<<<<< HEAD:Emulator/Games/Achtung/GameMaster.py
-        #pygame.mixer.init()
-        self.slamSound = pygame.mixer.Sound(self.path + '\explosion.wav')
-        self.coinSound = pygame.mixer.Sound(self.path + '\collision.wav')
-        #self.highScoreSound = pygame.mixer.Sound('jingle_win.wav')
-        self.gameOverSound = pygame.mixer.Sound(self.path + '\game_over2.wav')
-
-
-    def checkPelletCollision(self, snake, pellets):
-        pelletCols = pygame.sprite.spritecollide(snake, pellets, True)
-        snake.pellets = snake.pellets + len(pelletCols)
-        if (len(pelletCols) == 1):
-            self.coinSound.play()
-            pellets.add(Pellet(
-                pygame.Rect(randint(1, self.width / snake.width - 2) * snake.width + snake.width / 4,
-                            randint(10,
-                                    self.height / snake.height - 2) * snake.height + snake.height / 4,
-                            snake.pellet_width, snake.pellet_height)))
-            snake.length = snake.length + 1
-            snake.tailImage.append(pygame.Surface((snake.width, snake.height)))
-            snake.tailRect.append(snake.tailImage[-1].get_rect())
-            snake.score += 10
-            self.score_tick += 1
-            self.tick = 10 * exp(self.score_tick / 40)
-=======
         self.DJ = DJ()
         self.Painter = Painter([self.screen.get_width(), self.screen.get_height()])
         self.drawNextMove = False
         self.InputReader = InputReader()
->>>>>>> emilsbranch:Emulator/Achtung/GameMaster.py
 
     def updateNextMove(self, snake):
         if (snake.current_dir == 'left'):
@@ -161,17 +115,11 @@ class GameMaster:
         joystick.init()
         self.loadSprites()
 
-        if(self.snakes == 1):
-<<<<<<< HEAD:Emulator/Games/Achtung/GameMaster.py
-            pygame.mixer.music.load(self.path + '\cosmic.mp3')
-        else:
-            pygame.mixer.music.load(self.path + '\\twoplayer.mp3')
-        pygame.mixer.music.play(-1)
-=======
-            self.DJ.playGameMusic(1)
-        else:
-            self.DJ.playGameMusic(2)
->>>>>>> emilsbranch:Emulator/Achtung/GameMaster.py
+        #if(self.snakes == 1):
+        #    self.DJ.playGameMusic(1)
+        #else:
+        #    self.DJ.playGameMusic(2)
+        self.DJ.playGameMusic(self.snakes)
 
         while not self.gameIsOver:
             for snake in range(self.snakes):
@@ -301,13 +249,6 @@ class GameMaster:
         # Define selectable screen positions
         selectablePos = [15, 16]
         selectPosIndex = 0
-<<<<<<< HEAD:Emulator/Games/Achtung/GameMaster.py
-        fontColor = self.RED
-        pygame.mixer.music.load(self.path + '\game_over_loop.mp3')
-        self.gameOverSound.play()
-        pygame.mixer.music.queue(self.path + '\game_over_loop.mp3')
-        pygame.mixer.music.play(-1)
-=======
         fontColor = RED
         joystick = pygame.joystick.Joystick(1)
         joystick.init()
@@ -316,7 +257,6 @@ class GameMaster:
         self.DJ.playGameOverMusic()
 
         winnerText = None
->>>>>>> emilsbranch:Emulator/Achtung/GameMaster.py
         if(self.snakes == 1):
             self.highScore()
         else:
@@ -329,18 +269,6 @@ class GameMaster:
                     fontColor = self.colors[1]
             else:
                 fontColor = self.colors[self.winner - 1]
-<<<<<<< HEAD:Emulator/Games/Achtung/GameMaster.py
-            winnerText = self.arcadeFontNormal.render('Player ' + str(self.winner) + ' wins!', True, fontColor)
-
-        """ Define objects to be rendered """
-        retryText = self.arcadeFont.render('Play again?', True, fontColor)
-        yesText = self.arcadeFont.render('Yes', True, fontColor)
-        noText = self.arcadeFont.render('No', True, fontColor)
-        gameOverImage = pygame.image.load(self.path + '\erik400.png')
-        gameOverImage = pygame.transform.scale(gameOverImage, (round(256 * 1.5), round(226 * 1.5)))
-        selectSquare = pygame.Surface((60, 30))
-=======
->>>>>>> emilsbranch:Emulator/Achtung/GameMaster.py
 
         while 1:
 
@@ -390,16 +318,11 @@ class GameMaster:
         selectPosIndexStartGame = 0
         selectablePosStartGame = [9, 10]
         startGame = False
-<<<<<<< HEAD:Emulator/Games/Achtung/GameMaster.py
-        pygame.mixer.music.load(self.path + '\\right_back_into_you.mp3')
-        pygame.mixer.music.play(-1)
-=======
         joystick = pygame.joystick.Joystick(1)
         joystick.init()
 
         # Play intro music
         self.DJ.playIntroMusic()
->>>>>>> emilsbranch:Emulator/Achtung/GameMaster.py
 
         while 1:
 
@@ -446,42 +369,9 @@ class GameMaster:
                         self.DJ.stopMusic()
                         return False
 
-<<<<<<< HEAD:Emulator/Games/Achtung/GameMaster.py
-            menuTextColor = self.BLUE
-
-            """ Define objects to be rendered """
-            selectSquare = pygame.Surface((220, 30))
-            selectSquareStartGame = pygame.Surface((50, 30))
-            logoImage = pygame.image.load(self.path + '\SNEK_logo1.png')
-            logoImage = pygame.transform.scale(logoImage, (400, 240))
-            startGameText = self.arcadeFont.render('Start game', True, menuTextColor)
-            optionsText = self.arcadeFont.render('High score', True, menuTextColor)
-            quitText = self.arcadeFont.render('Quit', True, menuTextColor)
-            versionText = self.versionFont.render('Version ' + str(self.version), True, self.RED)
-            onePlayerText = self.arcadeFont.render('1P', True, menuTextColor)
-            twoPlayerText = self.arcadeFont.render('2P', True, menuTextColor)
-            #altenLogoImage = pygame.image.load('alten_logo.png')
-            #altenLogoImage = pygame.transform.scale(altenLogoImage, (round(40*1.2), round(60*1.2)))
-
-            """ Render objects """
-            self.screen.fill(self.YELLOW)
-            self.drawSurface(versionText, 2)
-            self.drawSurface(startGameText, 4)
-            self.drawSurface(optionsText, 5)
-            self.drawSurface(quitText, 6)
-            self.drawSurface(logoImage, 1)
-            if(startGame):
-                self.drawSurface(onePlayerText, 9)
-                self.drawSurface(twoPlayerText, 10)
-                self.drawSurface(selectSquareStartGame, 17, 128, selectablePosStartGame[selectPosIndexStartGame], menuTextColor)
-            else:
-                self.drawSurface(selectSquare, 13, 128, selectablePos[selectPosIndex], menuTextColor)
-
-            pygame.display.flip()
-=======
             # Draw start screen
             self.Painter.drawStartScreen(self.screen, startGame, selectablePos, selectPosIndex, selectablePosStartGame, selectPosIndexStartGame)
->>>>>>> emilsbranch:Emulator/Achtung/GameMaster.py
+
 
     def getHighScore(self):
         score_file = open(self.score_file, 'r')
