@@ -25,11 +25,10 @@ class InputReader:
         self.actions = ['left', 'right', 'up', 'down', 'execute', 'undo', 'back']
         self.joystick_inputs = {LEFT : 'left', RIGHT : 'right', UP : 'up', DOWN : 'down', BLACK_BUTTON : 'execute', BLUE_BUTTON : 'undo', YELLOW_BUTTON : 'back'}
         self.keyboard_inputs = ({K_LEFT : 'left', K_RIGHT : 'right', K_UP : 'up', K_DOWN : 'down', K_RETURN : 'execute', K_KP_ENTER : 'undo', K_ESCAPE : 'back'},
-                                {K_a : 'left', K_d : 'right', K_w : 'up', K_s : 'down', K_RETURN : 'execute', K_KP_ENTER : 'undo', K_ESCAPE : 'back'})
+                                {K_a : 'left', K_d : 'right', K_w : 'up', K_s : 'down', 32 : 'execute', K_KP_ENTER : 'undo', K_ESCAPE : 'back'})
 
     def readInput(self, event):
         actions = {}
-
         if(event.type == pygame.KEYDOWN):
             actions = self.readKeyboardInput(event)
         elif(event.type == pygame.JOYAXISMOTION or event.type == pygame.JOYBUTTONDOWN):

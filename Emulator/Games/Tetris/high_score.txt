@@ -1,5 +1,5 @@
 viktor:20
 viktor:19
 aaa:9
-korv:8
-eee:4
+ddd:5
+cvvv:2

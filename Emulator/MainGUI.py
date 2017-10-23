@@ -5,7 +5,7 @@ from platform import system
 from Games.Achtung.Achtung import *
 from Games.Tetris.Main import RunTetris
 from Option import Option
-import InputReader
+from InputReader import InputReader
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -32,9 +32,19 @@ class MainGUI:
         self.screen.fill(WHITE)
         self.option_screen = self.screen.subsurface(0, self.board_height / 2, self.board_width, self.board_height / 2)
         self.options = []
-        self.games = [name for name in os.listdir(self.path + "Games")]
-        self.InputReader = InputReader.InputReader()
+        self.games = self.GetDirs()
+        self.InputReader = InputReader()
 
+    def GetDirs(self):
+        ret = []
+        if system() == "Windows":
+            game_path = self.path + "Games" + "\\"
+        elif system() == "Linux":
+            game_path = self.path + "Games" + "/"
+        for name in os.listdir(self.path + "Games"):
+            if path.isdir(game_path + name):
+                ret.append(name)
+        return ret
     def Start(self):
         self.screen.fill(WHITE)
         ret_val = ""
