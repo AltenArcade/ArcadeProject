@@ -251,9 +251,10 @@ class Painter:
         self.font2 = pygame.font.SysFont('monospace', 16)
         self.font3 = pygame.font.SysFont('monospace', 20)
         self.versionFont = pygame.font.SysFont('monospace', 16)
-        self.arcadeFont = pygame.font.Font(self.path + 'ARCADE_I.ttf', 20)
+        self.arcadeFont = pygame.font.Font(self.path + 'ARCADE_I.ttf', 22)
         self.arcadeFontSmall = pygame.font.Font(self.path + 'ARCADE_I.ttf', 18)
         self.arcadeFontNormal = pygame.font.Font(self.path + 'ARCADE_N.ttf', 14)
+        self.arcadeFontMedium = pygame.font.Font(self.path + 'ARCADE_N.ttf', 18)
 
         # Start screen
         self.startMenuTextColor = BLUE
@@ -278,7 +279,7 @@ class Painter:
         self.gameOverImage = pygame.transform.scale(gameOverImage, (round(self.screen_width / 3), round(self.screen_height / 2.2)))
         self.selectSquareGameOver = pygame.Surface((60, 30))
 
-        self.wall_color = RED
+        self.wall_color = BLACK
         self.background_color = YELLOW
         self.snake_colors = [RED, BLUE]
         self.pellet_color = BLUE

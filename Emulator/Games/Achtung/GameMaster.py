@@ -85,12 +85,14 @@ class GameMaster:
 
     def mapAction(self, snake_and_action):
 
-        snake = self.snake[int(snake_and_action[0])]
         action = snake_and_action[1]
-        if action in ['left', 'right', 'up', 'down'] and not snake.key_registered:
-            snake.setDirection(action)
-            snake.key_registered = True
-            return True
+        snake_nr = int(snake_and_action[0])
+        if not (snake_nr + 1) > self.snakes:
+            snake = self.snake[snake_nr]
+            if action in ['left', 'right', 'up', 'down'] and not snake.key_registered:
+                snake.setDirection(action)
+                snake.key_registered = True
+                return True
         elif action == 'back':
             return False
         else:
@@ -417,7 +419,10 @@ class GameMaster:
             all_score.append((score, name))
         score_file.close()
         all_score.sort(reverse = True)
-        lastPerson = all_score[9]
+        if len(all_score) >= 10:
+            lastPerson = all_score[9]
+        else:
+            lastPerson = all_score[-1]
         lastScore = lastPerson[0]
         return lastScore
 
@@ -427,13 +432,13 @@ class GameMaster:
         high_name, high_score = self.getHighScore()
 
         if(self.snake[0].score > high_score):
-            name = self.promptBox('WOW!!', 'You have beaten the highscore!')
+            name = self.promptBox(['WOW!!', 'You have beaten the highscore!'])
             self.writeScore(name)
         elif(self.snake[0].score == high_score):
-            name = self.promptBox('Great job!', 'You equalised the highscore!')
+            name = self.promptBox(['Great job!', 'You equalised the highscore!'])
             self.writeScore(name)
         elif(self.snake[0].score > self.getLastTop10()):
-            name = self.promptBox('Well played!', 'You have made it into the top 10!')
+            name = self.promptBox(['Well played!', 'You have made it into the top 10!'])
             self.writeScore(name)
 
     def drawText(self, surface, text, color, rect, font, aa=False, bkg=None):
@@ -466,7 +471,7 @@ class GameMaster:
             else:
                 image = font.render(text[:i], aa, color)
 
-            surface.blit(image, (rect.left, y))
+            surface.blit(image, (rect.centerx / 2, y))
             y += fontHeight + lineSpacing
 
             # remove the text we just blitted
@@ -474,53 +479,69 @@ class GameMaster:
 
         return text
 
-    def promptBox(self, txt, txt2):
+    def promptBox(self, strings):
 
         windowWidth = self.width / 2
         windowHeight = self.height / 2
         backgroundColor = BLUE
         fontColor = WHITE
         nameFont = self.Painter.arcadeFont
+        strings.append('Enter your name:')
+        letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'x', 'y', 'z']
+        index = 0
+        current_letter = letters[index]
+        done = False
 
-        """ Function for showing the typed name """
+        # Function for showing the typed name
         def show_name(screen, box, name, color, font):
             txt_surf = font.render(name, True, color)
             txt_rect = txt_surf.get_rect(center = (windowWidth / 2, round(windowHeight - windowHeight * 0.2)))
             box.blit(txt_surf, txt_rect)
-            screen.blit(box, (windowWidth // 2, windowHeight // 2))
-            pygame.display.flip()
+            screen.blit(box, (windowWidth / 2, windowHeight / 2))
 
         box = pygame.Surface((windowWidth, windowHeight))
-        txt_surf = self.Painter.arcadeFont.render(txt, True, fontColor)
-        txt_rect = txt_surf.get_rect(center = (windowWidth / 2, round(0.1 * windowHeight)))
-        txt2_surf = self.Painter.arcadeFontNormal.render(txt2, True, fontColor)
-        txt2_rect = pygame.Rect(round(windowWidth * 0.15), round(windowHeight * 0.3), round(windowWidth * 0.8), 50)
-
-        txt3_surf = self.Painter.arcadeFontNormal.render('Enter your name:', True, fontColor)
-        txt3_rect = txt3_surf.get_rect(center = (windowWidth / 2, round(0.6 * windowHeight)))
+        sub_box1 = pygame.Surface((windowWidth, round(windowHeight * 0.8)))
 
         name = ''
-
-        while True:
+        while not done:
             box.fill(backgroundColor) # Background
-            pygame.draw.rect(box, BLACK, (0, 0, windowWidth, windowHeight), 1)  # Black edge
-            box.blit(txt_surf, txt_rect) # Congratulation text
-            self.drawText(box, txt2, fontColor, txt2_rect, self.Painter.arcadeFontNormal)
-            box.blit(txt3_surf, txt3_rect)
 
             for event in pygame.event.get():
-                if(event.type == pygame.QUIT):
-                    pygame.quit()
-                    sys.exit()
-                elif(event.type == pygame.KEYDOWN):
-                    inkey = event.key
-                    if(inkey in [13, 271]):
-                        return name
-                    elif(inkey == 8):
+                action = self.InputReader.readInput(event)
+                if action != None:
+                    action = action[1]
+                    if action == 'back':
+                        done = True
+                    elif action == 'down':
+                        if (index == len(letters) - 1):
+                            index = 0
+                        else:
+                            index += 1
+                        current_letter = letters[index]
+                    elif action == 'up':
+                        if (index == 0):
+                            index = len(letters) - 1
+                        else:
+                            index -= 1
+                        current_letter = letters[index]
+                    elif action == 'right':
+                        name = name + current_letter
+                    elif action == 'left':
                         name = name[:-1]
-                    elif(inkey <= 300):
-                        if(pygame.key.get_mods() & pygame.KMOD_SHIFT and 122 >= inkey >= 97):
-                            inkey -= 32
-                        name += chr(inkey)
-            show_name(self.screen, box, name, fontColor, nameFont)
+                    elif action == 'execute':
+                        return name + current_letter
+
+            # Draw info text
+            for idx, string in enumerate(strings):
+                sub_surface = pygame.Surface((sub_box1.get_width(), round(sub_box1.get_height() / len(strings))))
+                sub_surface.fill(backgroundColor)
+                if idx == 1:
+                    txt_surf = self.Painter.arcadeFontMedium.render(string, True, fontColor)
+                else:
+                    txt_surf = self.Painter.arcadeFont.render(string, True, fontColor)
+                sub_surface.blit(txt_surf, txt_surf.get_rect(center = (sub_surface.get_width() / 2, sub_surface.get_height() / 2)))
+                sub_box1.blit(sub_surface, (0, (idx / len(strings)) * sub_box1.get_height()))
+                box.blit(sub_box1, (0, 0))
+            pygame.draw.rect(box, BLACK, (0, 0, windowWidth, windowHeight), 1)
+            show_name(self.screen, box, name + current_letter, fontColor, nameFont)
             pygame.display.flip()
