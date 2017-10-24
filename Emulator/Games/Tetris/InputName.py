@@ -14,7 +14,7 @@ class InputName():
         self.board_height = self.screen.get_size()[1]
         self.font = font
 
-    def GetPlayerName(self):
+    def GetPlayerName(self, input_reader):
         letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','x','y','z']
         idx = 0
         current_letter = letters[idx]
@@ -23,6 +23,25 @@ class InputName():
         done = False
         while not done:
             for event in pygame.event.get():
+                action = input_reader.readInput(event)
+                if action != None:
+                    if action[1] == 'back':
+                        done = True
+                    elif action[1] == 'up':
+                        if(idx == len(letters) - 1):
+                            idx = 0
+                        else:
+                            idx += 1
+                        current_letter = letters[idx]
+                    elif action[1] == 'down':
+                        if (idx == 0):
+                            idx = len(letters) - 1
+                        else:
+                            idx -= 1
+                        current_letter = letters[idx]
+                    elif action[1] == 'execute':
+                        self.name += current_letter
+                '''
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         done = True
@@ -40,7 +59,7 @@ class InputName():
                         current_letter = letters[idx]
                     elif event.key == pygame.K_RETURN:
                         self.name += current_letter
-
+                '''
             self.screen.fill(BLACK)
 
             for i in range(len(highscore_text)):

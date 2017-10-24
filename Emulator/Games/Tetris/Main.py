@@ -4,6 +4,7 @@ from platform import system
 from os import path
 from Games.Tetris.Player import Player
 from Option import Option
+from InputReader import InputReader
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -35,12 +36,13 @@ class Main:
         self.exit_game = False
         self.restart = False
         self.clock = pygame.time.Clock()
-        self.font = pygame.font.Font(self.path + "font.ttf", 20)
+        self.font = pygame.font.Font(self.path + "font.ttf", 30)
         self.high_score = []
         self.options = []
         pygame.mixer.music.load(self.path + "tetris-sound.mp3")
-        self.background = pygame.image.load(self.path + "tetris_background.png")
-        self.background = self.ScaleImage(self.background, self.board_width)
+        #self.background = pygame.image.load(self.path + "tetris_background.png")
+        #self.background = self.ScaleImage(self.background, self.board_width)
+        self.input_reader = InputReader()
 
     def GetHighScore(self):
         file = open(self.path + "high_score.txt", "r")
@@ -59,37 +61,39 @@ class Main:
         img_ratio = img.get_rect().size[1] / img.get_rect().size[0]
         return pygame.transform.scale(img,(width,int(width * img_ratio)))
 
-    def GetPlayers(self,logo,background,screen_center):
+    def GetPlayers(self,logo, screen_center):
         done = False
-        selection_font = pygame.font.Font(self.path + "font.ttf", 20)
+        selection_font = pygame.font.Font(self.path + "font.ttf", 32)
         selection_font.set_underline(True)
 
         one_player = True
         start_string = "Players"
         text = self.font.render(start_string,1,WHITE)
-        y_offset = 30
-        x_offset = 20
+        y_offset = 50
+        x_offset = 25
         while not done:
-            self.screen.blit(background, (0, self.board_height - background.get_height()))
-            self.screen.blit(logo, (screen_center, 0))
-            self.screen.blit(text, (( self.board_width - self.font.size(start_string)[0]) / 2, self.board_height * 0.4))
+            #self.screen.blit(background, (0, self.board_height - background.get_height()))
+            self.screen.blit(logo, (screen_center, self.board_height * 0.15))
+            self.screen.blit(text, (( self.board_width - self.font.size(start_string)[0]) / 2, self.board_height * 0.5))
             for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_RIGHT:
-                        one_player = False
-                    if event.key == pygame.K_LEFT:
-                        one_player = True
-                    if event.key == pygame.K_RETURN:
-                        done = True
-                    if event.key == pygame.K_ESCAPE:
+                action = self.input_reader.readInput(event)
+                if(action != None):
+                    action = action[1]
+                    if action == 'back':
                         return 0
+                    elif action == 'execute':
+                        done = True
+                    elif action == 'right':
+                        one_player = False
+                    elif action == 'left':
+                        one_player = True
             txt_x = ( self.board_width - self.font.size("1")[0])/2
             if(one_player):
-                self.screen.blit(selection_font.render("1",1,WHITE),(txt_x - x_offset,self.board_height * 0.4 + y_offset))
-                self.screen.blit(self.font.render("2",1,WHITE), (txt_x + x_offset , self.board_height * 0.4 + y_offset))
+                self.screen.blit(selection_font.render("1",1,WHITE),(txt_x - x_offset,self.board_height * 0.5 + y_offset))
+                self.screen.blit(self.font.render("2",1,WHITE), (txt_x + x_offset , self.board_height * 0.5 + y_offset))
             else:
-                self.screen.blit(self.font.render("1",1,WHITE),(txt_x - x_offset, self.board_height * 0.4 + y_offset))
-                self.screen.blit(selection_font.render("2",1,WHITE), (txt_x + x_offset, self.board_height * 0.4 + y_offset))
+                self.screen.blit(self.font.render("1",1,WHITE),(txt_x - x_offset, self.board_height * 0.5 + y_offset))
+                self.screen.blit(selection_font.render("2",1,WHITE), (txt_x + x_offset, self.board_height * 0.5 + y_offset))
 
             pygame.display.flip()
             self.screen.fill(BLACK)
@@ -100,28 +104,19 @@ class Main:
         else:
             return 2
 
-    def KeyDown(self, event, p1, p2 = 0):
-        if event.key == pygame.K_ESCAPE:
+    def KeyDown(self, action, player):
+        if action == 'back':
             self.run_game = False
-        elif event.key == pygame.K_UP:
-            p1.flip()
-        elif event.key == pygame.K_LEFT:
-            p1.left()
-        elif event.key == pygame.K_RIGHT:
-            p1.right()
-        elif event.key == pygame.K_DOWN:
-            p1.down()
-        elif event.key == pygame.K_RETURN:
-            p1.down_fast()
-        if p2 != 0:
-            if event.key == pygame.K_w:
-                p2.flip()
-            elif event.key == pygame.K_a:
-                p2.left()
-            elif event.key == pygame.K_d:
-                p2.right()
-            elif event.key == pygame.K_s:
-                p2.down()
+        elif action == 'up':
+            player.flip()
+        elif action == 'left':
+            player.left()
+        elif action == 'right':
+            player.right()
+        elif action == 'down':
+            player.down()
+        elif action == 'execute':
+            player.down_fast()
 
     def insert_score(self,high_score, player):
         for i in range(len(high_score)):
@@ -148,12 +143,12 @@ class Main:
     def ShowHighScore(self):
         pixel_offset = 40
         i = 0
-        self.screen.blit(self.background, (0, self.board_height - self.background.get_height()))
-        self.screen.blit(self.logo, (self.screen_center, 0))
+        #self.screen.blit(self.background, (0, self.board_height - self.background.get_height()))
+        self.screen.blit(self.logo, (self.screen_center, self.board_height * 0.15))
         for score in self.high_score:
             string = score[0] + " " + str(score[1])
             txt = self.font.render(string, 1, WHITE)
-            self.screen.blit(txt, ((self.board_width - self.font.size(string)[0]) / 2,self.board_height * 0.4 + (i * pixel_offset)))
+            self.screen.blit(txt, ((self.board_width - self.font.size(string)[0]) / 2,self.board_height * 0.5 + (i * pixel_offset)))
             i += 1
         pygame.display.flip()
         while True:
@@ -162,7 +157,7 @@ class Main:
                     return
 
     def SaveScore(self):
-        file = open(self.path + "/high_score.txt", "w")
+        file = open(self.path + "high_score.txt", "w")
         for item in self.high_score:
             file.write(item[0] + ":" + str(item[1]) + "\n")
         file.close()
@@ -178,7 +173,7 @@ class Main:
 
         pixel_offset = 70
         for i in range(len(intro_text)):
-            self.options.append(Option(intro_text[i],((self.board_width - self.font.size(intro_text[i])[0]) / 2,self.board_height * 0.35 + (i * pixel_offset)),self.screen,self.font, RED, WHITE))
+            self.options.append(Option(intro_text[i],((self.board_width - self.font.size(intro_text[i])[0]) / 2, self.board_height / 2 + (i * pixel_offset)),self.screen,self.font, RED, WHITE))
 
     def start(self):
         self.high_score = self.GetHighScore()
@@ -191,40 +186,42 @@ class Main:
         self.options[idx].hovered = True
         while not self.exit_game:
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.exit_game = True
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
+                action = self.input_reader.readInput(event)
+                if action != None:
+                    if action[1] == 'back':
                         self.exit_game = True
-                    elif event.key == pygame.K_DOWN:
-                        self.options[idx].hovered = False
-                        idx += 1
-                        if idx > 2:
-                            idx = 0
-                        self.options[idx].hovered = True
-                    elif event.key == pygame.K_UP:
+                    elif action[1] == 'up':
                         self.options[idx].hovered = False
                         idx -= 1
                         if idx < 0:
                             idx = len(self.options) - 1
                         self.options[idx].hovered = True
-                    elif event.key == pygame.K_RETURN:
+                    elif action[1] == 'left':
+                        player.left()
+                    elif action[1] == 'right':
+                        player.right()
+                    elif action[1] == 'down':
+                        self.options[idx].hovered = False
+                        idx += 1
+                        if idx > 2:
+                            idx = 0
+                        self.options[idx].hovered = True
+                    elif action[1] == 'execute':
                         if self.options[idx].text == "High Score":
                             self.ShowHighScore()
                         elif self.options[idx].text == "Exit":
                             self.exit_game = True
                         elif self.options[idx].text == "New Game":
-                            players = self.GetPlayers(self.logo, self.background, self.screen_center)
+                            players = self.GetPlayers(self.logo, self.screen_center)
                             self.run_game = True
-
             if(self.run_game and players > 0):
                 if players == 2:
                     self.TwoPlayer()
                 else:
                     self.OnePlayer()
                 self.SaveScore()
-            self.screen.blit(self.background, (0, self.board_height - self.background.get_height()))
-            self.screen.blit(self.logo, (self.screen_center, 0))
+            #self.screen.blit(self.background, (0, self.board_height - self.background.get_height()))
+            self.screen.blit(self.logo, (self.screen_center, self.board_height * 0.15))
             for option in self.options:
                 option.draw()
             pygame.display.flip()
@@ -235,19 +232,16 @@ class Main:
 
     def OnePlayer(self):
         block_number = 10
-        subscreen_width = 400
+        subscreen_width = 600
         bottom_wall = self.board_height % (subscreen_width / block_number)
         p_ss = self.screen.subsurface(pygame.Rect(((self.board_width - subscreen_width) / 2), 0, subscreen_width, self.board_height - bottom_wall))
         figure_prediction = p_ss.subsurface(pygame.Rect(0,0,p_ss.get_size()[0] / 5, p_ss.get_size()[1] / 10))
         p = Player(self.clock, 1, self.logo, p_ss, figure_prediction, block_number)
         while self.run_game:
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.run_game = False
-                    self.exit_game = True
-                elif event.type == pygame.KEYDOWN:
-                    self.KeyDown(event, p)
-
+                action = self.input_reader.readInput(event)
+                if action != None:
+                    self.KeyDown(action[1],p)
             if p.CheckGameOver():
                 p.GameOver()
                 self.run_game = False
@@ -260,7 +254,7 @@ class Main:
             figure_prediction.fill(BLACK)
             self.clock.tick(FPS)
         if p.CheckIfHighScore(self.high_score):
-            p.GetPlayerName()
+            p.GetPlayerName(self.input_reader)
         self.SetHighScore(p)
 
     def TwoPlayer(self):
@@ -276,11 +270,12 @@ class Main:
         p2 = Player(self.clock, 2, self.logo, p2_ss, figure_prediction_2, block_number)
         while self.run_game:
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.run_game = False
-                    self.exit_game = True
-                elif event.type == pygame.KEYDOWN:
-                    self.KeyDown(event, p1, p2)
+                action = self.input_reader.readInput(event)
+                if action != None:
+                    if action[0] == 0:
+                        self.KeyDown(action[1],p1)
+                    elif action[0] == 1:
+                        self.KeyDown(action[1], p2)
 
             if p1.CheckGameOver():
                 p1.GameOver()
@@ -302,9 +297,9 @@ class Main:
             figure_prediction_2.fill(BLACK)
             self.clock.tick(FPS)
         if p1.CheckIfHighScore(self.high_score):
-            p1.GetPlayerName()
+            p1.GetPlayerName(self.input_reader)
         if p2.CheckIfHighScore(self.high_score):
-            p2.GetPlayerName()
+            p2.GetPlayerName(self.input_reader)
         self.SetHighScore(p1, p2)
 
 def RunTetris(screen):

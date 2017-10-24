@@ -111,33 +111,9 @@ class Player:
             self.screen.blit(txt, (((self.board_width - self.font.size(text[i])[0]) / 2), (
             (self.board_height - self.font.size(text[i])[1] - pixel_offset) / 2) + i * pixel_offset))
 
-    def GetPlayerName(self):
+    def GetPlayerName(self,reader):
         name_module = InputName(self.screen,self.score,self.font)
-        self.name = name_module.GetPlayerName()
-
-    def EnterName(self):
-
-        done = False
-        name = ""
-        while not done:
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_RETURN:
-                        done = True
-                    elif event.key == pygame.K_BACKSPACE:
-                        name = name[:len(name) - 1]
-                    else:
-                        if len(name) < 8:
-                            name += str(event.unicode)
-            text = self.font.render(name, 1, WHITE)
-            box_x = self.font.size(name)[0]
-            box_y = self.font.size(name)[1]
-            enter_box = pygame.Surface((box_x, box_y))
-            text_position = ((self.board_width - box_x) / 2, self.board_height / 2)
-            r = text.get_rect()
-            enter_box.blit(text, r)
-            self.screen.blit(enter_box, text_position)
-            pygame.display.flip()
+        self.name = name_module.GetPlayerName(reader)
 
     def move(self):
 
