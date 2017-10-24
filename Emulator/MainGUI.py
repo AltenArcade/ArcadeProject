@@ -26,7 +26,7 @@ class MainGUI:
         self.states = []
         self.clock = pygame.time.Clock()
         self.screen = screen
-        self.font = pygame.font.Font(self.path + "font.ttf", 20)
+        self.font = pygame.font.Font(self.path + "font.ttf", 30)
         self.board_width = self.screen.get_size()[0]
         self.board_height = self.screen.get_size()[1]
         self.screen.fill(WHITE)
@@ -34,6 +34,8 @@ class MainGUI:
         self.options = []
         self.games = self.GetDirs()
         self.InputReader = InputReader()
+        self.logo = pygame.image.load(self.path + "AltenArcadeLogo.png").convert_alpha()
+        self.logo = self.ScaleImage(self.logo, self.board_width)
 
     def GetDirs(self):
         ret = []
@@ -55,37 +57,10 @@ class MainGUI:
         while not done:
             for event in pygame.event.get():
                 action = self.InputReader.readInput(event)
-                '''
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        done = True
-                        ret_val = "quit"
-                    elif event.key == pygame.K_DOWN:
-                        self.options[idx].hovered = False
-                        idx += 1
-                        if idx > 2:
-                            idx = 0
-                        self.options[idx].hovered = True
-                    elif event.key == pygame.K_UP:
-                        self.options[idx].hovered = False
-                        idx -= 1
-                        if idx < 0:
-                            idx = len(self.options) - 1
-                        self.options[idx].hovered = True
-                    elif event.key == pygame.K_RETURN:
-                        if self.options[idx].text in self.games:
-                            ret_val = self.options[idx].text
-                            done = True
-                        else:
-                            idx = self.SetOptions(self.options[idx].text)
-                            self.options[idx].hovered = True
-                '''
-                #if event.type == pygame.KEYDOWN:
                 if(action != None):
                     action = action[1]
                     if action == 'back':
                         done = True
-                        ret_val = "quit"
                     elif action == 'down':
                         self.options[idx].hovered = False
                         idx += 1
@@ -102,6 +77,12 @@ class MainGUI:
                         if self.options[idx].text in self.games:
                             ret_val = self.options[idx].text
                             done = True
+                        elif self.options[idx].text == "Exit":
+                            done = True
+                            ret_val = "quit"
+                        elif self.options[idx].text == "Settings":
+                            settings = Settings(self.option_screen,self.font, self.logo)
+                            settings.show()
                         else:
                             idx = self.SetOptions(self.options[idx].text)
                             self.options[idx].hovered = True
@@ -125,17 +106,43 @@ class MainGUI:
     def DrawOptions(self,intro_text):
 
         pixel_offset = 70
-        logo = pygame.image.load(self.path + "AltenArcadeLogo.png").convert_alpha()
-        logo = self.ScaleImage(logo, self.board_width)
-        screen_center = (self.board_width - logo.get_size()[0])/ 2
+        screen_center = (self.board_width - self.logo.get_size()[0])/ 2
         pos_y = (self.option_screen.get_size()[1] - (3 * self.font.size(intro_text[0])[1] + 2 * pixel_offset)) / 2
         for i in range(len(intro_text)):
             self.options.append(Option(intro_text[i],((self.board_width - self.font.size(intro_text[i])[0]) / 2,pos_y + (i * pixel_offset)),self.option_screen,self.font, RED, BLACK))
-        self.screen.blit(logo, (screen_center, self.board_height * 0.1))
+        self.screen.blit(self.logo, (screen_center, self.board_height * 0.1))
 
     def ScaleImage(self,img,width):
         img_ratio = img.get_rect().size[1] / img.get_rect().size[0]
         return pygame.transform.scale(img,(width,int(width * img_ratio)))
+
+class Settings:
+    def __init__(self, screen, font, logo):
+        self.screen = screen
+        self.font = font
+        self.width = self.screen.get_size()[0]
+        self.height = self.screen.get_size()[1]
+        self.logo = logo
+
+    def show(self):
+        done = False
+        y_offset = 70
+        text = ["Nothing here yet!","Press any key..."]
+        reader = InputReader()
+        while not done:
+            self.screen.fill(WHITE)
+            for event in pygame.event.get():
+                action = reader.readInput(event)
+                if action != None:
+                    done = True
+            for i in range(len(text)):
+                posx = (self.width - self.font.size(text[i])[0]) / 2
+                posy = (self.height - len(text) * self.font.size(text[i])[1]) / 2 + (i * y_offset)
+                txt = self.font.render(text[i],1,BLACK)
+                self.screen.blit(txt,(posx,posy))
+            pygame.display.flip()
+
+
 
 class MainLoop:
     def __init__(self):

@@ -36,7 +36,7 @@ class Main:
         self.exit_game = False
         self.restart = False
         self.clock = pygame.time.Clock()
-        self.font = pygame.font.Font(self.path + "font.ttf", 20)
+        self.font = pygame.font.Font(self.path + "font.ttf", 30)
         self.high_score = []
         self.options = []
         pygame.mixer.music.load(self.path + "tetris-sound.mp3")
@@ -63,14 +63,14 @@ class Main:
 
     def GetPlayers(self,logo, screen_center):
         done = False
-        selection_font = pygame.font.Font(self.path + "font.ttf", 20)
+        selection_font = pygame.font.Font(self.path + "font.ttf", 32)
         selection_font.set_underline(True)
 
         one_player = True
         start_string = "Players"
         text = self.font.render(start_string,1,WHITE)
-        y_offset = 30
-        x_offset = 20
+        y_offset = 50
+        x_offset = 25
         while not done:
             #self.screen.blit(background, (0, self.board_height - background.get_height()))
             self.screen.blit(logo, (screen_center, self.board_height * 0.15))
@@ -157,7 +157,7 @@ class Main:
                     return
 
     def SaveScore(self):
-        file = open(self.path + "/high_score.txt", "w")
+        file = open(self.path + "high_score.txt", "w")
         for item in self.high_score:
             file.write(item[0] + ":" + str(item[1]) + "\n")
         file.close()
