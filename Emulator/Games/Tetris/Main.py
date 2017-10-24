@@ -107,7 +107,7 @@ class Main:
     def KeyDown(self, action, player):
         if action == 'back':
             self.run_game = False
-        elif action == 'up':
+        elif action == 'undo':
             player.flip()
         elif action == 'left':
             player.left()
@@ -196,10 +196,6 @@ class Main:
                         if idx < 0:
                             idx = len(self.options) - 1
                         self.options[idx].hovered = True
-                    elif action[1] == 'left':
-                        player.left()
-                    elif action[1] == 'right':
-                        player.right()
                     elif action[1] == 'down':
                         self.options[idx].hovered = False
                         idx += 1
