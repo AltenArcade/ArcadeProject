@@ -22,6 +22,7 @@ class MainGUI:
             self.path = str(path.dirname(path.realpath(__file__))) + "\\"
         if system() == "Linux":
             self.path = str(path.dirname(path.realpath(__file__))) + "/"
+        pygame.mouse.set_visible(False)
         self.state_idx = 0
         self.states = []
         self.clock = pygame.time.Clock()
