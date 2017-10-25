@@ -1,4 +1,3 @@
-import os, sys
 import pygame
 from pygame.locals import *
 from Games.Achtung.GameMaster import GameMaster

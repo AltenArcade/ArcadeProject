@@ -1,16 +1,9 @@
 from os import path
 from platform import system
-from Games.Achtung.Snake import *
+from Games.Achtung.Classes import *
 from random import randint
-from math import *
+from math import exp
 from InputReader import *
-
-#BLUE = (51, 51, 255)
-#WHITE = (255, 255, 255)
-#YELLOW = (255, 255, 102)
-#BLACK = (0, 0, 0)
-#RED = (255, 51, 51)
-#PINK = (255, 0, 255)
 
 class GameMaster:
 
@@ -22,8 +15,14 @@ class GameMaster:
 
         if system() == "Windows":
             self.path = str(path.dirname(path.realpath(__file__))) + "\\"
+            self.sound_path = self.path + 'sound\\'
+            self.img_path = self.path + 'img\\'
+            self.font_path = self.path + 'fonts\\'
         elif system() == "Linux":
             self.path = str(path.dirname(path.realpath(__file__))) + "/"
+            self.sound_path = self.path + 'sound/'
+            self.img_path = self.path + 'img/'
+            self.font_path = self.path + 'fonts/'
         if screen == None:
             self.width = width
             self.height = height
@@ -52,8 +51,8 @@ class GameMaster:
         self.colors = [RED, BLUE]
         self.winner = None
         self.winningScore = 150
-        self.DJ = DJ(self.path)
-        self.Painter = Painter([self.screen.get_width(), self.screen.get_height()], self.path, self.score_margin)
+        self.DJ = DJ(self.sound_path)
+        self.Painter = Painter([self.screen.get_width(), self.screen.get_height()], self.score_margin, self.img_path, self.font_path)
         self.drawNextMove = False
         self.InputReader = InputReader()
 

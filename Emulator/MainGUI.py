@@ -1,11 +1,11 @@
 from os import environ
 from os import path
 from platform import system
-
 from Games.Achtung.Achtung import *
 from Games.Tetris.Main import RunTetris
 from Option import Option
 from InputReader import InputReader
+import os
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)

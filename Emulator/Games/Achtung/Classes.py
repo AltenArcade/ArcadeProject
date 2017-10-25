@@ -19,14 +19,14 @@ class Snake(pygame.sprite.Sprite):
         self.height = size
         self.color = color
 
-        """ Head """
+        # Head
         self.image = pygame.Surface((self.width, self.height))#pygame.image.load('snake.png')
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
         self.image.fill(self.color)
 
-        """ Tail """
+        # Tail
         self.tailImage = []
         self.tailRect = []
 
@@ -37,7 +37,6 @@ class Snake(pygame.sprite.Sprite):
         self.x_dist = self.width
         self.y_dist = self.height
         self.current_dir = direction
-        #self.current_dir = 'right'
         self.speed = 1
         self.next_move = pygame.Rect(self.rect.x + self.width, self.rect.y, self.width, self.height)
         self.banned_move = None
@@ -179,15 +178,6 @@ class Wall(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-        '''
-        if rect != None:
-            self.rect = rect
-        if loc != None:
-            self.loc = loc
-        if image != None:
-            self.image = image
-            self.image.fill(self.color)
-        '''
 
 class DJ():
     '''
@@ -239,25 +229,26 @@ class Painter:
     Renders everything onto a screen.
     '''
 
-    def __init__(self, screen_size, path, score_margin):
+    def __init__(self, screen_size, score_margin, img_path, font_path):
         self.screen_width = screen_size[0]
         self.screen_height = screen_size[1]
-        self.path = path
+        self.img_path = img_path
+        self.font_path = font_path
         self.score_margin = score_margin
         self.font = pygame.font.Font(None, 46)
         self.font2 = pygame.font.SysFont('monospace', 16)
         self.font3 = pygame.font.SysFont('monospace', 20)
         self.versionFont = pygame.font.SysFont('monospace', 16)
-        self.arcadeFont = pygame.font.Font(self.path + 'ARCADE_I.ttf', 22)
-        self.arcadeFontSmall = pygame.font.Font(self.path + 'ARCADE_I.ttf', 18)
-        self.arcadeFontNormal = pygame.font.Font(self.path + 'ARCADE_N.ttf', 14)
-        self.arcadeFontMedium = pygame.font.Font(self.path + 'ARCADE_N.ttf', 18)
+        self.arcadeFont = pygame.font.Font(self.font_path + 'ARCADE_I.ttf', 22)
+        self.arcadeFontSmall = pygame.font.Font(self.font_path + 'ARCADE_I.ttf', 18)
+        self.arcadeFontNormal = pygame.font.Font(self.font_path + 'ARCADE_N.ttf', 14)
+        self.arcadeFontMedium = pygame.font.Font(self.font_path + 'ARCADE_N.ttf', 18)
 
         # Start screen
         self.startMenuTextColor = BLUE
         self.selectSquare = pygame.Surface((220, 30))
         self.selectSquareStartGame = pygame.Surface((50, 30))
-        logoImage = pygame.image.load(self.path + 'SNEK_logo1.png')
+        logoImage = pygame.image.load(self.img_path + 'SNEK_logo1.png')
         self.logoImage = pygame.transform.scale(logoImage,
                                                 (round(self.screen_width / 3.2), round(self.screen_height / 3.3)))
         self.logoImageSmall = pygame.transform.scale(logoImage,
@@ -274,7 +265,7 @@ class Painter:
         self.retryText = self.arcadeFont.render('Play again?', True, fontColor)
         self.yesText = self.arcadeFont.render('Yes', True, fontColor)
         self.noText = self.arcadeFont.render('No', True, fontColor)
-        gameOverImage = pygame.image.load(self.path + 'erik400.png')
+        gameOverImage = pygame.image.load(self.img_path + 'erik400.png')
         self.gameOverImage = pygame.transform.scale(gameOverImage, (round(self.screen_width / 3), round(self.screen_height / 2.2)))
         self.selectSquareGameOver = pygame.Surface((60, 30))
 
@@ -426,33 +417,33 @@ class Painter:
         surface_rect = surface.get_rect()
         logoMargin = 20
 
-        """ Check for screen positions """
+        # Check for screen positions
 
-        """ Version text """
+        # Version text
         if(screenPos == 0):
             surface_x = screen.get_width() / 2 - surface_rect.width / 2
             surface_y = screen.get_height() / 2 - surface_rect.height / 2
-        """ Game logo """
+        # Game logo
         if(screenPos == 1):
             surface_x = screen.get_width() / 2 - surface_rect.width / 2
             surface_y = 2*rowHeight
-        """ Version text """
+        # Version text
         if(screenPos == 2):
             surface_x = screen.get_width() / 2 - surface_rect.width / 2
             surface_y = screen.get_height() / 2 + surface_rect.height
-        """ Menu position 2 """
+        # Menu position 2
         if(screenPos == 4):
             surface_x = 2*columnWidth - surface_rect.width / 2
             surface_y = 6*rowHeight + rowHeight / 2 - surface_rect.height / 2
-        """ Menu position 3 """
+        # Menu position 3
         if(screenPos == 5):
             surface_x = 2*columnWidth - surface_rect.width / 2
             surface_y = 7*rowHeight + rowHeight / 2 - surface_rect.height / 2
-        """ Menu position 4 """
+        # Menu position 4
         if(screenPos == 6):
             surface_x = 2*columnWidth - surface_rect.width / 2
             surface_y = 8*rowHeight + rowHeight / 2 - surface_rect.height / 2
-        """ Menu position 5 """
+        # Menu position 5
         if(screenPos == 7):
             surface_x = 2 * columnWidth - surface_rect.width / 2
             surface_y = 9 * rowHeight + rowHeight / 2 - surface_rect.height / 2
@@ -462,15 +453,15 @@ class Painter:
         if(screenPos == 10):
             surface_x = 3 * columnWidth + columnWidth / 2 - surface_rect.width / 2 - columnWidth / 2
             surface_y = 7*rowHeight + rowHeight / 2 - surface_rect.height / 2
-        """ Select rectangle """
+        # Select rectangle
         if(screenPos == 13 and tempPos != None):
             surface_x = screen.get_width() / 2 - surface_rect.width / 2
             surface_y = (2 + tempPos) * rowHeight + rowHeight / 2 - surface_rect.height / 2
-        """ Alten logo (top right corner) """
+        # Alten logo (top right corner)
         if(screenPos == 14):
             surface_x = screen.get_width() - logoMargin - surface_rect.width
             surface_y = logoMargin
-        """ Menu position 5a """
+        # Menu position 5a
         if(screenPos == 15):
             if(tempPos != None):
                 tempPos = tempPos - 14
@@ -479,11 +470,11 @@ class Painter:
             else:
                 surface_x = columnWidth + columnWidth / 2 - surface_rect.width / 2
                 surface_y = 8 * rowHeight + rowHeight / 2 - surface_rect.height / 2
-        """ Menu position 5b """
+        # Menu position 5b
         if(screenPos == 16):
             surface_x = 2 * columnWidth + columnWidth / 2 - surface_rect.width / 2
             surface_y = 8 * rowHeight + rowHeight / 2 - surface_rect.height / 2
-        """ Select rectangle 1P / 2P """
+        # Select rectangle 1P / 2P
         if(screenPos == 17 and tempPos != None):
             tempPos = tempPos - 9
             surface_x = 3 * columnWidth + columnWidth / 2 - surface_rect.width / 2 - columnWidth / 2
@@ -499,12 +490,12 @@ class Painter:
             surface_y = 10 + surface_rect.height
 
 
-        """ Transparency """
+        # Transparency
         if(alpha != None and color != None):
             surface.set_alpha(alpha)
             surface.fill(color)
 
-        """ Render surface """
+        # Render surface
         screen.blit(surface, [surface_x, surface_y])
 
 
