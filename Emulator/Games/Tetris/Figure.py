@@ -74,13 +74,17 @@ class Figure(pygame.sprite.Sprite):
     def flip(self):
         old_y = self.block_list.sprites()[0].rect.y
         old_x = self.block_list.sprites()[0].rect.x
+        old_orient = len(self.matrix)
         self.block_list = pygame.sprite.Group()
         self.matrix = [list(a) for a in zip(*self.matrix[::-1])]
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[0])):
                 if (self.matrix[i][j] != 0):
                     block = Block(self.block_size, color = self.color_list[randint(0,len(self.color_list)-1)])
-                    block.rect.x = j * self.block_size + old_x
+                    if old_orient > len(self.matrix) or len(self.matrix) == 4:
+                        block.rect.x = j * self.block_size + old_x
+                    else:
+                        block.rect.x = (j - 1) * self.block_size + old_x
                     block.rect.y = i * self.block_size + old_y
                     self.block_list.add(block)
 
