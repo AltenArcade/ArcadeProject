@@ -198,13 +198,9 @@ class DJ():
 
         # Define music songs
         self.path = path
-        #self.introMusic = 'Achtung\\right_back_into_you.mp3'
         self.introMusic = self.path + 'right_back_into_you.mp3'
-        #self.gameOverMusic = 'Achtung\game_over_loop.mp3'
         self.gameOverMusic = self.path + 'game_over_loop.mp3'
-        #self.onePlayerMusic = 'Achtung\cosmic.mp3'
         self.onePlayerMusic = self.path + 'cosmic.mp3'
-        #self.twoPlayerMusic = 'Achtung\\twoplayer.mp3'
         self.twoPlayerMusic = self.path + 'twoplayer.mp3'
 
         # Define sound effects
@@ -243,10 +239,11 @@ class Painter:
     Renders everything onto a screen.
     '''
 
-    def __init__(self, screen_size, path):
-        self.path = path
+    def __init__(self, screen_size, path, score_margin):
         self.screen_width = screen_size[0]
         self.screen_height = screen_size[1]
+        self.path = path
+        self.score_margin = score_margin
         self.font = pygame.font.Font(None, 46)
         self.font2 = pygame.font.SysFont('monospace', 16)
         self.font3 = pygame.font.SysFont('monospace', 20)
@@ -263,6 +260,8 @@ class Painter:
         logoImage = pygame.image.load(self.path + 'SNEK_logo1.png')
         self.logoImage = pygame.transform.scale(logoImage,
                                                 (round(self.screen_width / 3.2), round(self.screen_height / 3.3)))
+        self.logoImageSmall = pygame.transform.scale(logoImage,
+                                                (round((self.score_margin - 10) * 1.66), round(self.score_margin - 10)))
         self.startGameText = self.arcadeFont.render('Start game', True, self.startMenuTextColor)
         self.optionsText = self.arcadeFont.render('Highscore', True, self.startMenuTextColor)
         self.quitText = self.arcadeFont.render('Quit', True, self.startMenuTextColor)
@@ -346,6 +345,8 @@ class Painter:
             scoretext = self.arcadeFontNormal.render("Score: {0}".format(snakes[snake].score), 1,
                                                      snakes[snake].color)
             score_window.blit(scoretext, (5 + snake * (score_window.get_width() - scoretext.get_rect().width - 10), 10))
+
+
 
         # Draw highscore (single player)
         if (len(snakes) == 1):

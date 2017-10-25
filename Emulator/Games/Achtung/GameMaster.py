@@ -53,7 +53,7 @@ class GameMaster:
         self.winner = None
         self.winningScore = 150
         self.DJ = DJ(self.path)
-        self.Painter = Painter([self.screen.get_width(), self.screen.get_height()], self.path)
+        self.Painter = Painter([self.screen.get_width(), self.screen.get_height()], self.path, self.score_margin)
         self.drawNextMove = False
         self.InputReader = InputReader()
 
@@ -119,7 +119,8 @@ class GameMaster:
                 # Translate input to action
                 action = self.InputReader.readInput(event)
                 if action != None:
-                    if not self.mapAction(action):
+                    if self.mapAction(action) == False:
+                        print(self.mapAction(action))
                         return False
 
             # Manage actions
