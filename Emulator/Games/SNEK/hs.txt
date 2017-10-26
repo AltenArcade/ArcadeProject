@@ -8,3 +8,8 @@ ejjjjj 50
 emil 150
 ekk 50
 aaaa 70
+aa 20
+aaaa 180
+aaaa 70
+gg 190
+addee 150

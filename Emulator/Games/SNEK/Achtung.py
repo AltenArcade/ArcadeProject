@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-from Games.Achtung.GameMaster import GameMaster
+from Games.SNEK.GameMaster import GameMaster
 
 if not pygame.font:
     print('Warning, fonts disabled')
@@ -53,5 +53,5 @@ def AchtungMain(screen = None):
 if __name__ == '__main__':
     AchtungMain()
 
-if __name__ == 'Achtung':
+if __name__ == 'SNEK':
     AchtungMain()

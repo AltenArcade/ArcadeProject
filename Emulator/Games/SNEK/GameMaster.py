@@ -1,6 +1,6 @@
 from os import path
 from platform import system
-from Games.Achtung.Classes import *
+from Games.SNEK.Classes import *
 from random import randint
 from math import exp
 from InputReader import *
