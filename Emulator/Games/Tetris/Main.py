@@ -153,7 +153,8 @@ class Main:
         pygame.display.flip()
         while True:
             for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
+                action = self.input_reader.readInput(event)
+                if action != None:
                     return
 
     def SaveScore(self):

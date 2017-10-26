@@ -166,7 +166,7 @@ class Pellet(pygame.sprite.Sprite):
 
 class Wall(pygame.sprite.Sprite):
     '''
-    Walls defining the game area.
+    Wall defining the game area.
     '''
 
     def __init__(self, x, y, width, height, color):
