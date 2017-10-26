@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+from platform import system
 
 BLUE = (51, 51, 255)
 WHITE = (255, 255, 255)
@@ -239,10 +240,14 @@ class Painter:
         self.font2 = pygame.font.SysFont('monospace', 16)
         self.font3 = pygame.font.SysFont('monospace', 20)
         self.versionFont = pygame.font.SysFont('monospace', 16)
-        self.arcadeFont = pygame.font.Font(self.font_path + 'ARCADE_I.ttf', 22)
-        self.arcadeFontSmall = pygame.font.Font(self.font_path + 'ARCADE_I.ttf', 18)
-        self.arcadeFontNormal = pygame.font.Font(self.font_path + 'ARCADE_N.ttf', 16)
-        self.arcadeFontMedium = pygame.font.Font(self.font_path + 'ARCADE_N.ttf', 18)
+        if system() == "Windows":
+            font_extension = '.ttf'
+        if system() == "Linux":
+            font_extension = '.TTF'
+        self.arcadeFont = pygame.font.Font(self.font_path + 'ARCADE_I' + font_extension, 22)
+        self.arcadeFontSmall = pygame.font.Font(self.font_path + 'ARCADE_I' + font_extension, 18)
+        self.arcadeFontNormal = pygame.font.Font(self.font_path + 'ARCADE_N' + font_extension, 16)
+        self.arcadeFontMedium = pygame.font.Font(self.font_path + 'ARCADE_N' + font_extension, 18)
 
         # Start screen
         self.startMenuTextColor = BLUE
