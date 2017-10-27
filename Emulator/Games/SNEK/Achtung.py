@@ -12,6 +12,7 @@ def AchtungMain(screen = None):
     play = True
     firstPlay = True
     twoPlayers = False
+    winningScore = None
 
     while running:
         if (screen != None):
@@ -24,10 +25,11 @@ def AchtungMain(screen = None):
                 gameOver = MainWindow.mainLoop()
                 if(gameOver):
                     retry = MainWindow.gameOver()
-                    if (retry):
+                    if (retry[0]):
                         firstPlay = False
                         if(MainWindow.snakes == 2):
                             twoPlayers = True
+                            winningScore = MainWindow.winningScore
                         else:
                             twoPlayers = False
                     else:
@@ -39,10 +41,12 @@ def AchtungMain(screen = None):
         else:
             if(twoPlayers):
                 MainWindow.snakes = 2
+                MainWindow.winningScore = winningScore
+                #MainWindow.winningScore = retry[1]
             gameOver = MainWindow.mainLoop()
             if (gameOver):
                 retry = MainWindow.gameOver()
-                if (retry):
+                if (retry[0]):
                     firstPlay = False
                 else:
                     firstPlay = True

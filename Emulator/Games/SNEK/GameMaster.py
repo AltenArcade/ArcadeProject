@@ -50,11 +50,14 @@ class GameMaster:
         self.score_margin =  2 * self.snake_size #48
         self.colors = [RED, BLUE]
         self.winner = None
-        self.winningScore = 150
+        #self.winningScore = 150
         self.DJ = DJ(self.sound_path)
         self.Painter = Painter([self.screen.get_width(), self.screen.get_height()], self.score_margin, self.img_path, self.font_path)
         self.drawNextMove = False
         self.InputReader = InputReader()
+        self.alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+         'x', 'y', 'z']
+        self.winning_scores = [50, 100, 150, 200]
 
     def updateNextMove(self, snake):
         if (snake.current_dir == 'left'):
@@ -119,7 +122,6 @@ class GameMaster:
                 action = self.InputReader.readInput(event)
                 if action != None:
                     if self.mapAction(action) == False:
-                        print(self.mapAction(action))
                         return False
 
             # Manage actions
@@ -151,6 +153,7 @@ class GameMaster:
 
                         # Check if there is a winner
                         if (self.checkScore(self.snake[snake], self.winningScore)):
+                            self.winner = snake + 1
                             self.gameIsOver = True
                             self.DJ.stopMusic()
                             return True
@@ -240,7 +243,10 @@ class GameMaster:
         # Play game over music
         self.DJ.playGameOverMusic()
 
-        winnerText = None
+       #winnerText = None
+        #if self.winner == None:
+        #    self.highScore()
+
         if(self.snakes == 1):
             self.highScore()
         else:
@@ -253,6 +259,7 @@ class GameMaster:
                     fontColor = self.colors[1]
             else:
                 fontColor = self.colors[self.winner - 1]
+
 
         while 1:
 
@@ -267,10 +274,10 @@ class GameMaster:
                     if action == 'execute':
                         if (selectPosIndex == 0):
                             self.DJ.stopMusic()
-                            return True
+                            return [True, self.winningScore]
                         if (selectPosIndex == 1):
                             self.DJ.stopMusic()
-                            return False
+                            return [False, None]
                     if action == 'right':
                         if (selectPosIndex + 1 < len(selectablePos)):
                             selectPosIndex += 1
@@ -279,7 +286,7 @@ class GameMaster:
                             selectPosIndex -= 1
                     if action == 'back':
                         self.DJ.stopMusic()
-                        return False
+                        return [False, None]
 
             # Draw game objects
             self.Painter.drawGameObjects(self.screen, [self.snake_sprites, self.pellet_sprites, self.wall_sprites],
@@ -323,6 +330,7 @@ class GameMaster:
                                 return True
                             if (selectPosIndexStartGame == 1):
                                 self.snakes = 2
+                                self.winningScore = self.promptBox(self.winning_scores, 'number', ['Let the largest snake win!', 'Rules: First to reach score limit wins.', 'Please choose score limit:'], LIGHT_YELLOW, BLACK, RED)
                                 self.DJ.stopMusic()
                                 return True
                         else:
@@ -432,13 +440,13 @@ class GameMaster:
         high_name, high_score = self.getHighScore()
 
         if(self.snake[0].score > high_score):
-            name = self.promptBox(['WOW!!', 'You have beaten the highscore!'])
+            name = self.promptBox(self.alphabet, 'name', ['WOW!!', 'You have beaten the highscore!', 'Enter your name:'], BLUE, WHITE, BLACK)
             self.writeScore(name)
         elif(self.snake[0].score == high_score):
-            name = self.promptBox(['Great job!', 'You equalised the highscore!'])
+            name = self.promptBox(self.alphabet, 'name', ['Great job!', 'You equalised the highscore!', 'Enter your name:'], BLUE, WHITE, BLACK)
             self.writeScore(name)
         elif(self.snake[0].score > self.getLastTop10()):
-            name = self.promptBox(['Well played!', 'You have made it into the top 10!'])
+            name = self.promptBox(self.alphabet, 'name', ['Well played!', 'You have made it into the top 10!', 'Enter your name:'], BLUE, WHITE, BLACK)
             self.writeScore(name)
 
     def drawText(self, surface, text, color, rect, font, aa=False, bkg=None):
@@ -479,17 +487,13 @@ class GameMaster:
 
         return text
 
-    def promptBox(self, strings):
+    def promptBox(self, data, entry_type, strings, background_color, font_color, border_color, headline_color = None):
 
         windowWidth = self.width / 2
         windowHeight = self.height / 2
-        backgroundColor = BLUE
-        fontColor = WHITE
         nameFont = self.Painter.arcadeFont
-        strings.append('Enter your name:')
-        letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'x', 'y', 'z']
         index = 0
-        current_letter = letters[index]
+        current_element = data[index]
         done = False
 
         # Function for showing the typed name
@@ -504,7 +508,7 @@ class GameMaster:
 
         name = ''
         while not done:
-            box.fill(backgroundColor) # Background
+            box.fill(background_color) # Background
 
             for event in pygame.event.get():
                 action = self.InputReader.readInput(event)
@@ -513,28 +517,36 @@ class GameMaster:
                     if action == 'back':
                         done = True
                     elif action == 'down':
-                        if (index == len(letters) - 1):
+                        if (index == len(data) - 1):
                             index = 0
                         else:
                             index += 1
-                        current_letter = letters[index]
+                        current_element = data[index]
                     elif action == 'up':
                         if (index == 0):
-                            index = len(letters) - 1
+                            index = len(data) - 1
                         else:
                             index -= 1
-                        current_letter = letters[index]
-                    elif action == 'right':
-                        name = name + current_letter
-                    elif action == 'left':
-                        name = name[:-1]
-                    elif action == 'execute':
-                        return name + current_letter
+                        current_element = data[index]
+                    if entry_type == 'name':
+                        if action == 'right':
+                            name = name + current_element
+                        elif action == 'left':
+                            name = name[:-1]
+                        elif action == 'execute':
+                            return name + current_element
+                    elif entry_type == 'number':
+                        if action == 'execute':
+                            return current_element
 
             # Draw info text
             for idx, string in enumerate(strings):
                 sub_surface = pygame.Surface((sub_box1.get_width(), round(sub_box1.get_height() / len(strings))))
-                sub_surface.fill(backgroundColor)
+                sub_surface.fill(background_color)
+                if idx == 0 and headline_color != None:
+                    fontColor = headline_color
+                else:
+                    fontColor = font_color
                 if idx == 1:
                     txt_surf = self.Painter.arcadeFontMedium.render(string, True, fontColor)
                 else:
@@ -542,6 +554,9 @@ class GameMaster:
                 sub_surface.blit(txt_surf, txt_surf.get_rect(center = (sub_surface.get_width() / 2, sub_surface.get_height() / 2)))
                 sub_box1.blit(sub_surface, (0, (idx / len(strings)) * sub_box1.get_height()))
                 box.blit(sub_box1, (0, 0))
-            pygame.draw.rect(box, BLACK, (0, 0, windowWidth, windowHeight), 1)
-            show_name(self.screen, box, name + current_letter, fontColor, nameFont)
+            pygame.draw.rect(box, border_color, (0, 0, windowWidth, windowHeight), 1)
+            if entry_type == 'name':
+                show_name(self.screen, box, name + current_element, fontColor, nameFont)
+            elif entry_type == 'number':
+                show_name(self.screen, box, str(current_element), fontColor, nameFont)
             pygame.display.flip()

@@ -13,3 +13,7 @@ aaaa 180
 aaaa 70
 gg 190
 addee 150
+emil 230
+aaaaa 100
+emil 140
+emil 150

@@ -3,6 +3,7 @@ from os import path
 from platform import system
 from Games.SNEK.Achtung import *
 from Games.Tetris.Main import RunTetris
+from Games.BREKT.main import RunBrekt
 from Option import Option
 from InputReader import InputReader
 import os
@@ -164,6 +165,8 @@ class MainLoop:
                 RunTetris(self.screen)
             elif ret == "SNEK":
                 AchtungMain(self.screen)
+            elif ret == "BREKT":
+                RunBrekt(self.screen)
 
 main = MainLoop()
 main.run()

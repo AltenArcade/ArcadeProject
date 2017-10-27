@@ -5,6 +5,7 @@ from platform import system
 BLUE = (51, 51, 255)
 WHITE = (255, 255, 255)
 YELLOW = (255, 255, 102)
+LIGHT_YELLOW = (255, 255, 153)
 BLACK = (0, 0, 0)
 RED = (255, 51, 51)
 PINK = (255, 0, 255)
@@ -248,6 +249,7 @@ class Painter:
         self.arcadeFontSmall = pygame.font.Font(self.font_path + 'ARCADE_I' + font_extension, 18)
         self.arcadeFontNormal = pygame.font.Font(self.font_path + 'ARCADE_N' + font_extension, 16)
         self.arcadeFontMedium = pygame.font.Font(self.font_path + 'ARCADE_N' + font_extension, 18)
+        self.arcadeFontHuge = pygame.font.Font(self.font_path + 'ARCADE_I' + font_extension, 48)
 
         # Start screen
         self.startMenuTextColor = BLUE
@@ -378,10 +380,14 @@ class Painter:
         self.drawSurface(screen, self.retryText, 5)
         self.drawSurface(screen, self.yesText, 15)
         self.drawSurface(screen, self.noText, 16)
-        self.drawSurface(screen, self.gameOverImage, 0)
         if (winner != None):
-            winner_text = self.arcadeFontNormal.render('Player ' + str(winner) + ' wins!', True, font_color)
-            self.drawSurface(screen, winner_text, 18 + (winner - 1) * 2)
+            #winner_text = self.arcadeFontNormal.render('Player ' + str(winner) + ' wins!', True, font_color)
+            winner_text = self.arcadeFontHuge.render('Player ' + str(winner) + ' wins!', True, font_color)
+            #explanation_text = self.self.arcadeFontNormal.render('')
+            #self.drawSurface(screen, winner_text, 18 + (winner - 1) * 2)
+            self.drawSurface(screen, winner_text, 0)
+        else:
+            self.drawSurface(screen, self.gameOverImage, 0)
         self.drawSurface(screen, self.selectSquareGameOver, 15, 128, selectable_positions[selectable_pos_index], BLACK)#font_color)
         pygame.display.flip()
 
