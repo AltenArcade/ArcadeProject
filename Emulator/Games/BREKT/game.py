@@ -118,41 +118,41 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     exit()
-                elif event.type == pygame.KEYDOWN:
-                    action = self.input_reader.readInput(event)
-                    if action is not None:
-                        action = action[1]
-                        if action == "left":
-                            self.dv = (1 - 2 * self.reversed_keys) * self.vel
-                            self.pad.dx -= self.dv
-                            self.prev_input = "left"
-                        elif action == "right":
-                            self.dv = (1 - 2 * self.reversed_keys) * self.vel
+                #elif event.type == pygame.KEYDOWN:
+                action = self.input_reader.readInput(event)
+                if action is not None:
+                    action = action[1]
+                    if action == "left":
+                        self.dv = (1 - 2 * self.reversed_keys) * self.vel
+                        self.pad.dx -= self.dv
+                        self.prev_input = "left"
+                    elif action == "right":
+                        self.dv = (1 - 2 * self.reversed_keys) * self.vel
+                        self.pad.dx += self.dv
+                        self.prev_input = "right"
+                    elif action == "execute":
+                        if self.pad.has_canon and len(self.bullet_list) == 0:
+                            for i in range(0, 2):
+                                bullet = cl.Bullet(self.pad, i)
+                                self.bullet_list.add(bullet)
+                        if not self.ball.started:
+                            self.ball.started = True
+                            tmp_dx = -1 + rn.random() * 2
+                            tmp_dy = -1
+                            self.ball.dx = int((tmp_dx / np.sqrt(tmp_dx ** 2 + tmp_dy ** 2)) * self.vel)
+                            self.ball.dy = int((tmp_dy / np.sqrt(tmp_dx ** 2 + tmp_dy ** 2)) * self.vel)
+                            #self.ball.dx = 0
+                            #self.ball.dy = -self.vel
+                    elif action == "back":
+                        self.done = True
+                    elif action == "center":
+                        if self.prev_input == "left":
+                            #self.pad.dx += (1 - 2 * self.reversed_keys) * self.vel
                             self.pad.dx += self.dv
-                            self.prev_input = "right"
-                        elif action == "execute":
-                            if self.pad.has_canon and len(self.bullet_list) == 0:
-                                for i in range(0, 2):
-                                    bullet = cl.Bullet(self.pad, i)
-                                    self.bullet_list.add(bullet)
-                            if not self.ball.started:
-                                self.ball.started = True
-                                tmp_dx = -1 + rn.random() * 2
-                                tmp_dy = -1
-                                self.ball.dx = int((tmp_dx / np.sqrt(tmp_dx ** 2 + tmp_dy ** 2)) * self.vel)
-                                self.ball.dy = int((tmp_dy / np.sqrt(tmp_dx ** 2 + tmp_dy ** 2)) * self.vel)
-                                #self.ball.dx = 0
-                                #self.ball.dy = -self.vel
-                        elif action == "back":
-                            self.done = True
-                        elif action == "center":
-                            if self.prev_input == "left":
-                                #self.pad.dx += (1 - 2 * self.reversed_keys) * self.vel
-                                self.pad.dx += self.dv
-                            elif self.prev_input == "right":
-                                #self.pad.dx -= (1 - 2 * self.reversed_keys) * self.vel
-                                self.pad.dx -= self.dv
-                            self.prev_input = None
+                        elif self.prev_input == "right":
+                            #self.pad.dx -= (1 - 2 * self.reversed_keys) * self.vel
+                            self.pad.dx -= self.dv
+                        self.prev_input = None
 
             # Game logic
             self.pad.move()
