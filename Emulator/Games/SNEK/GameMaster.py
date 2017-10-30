@@ -50,6 +50,7 @@ class GameMaster:
         self.score_margin =  2 * self.snake_size #48
         self.colors = [RED, BLUE]
         self.winner = None
+        self.score_win = False
         #self.winningScore = 150
         self.DJ = DJ(self.sound_path)
         self.Painter = Painter([self.screen.get_width(), self.screen.get_height()], self.score_margin, self.img_path, self.font_path)
@@ -108,6 +109,7 @@ class GameMaster:
 
         self.loadSprites()
         self.DJ.playGameMusic(self.snakes)
+        self.score_win = False
 
         while not self.gameIsOver:
             for snake in range(self.snakes):
@@ -155,6 +157,7 @@ class GameMaster:
                         if (self.checkScore(self.snake[snake], self.winningScore)):
                             self.winner = snake + 1
                             self.gameIsOver = True
+                            self.score_win = True
                             self.DJ.stopMusic()
                             return True
 
@@ -293,7 +296,7 @@ class GameMaster:
                                          self.snake, self.score_window, self.currentHighScore)
 
             # Draw game over screen
-            self.Painter.drawGameOverScreen(self.screen, selectablePos, selectPosIndex, fontColor, self.winner)
+            self.Painter.drawGameOverScreen(self.screen, selectablePos, selectPosIndex, fontColor, self.score_win, self.winner)
 
 
     def startScreen(self):

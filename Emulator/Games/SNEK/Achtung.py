@@ -42,7 +42,6 @@ def AchtungMain(screen = None):
             if(twoPlayers):
                 MainWindow.snakes = 2
                 MainWindow.winningScore = winningScore
-                #MainWindow.winningScore = retry[1]
             gameOver = MainWindow.mainLoop()
             if (gameOver):
                 retry = MainWindow.gameOver()

@@ -245,7 +245,7 @@ class Painter:
             font_extension = '.ttf'
         if system() == "Linux":
             font_extension = '.TTF'
-        self.arcadeFont = pygame.font.Font(self.font_path + 'ARCADE_I' + font_extension, 22)
+        self.arcadeFont = pygame.font.Font(self.font_path + 'ARCADE_I' + font_extension, 30)
         self.arcadeFontSmall = pygame.font.Font(self.font_path + 'ARCADE_I' + font_extension, 18)
         self.arcadeFontNormal = pygame.font.Font(self.font_path + 'ARCADE_N' + font_extension, 16)
         self.arcadeFontMedium = pygame.font.Font(self.font_path + 'ARCADE_N' + font_extension, 18)
@@ -253,8 +253,6 @@ class Painter:
 
         # Start screen
         self.startMenuTextColor = BLUE
-        self.selectSquare = pygame.Surface((220, 30))
-        self.selectSquareStartGame = pygame.Surface((50, 30))
         logoImage = pygame.image.load(self.img_path + 'SNEK_logo1_r.png')
         ratio = logoImage.get_width() / logoImage.get_height()
         self.logoImage = pygame.transform.scale(logoImage,
@@ -262,20 +260,22 @@ class Painter:
         self.logoImageSmall = pygame.transform.scale(logoImage,
                                                 (round((self.score_margin - 2) * ratio), round(self.score_margin - 2)))
         self.startGameText = self.arcadeFont.render('Start game', True, self.startMenuTextColor)
+        self.selectSquare = pygame.Surface((self.startGameText.get_width() + 30, self.startGameText.get_height() + 10))
         self.optionsText = self.arcadeFont.render('Highscore', True, self.startMenuTextColor)
         self.quitText = self.arcadeFont.render('Quit', True, self.startMenuTextColor)
         self.versionText = self.versionFont.render('Version ' + str(0.1), True, RED)
         self.onePlayerText = self.arcadeFont.render('1P', True, self.startMenuTextColor)
         self.twoPlayerText = self.arcadeFont.render('2P', True, self.startMenuTextColor)
+        self.selectSquareStartGame = pygame.Surface((self.twoPlayerText.get_width() + 20, self.twoPlayerText.get_height() + 10))
 
         # Game over screen
         fontColor = BLACK
         self.retryText = self.arcadeFont.render('Play again?', True, fontColor)
-        self.yesText = self.arcadeFont.render('Yes', True, fontColor)
-        self.noText = self.arcadeFont.render('No', True, fontColor)
+        self.yesText = self.arcadeFont.render('Sure', True, fontColor)
+        self.noText = self.arcadeFont.render('Hell no', True, fontColor)
         gameOverImage = pygame.image.load(self.img_path + 'erik400.png')
         self.gameOverImage = pygame.transform.scale(gameOverImage, (round(self.screen_width / 3), round(self.screen_height / 2.2)))
-        self.selectSquareGameOver = pygame.Surface((60, 30))
+        self.selectSquareGameOver = pygame.Surface((self.noText.get_width() + 20, self.noText.get_height() + 10))
 
         self.wall_color = BLACK
         self.background_color = YELLOW
@@ -364,7 +364,7 @@ class Painter:
         screen.blit(score_window, (0, 0))
 
 
-    def drawGameOverScreen(self, screen, selectable_positions, selectable_pos_index, font_color, winner = None):
+    def drawGameOverScreen(self, screen, selectable_positions, selectable_pos_index, font_color, score_win, winner = None):
 
         '''
         Draws the game over screen on given screen surface.
@@ -381,11 +381,13 @@ class Painter:
         self.drawSurface(screen, self.yesText, 15)
         self.drawSurface(screen, self.noText, 16)
         if (winner != None):
-            #winner_text = self.arcadeFontNormal.render('Player ' + str(winner) + ' wins!', True, font_color)
             winner_text = self.arcadeFontHuge.render('Player ' + str(winner) + ' wins!', True, font_color)
-            #explanation_text = self.self.arcadeFontNormal.render('')
-            #self.drawSurface(screen, winner_text, 18 + (winner - 1) * 2)
+            if score_win:
+                explanation_text = self.arcadeFontNormal.render(f'Player {winner} reached the score limit :)', True, font_color)
+            else:
+                explanation_text = self.arcadeFontNormal.render(f'Player {((winner - 1) * -1) + 2} committed suicide :(', True, font_color)
             self.drawSurface(screen, winner_text, 0)
+            self.drawSurface(screen, explanation_text, 3)
         else:
             self.drawSurface(screen, self.gameOverImage, 0)
         self.drawSurface(screen, self.selectSquareGameOver, 15, 128, selectable_positions[selectable_pos_index], BLACK)#font_color)
@@ -444,6 +446,9 @@ class Painter:
         if(screenPos == 2):
             surface_x = screen.get_width() / 2 - surface_rect.width / 2
             surface_y = screen.get_height() / 2 + surface_rect.height
+        if(screenPos == 3):
+            surface_x = screen.get_width() / 2 - surface_rect.width / 2
+            surface_y = 5 * rowHeight + rowHeight / 2 - surface_rect.height / 2
         # Menu position 2
         if(screenPos == 4):
             surface_x = 2*columnWidth - surface_rect.width / 2
