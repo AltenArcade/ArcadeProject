@@ -1,9 +1,11 @@
 import pygame
 from pygame.locals import *
+from platform import system
 
 BLUE = (51, 51, 255)
 WHITE = (255, 255, 255)
 YELLOW = (255, 255, 102)
+LIGHT_YELLOW = (255, 255, 153)
 BLACK = (0, 0, 0)
 RED = (255, 51, 51)
 PINK = (255, 0, 255)
@@ -165,7 +167,7 @@ class Pellet(pygame.sprite.Sprite):
 
 class Wall(pygame.sprite.Sprite):
     '''
-    Walls defining the game area.
+    Wall defining the game area.
     '''
 
     def __init__(self, x, y, width, height, color):
@@ -239,20 +241,26 @@ class Painter:
         self.font2 = pygame.font.SysFont('monospace', 16)
         self.font3 = pygame.font.SysFont('monospace', 20)
         self.versionFont = pygame.font.SysFont('monospace', 16)
-        self.arcadeFont = pygame.font.Font(self.font_path + 'ARCADE_I.ttf', 22)
-        self.arcadeFontSmall = pygame.font.Font(self.font_path + 'ARCADE_I.ttf', 18)
-        self.arcadeFontNormal = pygame.font.Font(self.font_path + 'ARCADE_N.ttf', 14)
-        self.arcadeFontMedium = pygame.font.Font(self.font_path + 'ARCADE_N.ttf', 18)
+        if system() == "Windows":
+            font_extension = '.ttf'
+        if system() == "Linux":
+            font_extension = '.TTF'
+        self.arcadeFont = pygame.font.Font(self.font_path + 'ARCADE_I' + font_extension, 22)
+        self.arcadeFontSmall = pygame.font.Font(self.font_path + 'ARCADE_I' + font_extension, 18)
+        self.arcadeFontNormal = pygame.font.Font(self.font_path + 'ARCADE_N' + font_extension, 16)
+        self.arcadeFontMedium = pygame.font.Font(self.font_path + 'ARCADE_N' + font_extension, 18)
+        self.arcadeFontHuge = pygame.font.Font(self.font_path + 'ARCADE_I' + font_extension, 48)
 
         # Start screen
         self.startMenuTextColor = BLUE
         self.selectSquare = pygame.Surface((220, 30))
         self.selectSquareStartGame = pygame.Surface((50, 30))
-        logoImage = pygame.image.load(self.img_path + 'SNEK_logo1.png')
+        logoImage = pygame.image.load(self.img_path + 'SNEK_logo1_r.png')
+        ratio = logoImage.get_width() / logoImage.get_height()
         self.logoImage = pygame.transform.scale(logoImage,
-                                                (round(self.screen_width / 3.2), round(self.screen_height / 3.3)))
+                                                (round(self.screen_width / 3), round(self.screen_width / 3 / ratio)))
         self.logoImageSmall = pygame.transform.scale(logoImage,
-                                                (round((self.score_margin - 10) * 1.66), round(self.score_margin - 10)))
+                                                (round((self.score_margin - 2) * ratio), round(self.score_margin - 2)))
         self.startGameText = self.arcadeFont.render('Start game', True, self.startMenuTextColor)
         self.optionsText = self.arcadeFont.render('Highscore', True, self.startMenuTextColor)
         self.quitText = self.arcadeFont.render('Quit', True, self.startMenuTextColor)
@@ -333,17 +341,18 @@ class Painter:
 
         # Draw score
         for snake in range(len(snakes)):
-            scoretext = self.arcadeFontNormal.render("Score: {0}".format(snakes[snake].score), 1,
+            scoretext = self.arcadeFontMedium.render("Score: {0}".format(snakes[snake].score), 1,
                                                      snakes[snake].color)
             score_window.blit(scoretext, (5 + snake * (score_window.get_width() - scoretext.get_rect().width - 10), 10))
 
-
+        # Draw SNEK logo
+        score_window.blit(self.logoImageSmall, (self.screen_width / 2 - self.logoImageSmall.get_width() / 2, self.score_margin / 2 - self.logoImageSmall.get_height() / 2))
 
         # Draw highscore (single player)
         if (len(snakes) == 1):
-            highScoreText = self.arcadeFontNormal.render('Highscore: {0}'.format(current_highscore[1]), 1,
+            highScoreText = self.arcadeFontMedium.render('Highscore: {0}'.format(current_highscore[1]), 1,
                                                          BLUE)
-            highScoreText2 = self.arcadeFontNormal.render('Set by: {0}'.format(current_highscore[0]), 1,
+            highScoreText2 = self.arcadeFontMedium.render('Set by: {0}'.format(current_highscore[0]), 1,
                                                           BLUE)
             highScoreText_rect = highScoreText.get_rect()
             highScoreText2_rect = highScoreText2.get_rect()
@@ -371,10 +380,14 @@ class Painter:
         self.drawSurface(screen, self.retryText, 5)
         self.drawSurface(screen, self.yesText, 15)
         self.drawSurface(screen, self.noText, 16)
-        self.drawSurface(screen, self.gameOverImage, 0)
         if (winner != None):
-            winner_text = self.arcadeFontNormal.render('Player ' + str(winner) + ' wins!', True, font_color)
-            self.drawSurface(screen, winner_text, 18 + (winner - 1) * 2)
+            #winner_text = self.arcadeFontNormal.render('Player ' + str(winner) + ' wins!', True, font_color)
+            winner_text = self.arcadeFontHuge.render('Player ' + str(winner) + ' wins!', True, font_color)
+            #explanation_text = self.self.arcadeFontNormal.render('')
+            #self.drawSurface(screen, winner_text, 18 + (winner - 1) * 2)
+            self.drawSurface(screen, winner_text, 0)
+        else:
+            self.drawSurface(screen, self.gameOverImage, 0)
         self.drawSurface(screen, self.selectSquareGameOver, 15, 128, selectable_positions[selectable_pos_index], BLACK)#font_color)
         pygame.display.flip()
 

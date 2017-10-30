@@ -6,6 +6,7 @@ UP = (1, -1)
 RIGHT = (0, 1)
 DOWN = (1, 1)
 LEFT = (0, -1)
+STILL = (0, 0)
 RED_BUTTON = 0
 YELLOW_BUTTON = 1
 BLACK_BUTTON = 2
@@ -23,7 +24,7 @@ class InputReader:
             for i in range(self.joystick_count):
                 self.joysticks[i].init()
         self.actions = ['left', 'right', 'up', 'down', 'execute', 'undo', 'back']
-        self.joystick_inputs = {LEFT : 'left', RIGHT : 'right', UP : 'up', DOWN : 'down', RED_BUTTON : 'execute', YELLOW_BUTTON : 'undo', BLACK_BUTTON : 'back', BLUE_BUTTON: None}
+        self.joystick_inputs = {LEFT : 'left', RIGHT : 'right', UP : 'up', DOWN : 'down', RED_BUTTON : 'execute', YELLOW_BUTTON : 'undo', BLACK_BUTTON : 'back', BLUE_BUTTON: None, STILL : 'center'}
         self.keyboard_inputs = ({K_LEFT : 'left', K_RIGHT : 'right', K_UP : 'up', K_DOWN : 'down', K_RETURN : 'execute', K_KP_ENTER : 'undo', K_ESCAPE : 'back'},
                                 {K_a : 'left', K_d : 'right', K_w : 'up', K_s : 'down', 32 : 'execute', K_KP_ENTER : 'undo', K_ESCAPE : 'back'})
 
