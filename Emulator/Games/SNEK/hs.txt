@@ -17,4 +17,3 @@ emil 230
 aaaaa 100
 emil 140
 emil 150
-emil 160
