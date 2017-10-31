@@ -14,6 +14,7 @@ class Menu:
         self.screen = screen
         self.width, self.height = screen.get_size()
         self.y_offset = int(self.height / 20)
+        self.done = False
 
         # NEW ----------------------------------------------------------------------------------------------------------
         if system() == "Windows": 
@@ -52,12 +53,12 @@ class Menu:
 
     def start_menu(self):
         sel = 0
-        execute = [self.start_game, self.show_high_score, exit]
+        execute = [self.start_game, self.show_high_score, exit_game]
         self.block_list = self.init_menu_blocks(self.width, self.height, self.y_offset, lvl.menu_bp)
         self.hs_block_list = self.init_menu_blocks(self.width, self.height, self.y_offset, lvl.hs_bp)
 
         done = False
-        while not done:
+        while not self.done:
             # Main event loop
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -176,6 +177,8 @@ class Menu:
                 action = self.input_reader.readInput(event)
                 if action is not None:
                     return
+    def exit_game(self):
+        self.done = True
 # ----------------------------------------------------------------------------------------------------------------------
 
 def RunBrekt(screen):
