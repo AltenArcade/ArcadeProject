@@ -1,11 +1,11 @@
 from platform import system
 from os import path
 import pygame
-import Emulator.Games.BREKT.game as g
-import Emulator.Games.BREKT.classes as cl
+import Games.BREKT.game as g
+import Games.BREKT.classes as cl
 import random as rn
-import Emulator.Games.BREKT.levels as lvl
-from Emulator.InputReader import InputReader
+import Games.BREKT.levels as lvl
+from InputReader import InputReader
 
 
 class Menu:
@@ -173,7 +173,8 @@ class Menu:
         pygame.display.flip()
         while True:
             for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
+                action = self.input_reader.readInput(event)
+                if action is not None:
                     return
 # ----------------------------------------------------------------------------------------------------------------------
 

@@ -1,13 +1,13 @@
 from platform import system
 from os import path
 import pygame
-import Emulator.Games.BREKT.classes as cl
-import Emulator.Games.BREKT.levels as lvl
+import Games.BREKT.classes as cl
+import Games.BREKT.levels as lvl
 import numpy as np
 import random as rn
 import time
-from Emulator.Games.BREKT.InputName import InputName
-from Emulator.InputReader import InputReader
+from Games.BREKT.InputName import InputName
+from InputReader import InputReader
 
 class Game:
     def __init__(self, screen, width, height, y_offset, bg_screen, clock, high_score, hs_block_list):
