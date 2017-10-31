@@ -5,7 +5,7 @@ WHITE = (255, 255, 255)
 
 class InputName():
 
-    def __init__(self, screen, bg_screen, score, font):
+    def __init__(self, screen, bg_screen, score, font, input_reader):
         pygame.init()
         self.name = ""
         self.screen = screen
@@ -14,6 +14,7 @@ class InputName():
         self.board_width = self.screen.get_size()[0]
         self.board_height = self.screen.get_size()[1]
         self.font = font
+        self.input_reader = input_reader
 
     def GetPlayerName(self):  # input_reader
         #letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','x','y','z']
@@ -26,10 +27,10 @@ class InputName():
         done = False
         while not done:
             for event in pygame.event.get():
-                '''
-                action = input_reader.readInput(event)
+                action = self.input_reader.readInput(event)
                 if action != None:
-                    if action[1] == 'back':
+                    if action[1] == 'execute':
+                        self.name += current_letter
                         done = True
                     elif action[1] == 'up':
                         if(idx == len(letters) - 1):
@@ -43,7 +44,7 @@ class InputName():
                         else:
                             idx -= 1
                         current_letter = letters[idx]
-                    elif action[1] == 'execute':
+                    elif action[1] == 'right':
                         self.name += current_letter
                 '''
                 if event.type == pygame.KEYDOWN:
@@ -64,7 +65,7 @@ class InputName():
                         current_letter = letters[idx]
                     elif event.key == pygame.K_RIGHT:
                         self.name += current_letter
-
+                '''
             if not done:
                 self.screen.blit(self.bg_screen, (0, 0))
 

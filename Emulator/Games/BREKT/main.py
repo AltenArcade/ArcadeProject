@@ -1,11 +1,11 @@
 from platform import system
 from os import path
 import pygame
-import Games.BREKT.game as g
-import Games.BREKT.classes as cl
+import Emulator.Games.BREKT.game as g
+import Emulator.Games.BREKT.classes as cl
 import random as rn
-import Games.BREKT.levels as lvl
-from InputReader import InputReader
+import Emulator.Games.BREKT.levels as lvl
+from Emulator.InputReader import InputReader
 
 
 class Menu:
@@ -86,8 +86,6 @@ class Menu:
 
             # Limit to 60 frames per second
             self.clock.tick(60)
-
-        pygame.quit()
 
     # NEW---------------------------------------------------------------------------------------------------------------
     def draw_menu(self, sel):

@@ -1,13 +1,13 @@
 from platform import system
 from os import path
 import pygame
-import Games.BREKT.classes as cl
-import Games.BREKT.levels as lvl
+import Emulator.Games.BREKT.classes as cl
+import Emulator.Games.BREKT.levels as lvl
 import numpy as np
 import random as rn
 import time
-from Games.BREKT.InputName import InputName
-from InputReader import InputReader
+from Emulator.Games.BREKT.InputName import InputName
+from Emulator.InputReader import InputReader
 
 class Game:
     def __init__(self, screen, width, height, y_offset, bg_screen, clock, high_score, hs_block_list):
@@ -399,7 +399,8 @@ class Game:
         #time.sleep(3)
         while True:
             for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
+                action = self.input_reader.readInput(event)
+                if action is not None:
                     return
 
     def clean_up(self):
@@ -475,7 +476,8 @@ class Game:
         pygame.display.flip()
         while True:
             for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
+                action = self.input_reader.readInput(event)
+                if action is not None:
                     return
         
     def check_if_high_score(self):
@@ -485,7 +487,7 @@ class Game:
         return False
         
     def get_player_name(self):
-        name_module = InputName(self.screen, self.bg_screen, self.score, self.font)
+        name_module = InputName(self.screen, self.bg_screen, self.score, self.font, self.input_reader)
         self.name = name_module.GetPlayerName()
         
     def insert_score(self):
