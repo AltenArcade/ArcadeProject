@@ -53,11 +53,11 @@ class Menu:
 
     def start_menu(self):
         sel = 0
-        execute = [self.start_game, self.show_high_score, exit_game]
+        execute = [self.start_game, self.high_score, self.exit_game]
         self.block_list = self.init_menu_blocks(self.width, self.height, self.y_offset, lvl.menu_bp)
         self.hs_block_list = self.init_menu_blocks(self.width, self.height, self.y_offset, lvl.hs_bp)
 
-        done = False
+        self.done = False
         while not self.done:
             # Main event loop
             for event in pygame.event.get():
@@ -179,6 +179,10 @@ class Menu:
                     return
     def exit_game(self):
         self.done = True
+
+    def high_score(self):
+        self.high_score = self.get_high_score()
+        self.show_high_score()
 # ----------------------------------------------------------------------------------------------------------------------
 
 def RunBrekt(screen):
