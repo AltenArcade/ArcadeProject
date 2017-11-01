@@ -1,5 +1,5 @@
 viktor:20
 viktor:19
 aaa:9
-:8
+ignore:8
 dddf:1
