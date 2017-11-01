@@ -41,25 +41,8 @@ class InputName():
                         current_letter = letters[idx]
                     elif action[1] == 'right':
                         self.name += current_letter
-                '''
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        done = True
-                    elif event.key == pygame.K_UP:
-                        if(idx == len(letters) - 1):
-                            idx = 0
-                        else:
-                            idx += 1
-                        current_letter = letters[idx]
-                    elif event.key == pygame.K_DOWN:
-                        if (idx == 0):
-                            idx = len(letters) - 1
-                        else:
-                            idx -= 1
-                        current_letter = letters[idx]
-                    elif event.key == pygame.K_RETURN:
-                        self.name += current_letter
-                '''
+                    elif action[1] == 'left':
+                        self.name = self.name[:len(self.name) - 1:]
             self.screen.fill(BLACK)
 
             for i in range(len(highscore_text)):
