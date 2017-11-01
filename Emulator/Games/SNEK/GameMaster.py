@@ -51,7 +51,7 @@ class GameMaster:
         self.colors = [RED, BLUE]
         self.winner = None
         self.score_win = False
-        #self.winningScore = 150
+        self.winningScore = 150
         self.DJ = DJ(self.sound_path)
         self.Painter = Painter([self.screen.get_width(), self.screen.get_height()], self.score_margin, self.img_path, self.font_path)
         self.drawNextMove = False
