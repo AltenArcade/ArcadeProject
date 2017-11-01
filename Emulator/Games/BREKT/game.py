@@ -1,28 +1,48 @@
+from platform import system
+from os import path
 import pygame
 import Games.BREKT.classes as cl
 import Games.BREKT.levels as lvl
 import numpy as np
 import random as rn
 import time
+from Games.BREKT.InputName import InputName
 from InputReader import InputReader
 
-
 class Game:
-    def __init__(self, screen, width, height, y_offset, bg_screen, clock):
+    def __init__(self, screen, width, height, y_offset, bg_screen, clock, high_score, hs_block_list):
         self.screen = screen
         self.bg_screen = bg_screen
         self.width = width
         self.height = height
         self.y_offset = y_offset
         self.clock = clock
+
+        # NEW ----------------------------------------------------------------------------------------------------------
+        if system() == "Windows":
+            self.path = str(path.dirname(path.realpath(__file__))) + "\\"
+        if system() == "Linux":
+            self.path = str(path.dirname(path.realpath(__file__))) + "/"
+        self.hs_block_list = hs_block_list
         self.input_reader = InputReader()
         self.prev_input = None
+        # --------------------------------------------------------------------------------------------------------------
 
-        self.vel = 8 * width / 1600  # 2 * (2 * width / 1600) ** 2
+        # NEW ----------------------------------------------------------------------------------------------------------
+        self.vel = 12  # 8 * width / 1600
+        # --------------------------------------------------------------------------------------------------------------
         self.dv = 0
         self.v_tmp = 0
 
         self.score = 0
+
+        # NEW ---------------------------------------------------------------------------------------------------------- 
+        self.name = " "
+        self.font = pygame.font.SysFont('Calibri', int(self.height / 15), True, False)
+        self.font = pygame.font.Font(self.path + 'font.ttf', int(self.height / 22))
+        self.drop_probability = 0.25
+        # --------------------------------------------------------------------------------------------------------------
+
         self.level = 1
         self.lives = 4
         self.not_died_count = 1
@@ -56,6 +76,9 @@ class Game:
 
         # self.bullet_fired = pygame.mixer.Sound("bullet_fired.wav")
 
+        # NEW ----------------------------------------------------------------------------------------------------------
+        self.high_score = high_score
+        # --------------------------------------------------------------------------------------------------------------
 
         # INITIATE LEVEL
         self.initiate_level()
@@ -93,7 +116,7 @@ class Game:
         self.all_list.add(self.ball)
 
         # INITIATE INFO
-        self.info = cl.Info(self.y_offset, self.width)
+        self.info = cl.Info(self.y_offset, self.width, self.path)
         self.all_list.add(self.info)
 
         # DRAW FIRST TIME
@@ -101,7 +124,8 @@ class Game:
 
         # LEVEL TEXT
         self.badge_list.draw(self.screen)
-        font = pygame.font.SysFont('Calibri', int(self.height / 5), True, False)
+        #font = pygame.font.SysFont('Calibri', int(self.height / 5), True, False)
+        font = pygame.font.Font(self.path + 'font.ttf', int(self.height / 7))
         text = font.render(str(self.level), True, cl.BLACK)
         self.screen.blit(text, [(self.width / 2) - text.get_rect().width / 2, (self.height / 2) -
                                   text.get_rect().height / 2])
@@ -118,7 +142,6 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     exit()
-                #elif event.type == pygame.KEYDOWN:
                 action = self.input_reader.readInput(event)
                 if action is not None:
                     action = action[1]
@@ -181,17 +204,39 @@ class Game:
 
             self.clock.tick(60)
 
-        if self.next and self.level < 5:
+        if self.next:
             self.score += self.not_died_count * self.level * 100
             self.not_died_count += 1
 
             self.reset()
             self.clean_up()
 
-            self.level += 1
-            self.initiate_level()
+            # NEW ------------------------------------------------------------------------------------------------------
+            if self.level > 4:
+                self.game_completed()
+                if self.check_if_high_score():
+                    self.get_player_name()
+                    self.insert_score()
+                    self.save_score()
+                    self.high_score = self.get_high_score()
+                    self.show_high_score()
+                self.clean_up()
+                #self.game_completed()
+            else:
+                self.level += 1
+                self.initiate_level()
+            #-----------------------------------------------------------------------------------------------------------
+
+            #self.level += 1
+            #self.initiate_level()
         else:
             self.game_over()
+            if self.check_if_high_score():
+                self.get_player_name()
+                self.insert_score()
+                self.save_score()
+                self.high_score = self.get_high_score()
+                self.show_high_score()
             self.clean_up()
 
     def redraw(self):
@@ -252,8 +297,8 @@ class Game:
                 if obj.hp > 1:
                     obj.hit()
                 else:
-                    if rn.random() <= obj.type * 0.25:
-                        drop = cl.Drop(obj.width, obj.height, rn.randrange(0, 7), obj.rect.center, self.vel)
+                    if rn.random() <= obj.type * self.drop_probability:
+                        drop = cl.Drop(obj.width, obj.height, rn.randrange(0, 7), obj.rect.center, self.vel, self.path)
                         self.drop_list.add(drop)
                         self.all_list.add(drop)
                     self.block_list.remove(obj)
@@ -331,8 +376,8 @@ class Game:
                 if obj.hp > 1:
                     obj.hit()
                 else:
-                    if rn.random() <= obj.type * 0.25:
-                        drop = cl.Drop(obj.width, obj.height, rn.randrange(0, 7), obj.rect.center, self.vel)
+                    if rn.random() <= obj.type * self.drop_probability:
+                        drop = cl.Drop(obj.width, obj.height, rn.randrange(0, 7), obj.rect.center, self.vel, self.path)
                         self.drop_list.add(drop)
                         self.all_list.add(drop)
                     self.block_list.remove(obj)
@@ -345,12 +390,18 @@ class Game:
         self.redraw()
 
         self.badge_list.draw(self.screen)
-        font = pygame.font.SysFont('Calibri', int(self.height / 5), True, False)
+        #font = pygame.font.SysFont('Calibri', int(self.height / 5), True, False)
+        font = pygame.font.Font(self.path + 'font.ttf', int(self.height / 7))
         text = font.render("GAME OVER", True, cl.BLACK)
         self.screen.blit(text, [(self.width / 2) - text.get_rect().width / 2, (self.height / 2) -
                                   text.get_rect().height / 2])
         pygame.display.flip()
-        time.sleep(3)
+        #time.sleep(3)
+        while True:
+            for event in pygame.event.get():
+                action = self.input_reader.readInput(event)
+                if action is not None:
+                    return
 
     def clean_up(self):
         self.drop_list.empty()
@@ -382,3 +433,79 @@ class Game:
 
         self.pad.reset()
         self.redraw()
+
+
+    # NEW --------------------------------------------------------------------------------------------------------------
+    def game_completed(self):
+        self.screen.blit(self.bg_screen, (0, 0))
+        self.redraw()
+
+        self.badge_list.draw(self.screen)
+        #font = pygame.font.SysFont('Calibri', int(self.height / 10), True, False)
+        font = pygame.font.Font(self.path + 'font.ttf', int(self.height / 20))
+        text = font.render("WINNER WINNER CHICKEN DINNER!", True, cl.BLACK)
+        self.screen.blit(text, [(self.width / 2) - text.get_rect().width / 2, (self.height / 2) -
+                                  text.get_rect().height / 2])
+        pygame.display.flip()
+        time.sleep(2)
+        
+    def get_high_score(self):
+        file = open(self.path + "high_score.txt", "r")
+        lst = [l.split(":") for l in file.readlines()]
+        for t in lst:
+            try:
+                t[1] = int(t[1])
+            except ValueError:
+                print("Error can not be integer")
+        s = sorted(lst, key=lambda score: score[1])[::-1]
+        file.close()
+        return s
+
+    def show_high_score(self):
+        self.screen.blit(self.bg_screen, (0, 0))
+        self.hs_block_list.draw(self.screen)
+        pixel_offset = int(self.height / 12)
+        i = 0
+
+        for score in self.high_score:
+            string = score[0] + "  " + str(score[1])
+            txt = self.font.render(string, 1, cl.WHITE)
+            self.screen.blit(txt, ((self.width - self.font.size(string)[0]) / 2,
+                                   2 * self.y_offset + (i * pixel_offset)))
+            i += 1
+        pygame.display.flip()
+        while True:
+            for event in pygame.event.get():
+                action = self.input_reader.readInput(event)
+                if action is not None:
+                    return
+        
+    def check_if_high_score(self):
+        for score in self.high_score:
+            if self.score > score[1] or len(self.high_score) < 10:
+                return True
+        return False
+        
+    def get_player_name(self):
+        name_module = InputName(self.screen, self.bg_screen, self.score, self.font, self.input_reader)
+        self.name = name_module.GetPlayerName()
+        
+    def insert_score(self):
+        for i in range(len(self.high_score)):
+            if self.high_score[i][1] < self.score:
+                self.high_score.insert(i, [self.name, self.score])
+                break
+        self.high_score = sorted(self.high_score, key=lambda score: score[1])[::-1]
+        while len(self.high_score) > 10:
+            self.high_score.remove(self.high_score[len(self.high_score) - 1])
+
+    def set_high_score(self):
+        self.insert_score()
+        return self.high_score
+
+    def save_score(self):
+        file = open(self.path + "high_score.txt", "w")
+        for item in self.high_score:
+            file.write(item[0] + ":" + str(item[1]) + "\n")
+        file.close()
+    #---------------------------------------------------------------------------------------------------------------

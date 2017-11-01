@@ -152,11 +152,12 @@ class Ball(pygame.sprite.Sprite):
 
 
 class Info(pygame.sprite.Sprite):
-    def __init__(self, y_offset, width):
+    def __init__(self, y_offset, width, path):
         super().__init__()
         self.size = y_offset
-        self.font_size = int(self.size * 0.8)
+        self.font_size = int(self.size * 0.8 * 0.8)
         self.width = width
+        self.path = path
 
         self.image = pygame.Surface([self.width, self.size])
         self.image.fill(GREY)
@@ -165,14 +166,15 @@ class Info(pygame.sprite.Sprite):
         self.rect.x = 0
         self.rect.y = 0
 
-        self.font = pygame.font.SysFont('Calibri', self.font_size, True, False)
-        self.score_text = self.font.render("Score:", True, BLACK)
-        self.level_text = self.font.render("Level:", True, BLACK)
+        #self.font = pygame.font.SysFont('Calibri', self.font_size, True, False)
+        self.font = pygame.font.Font(self.path + 'font.ttf', self.font_size)
+        self.score_text = self.font.render("SCORE:", True, BLACK)
+        self.level_text = self.font.render("LEVEL:", True, BLACK)
 
     def update(self, lv, sc, liv):
         score = self.font.render(str(sc), True, BLACK)
         level = self.font.render(str(lv), True, BLACK)
-        lives = self.font.render(str((liv-1)*chr(9679)), True, BLACK)
+        lives = self.font.render(str((liv-1)*'O'), True, BLACK)
 
         self.image.fill(GREY)
 
@@ -186,16 +188,21 @@ class Info(pygame.sprite.Sprite):
         self.image.blit(lives, [self.width - lives.get_rect().width - + self.size * 0.6, (self.size - self.font_size) / 2])
 
 class Drop(pygame.sprite.Sprite):
-    def __init__(self, w, h, type, block_center, vel):
+    def __init__(self, w, h, type, block_center, vel, path):
         super().__init__()
 
         self.width = 0.8 * w
         self.height = 0.8 * h
+        self.path = path
 
         #
         self.type = type
-        self.texts = [chr(9679), chr(9675), str(chr(8592) + chr(8594)), str(chr(8594) + chr(8592)), "X", "?", "--¤"]
+        self.texts = [chr(9675), str(chr(9675)+chr(9675)), str(chr(8592) + chr(8594)),
+                      str(chr(8594) + chr(8592)), "X", "?", "--¤"]
+        self.texts = ["O", "OO", str(chr(8592) + chr(8594)),
+                      str(chr(8594) + chr(8592)), "X", "?", "++"]
         self.font = pygame.font.SysFont('Calibri', int(self.height * 1.2), True, False)
+        self.font = pygame.font.Font(self.path + 'font.ttf', int(self.height*0.9))
         self.font.set_bold(True)
 
         self.image = pygame.Surface([self.width, self.height])
@@ -210,7 +217,7 @@ class Drop(pygame.sprite.Sprite):
     def draw(self):
         self.image.fill(WHITE)
         text = self.font.render(self.texts[self.type], True, BLACK)
-        self.image.blit(text, [(self.width - text.get_rect().width) / 2, (self.height - text.get_rect().height) / 2])
+        self.image.blit(text, [(self.width - text.get_rect().width) / 2, (self.height - text.get_rect().height*0.8) / 2])
 
     def move(self):
         self.rect.y += self.dy
@@ -227,9 +234,6 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (pad.rect.center[0] - (1 - pos * 2)*(pad.rect.width / 2 - pad.w / 16), pad.rect.center[1])
         self.dy = -pad.vel*2
-
-    def draw(self):
-        a=1
 
     def move(self):
         self.rect.y += self.dy

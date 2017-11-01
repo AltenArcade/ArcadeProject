@@ -383,9 +383,9 @@ class Painter:
         if (winner != None):
             winner_text = self.arcadeFontHuge.render('Player ' + str(winner) + ' wins!', True, font_color)
             if score_win:
-                explanation_text = self.arcadeFontNormal.render(f'Player {winner} reached the score limit :)', True, font_color)
+                explanation_text = self.arcadeFontNormal.render('Player {0} reached the score limit'.format(winner), True, font_color)
             else:
-                explanation_text = self.arcadeFontNormal.render(f'Player {((winner - 1) * -1) + 2} committed suicide :(', True, font_color)
+                explanation_text = self.arcadeFontNormal.render('Player {0} committed suicide'.format(((winner - 1) * -1) + 2), True, font_color)
             self.drawSurface(screen, winner_text, 0)
             self.drawSurface(screen, explanation_text, 3)
         else:
