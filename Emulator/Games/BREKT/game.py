@@ -315,8 +315,8 @@ class Game:
                 self.lives -= 1
                 self.redraw()
                 time.sleep(2)
-                pygame.event.clear()
                 self.reset()
+                pygame.event.clear()
             else:
                 self.done = True
         elif ball.rect.x < 0 or ball.rect.x + 2 * ball.radius > self.width:
@@ -354,8 +354,8 @@ class Game:
                     self.lives -= 1
                     self.redraw()
                     time.sleep(2)
-                    pygame.event.clear()
                     self.reset()
+                    pygame.event.clear()
                 else:
                     self.done = True
             elif drop.type == 5:
