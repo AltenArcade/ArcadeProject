@@ -139,8 +139,9 @@ class Player:
         self.frame_ctr += 1
 
     def flip(self):
-        self.current_figure.flip()
-        self.current_figure.CorrectSide()
+        if self.current_figure.CheckCollision(self.collision_list, "left") and self.current_figure.CheckCollision(self.collision_list,"right") and self.current_figure.CheckCollision(self.collision_list,"down"):
+            self.current_figure.flip()
+            self.current_figure.CorrectSide()
 
     def left(self):
         if self.current_figure.CheckCollision(self.collision_list,"left"):
