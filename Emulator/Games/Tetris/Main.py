@@ -229,7 +229,7 @@ class Main:
 
     def OnePlayer(self):
         block_number = 10
-        subscreen_width = 600
+        subscreen_width = 500
         bottom_wall = self.board_height % (subscreen_width / block_number)
         p_ss = self.screen.subsurface(pygame.Rect(((self.board_width - subscreen_width) / 2), 0, subscreen_width, self.board_height - bottom_wall))
         figure_prediction = p_ss.subsurface(pygame.Rect(0,0,p_ss.get_size()[0] / 5, p_ss.get_size()[1] / 10))
@@ -244,6 +244,7 @@ class Main:
                 self.run_game = False
             else:
                 p.move()
+                p.SetSpeedControl(p.score)
 
             pygame.display.flip()
             self.screen.fill(GREY)
@@ -256,7 +257,7 @@ class Main:
 
     def TwoPlayer(self):
         block_number = 10
-        subscreen_width = 400
+        subscreen_width = 500
         pos_x = (self.board_width - 2 * subscreen_width - WALL_SIZE) / 2
         bottom_wall = self.board_height % (subscreen_width / block_number)
         p1_ss = self.screen.subsurface(pygame.Rect(pos_x, 0, subscreen_width, self.board_height - bottom_wall))
@@ -278,11 +279,13 @@ class Main:
                 p1.GameOver()
             else:
                 p1.move()
+                p2.SetSpeedControl(p1.score)
 
             if p2.CheckGameOver():
                 p2.GameOver()
             else:
                 p2.move()
+                p1.SetSpeedControl(p2.score)
             if p1.CheckGameOver() and p2.CheckGameOver():
                 self.run_game = False
 

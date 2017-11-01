@@ -69,7 +69,7 @@ class Player:
         y_coords_unique = list(set(y_coords))
         for element in y_coords_unique:
             if y_coords.count(element) == self.full_row:
-                self.speed_control += 0.3
+                #self.speed_control += 0.6
                 delete_rows.append(element)
         self.score += len(delete_rows)
 
@@ -114,6 +114,9 @@ class Player:
     def GetPlayerName(self,reader):
         name_module = InputName(self.screen,self.score,self.font)
         self.name = name_module.GetPlayerName(reader)
+
+    def SetSpeedControl(self, score):
+        self.speed_control = 1 + score * 0.5
 
     def move(self):
 
