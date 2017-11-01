@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bca1b115-cf2d-4a4a-b59f-60ee07dcb9e3" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Games/BREKT/high_score.txt" afterPath="$PROJECT_DIR$/Games/BREKT/high_score.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Games/SNEK/hs.txt" afterPath="$PROJECT_DIR$/Games/SNEK/hs.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Games/Tetris/InputName.py" afterPath="$PROJECT_DIR$/Games/Tetris/InputName.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gitignore" afterPath="$PROJECT_DIR$/../.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Games/Tetris/high_score.txt" afterPath="$PROJECT_DIR$/Games/Tetris/high_score.txt" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -65,7 +62,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="InputName.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="InputName.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Games/Tetris/InputName.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="204">
@@ -75,7 +72,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="high_score.txt" pinned="false" current-in-tab="false">
+      <file leaf-file-name="high_score.txt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Games/Tetris/high_score.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="68">
@@ -290,18 +287,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Games/Tetris/high_score.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="6" lean-forward="false" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Games/Tetris/InputName.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="27" column="44" lean-forward="false" selection-start-line="27" selection-start-column="44" selection-end-line="27" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Games/Tetris/high_score.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="6" lean-forward="false" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
           <folding />
         </state>
       </provider>
