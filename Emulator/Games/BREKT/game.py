@@ -131,6 +131,7 @@ class Game:
                                   text.get_rect().height / 2])
         pygame.display.flip()
         time.sleep(2)
+        pygame.event.clear()
 
         # INITIATE MAIN LOOP
         self.update()
@@ -143,7 +144,7 @@ class Game:
                 if event.type == pygame.QUIT:
                     exit()
                 action = self.input_reader.readInput(event)
-                if action is not None:
+                if action is not None and action[0] == 0:
                     action = action[1]
                     if action == "left":
                         self.dv = (1 - 2 * self.reversed_keys) * self.vel
@@ -314,6 +315,7 @@ class Game:
                 self.lives -= 1
                 self.redraw()
                 time.sleep(2)
+                pygame.event.clear()
                 self.reset()
             else:
                 self.done = True
@@ -352,6 +354,7 @@ class Game:
                     self.lives -= 1
                     self.redraw()
                     time.sleep(2)
+                    pygame.event.clear()
                     self.reset()
                 else:
                     self.done = True

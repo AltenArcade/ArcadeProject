@@ -65,7 +65,7 @@ class Menu:
                     exit()
                 else:
                     action = self.input_reader.readInput(event)
-                    if action is not None:
+                    if action is not None and action[0] == 0:
                         action = action[1]
                         if action == "up":
                             if sel > 0:
