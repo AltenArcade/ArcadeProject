@@ -15,7 +15,7 @@ class InputName():
         self.font = font
 
     def GetPlayerName(self, input_reader):
-        letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','x','y','z']
+        letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
         idx = 0
         current_letter = letters[idx]
         pixel_offset = 70
@@ -25,7 +25,7 @@ class InputName():
             for event in pygame.event.get():
                 action = input_reader.readInput(event)
                 if action != None:
-                    if action[1] == 'back':
+                    if action[1] == 'execute':
                         done = True
                     elif action[1] == 'up':
                         if(idx == len(letters) - 1):
@@ -39,7 +39,7 @@ class InputName():
                         else:
                             idx -= 1
                         current_letter = letters[idx]
-                    elif action[1] == 'execute':
+                    elif action[1] == 'right':
                         self.name += current_letter
                 '''
                 if event.type == pygame.KEYDOWN:
