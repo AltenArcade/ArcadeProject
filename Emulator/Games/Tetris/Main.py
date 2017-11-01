@@ -114,7 +114,10 @@ class Main:
         self.options[0].hovered = True
 
     def GetHighScore(self):
-        file = open(self.path + "high_score.txt", "r")
+        if path.isfile(self.path + "high_score.txt"):
+            file = open(self.path + "high_score.txt", "r")
+        else:
+            file = open(self.path + "high_score.txt","w+")
         lst = [l.split(":") for l in file.readlines()]
         for t in lst:
             try:
@@ -183,6 +186,8 @@ class Main:
             player.down_fast()
 
     def InsertScore(self, high_score, player):
+        if len(high_score) == 0:
+            high_score.insert(0,[player.name, player.score])
         for i in range(len(high_score)):
             if high_score[i][1] < player.score or len(high_score) < 5:
                 high_score.insert(i, [player.name, player.score])

@@ -164,6 +164,8 @@ class Player:
         return self.game_over
 
     def CheckIfHighScore(self,high_score):
+        if len(high_score) == 0:
+            return True
         for score in high_score:
             if self.score > score[1] or len(high_score) < 5:
                 return True
