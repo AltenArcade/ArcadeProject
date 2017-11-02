@@ -424,6 +424,7 @@ class Game:
 
         self.pad.dx = 0
         self.v_tmp = 0
+        self.prev_input = None
 
         self.ball.reset()
         self.all_list.remove(self.ball_list)

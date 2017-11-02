@@ -27,8 +27,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/Emulator/Games/BREKT/main.py" />
-        <option value="$PROJECT_DIR$/Emulator/Games/BREKT/game.py" />
         <option value="$PROJECT_DIR$/Emulator/Games/BREKT/high_score.txt" />
+        <option value="$PROJECT_DIR$/Emulator/Games/BREKT/game.py" />
       </list>
     </option>
   </component>
@@ -212,8 +212,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Emulator/Games/BREKT/game.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="327">
-          <caret line="425" column="22" lean-forward="false" selection-start-line="425" selection-start-column="22" selection-end-line="425" selection-end-column="22" />
+        <state relative-caret-position="395">
+          <caret line="426" column="30" lean-forward="false" selection-start-line="426" selection-start-column="30" selection-end-line="426" selection-end-column="30" />
           <folding>
             <element signature="e#0#27#0" expanded="true" />
           </folding>
