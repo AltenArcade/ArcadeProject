@@ -11,6 +11,7 @@ PURPLE = (182, 0, 251)
 YELLOW = (251, 247, 5)
 
 class Figure(pygame.sprite.Sprite):
+
     def __init__(self, struct,width,height,block,prediction):
         super().__init__()
         self.board_width = width

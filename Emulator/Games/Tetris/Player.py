@@ -47,6 +47,10 @@ class Player:
         self.current_figure = Figure(self.GetFigureShape(),self.board_width,self.board_height,self.block_size, False)
         self.next_figure = Figure(self.GetFigureShape(),self.figure_prediction.get_size()[0],self.figure_prediction.get_size()[1],self.block_size / 2, True)
 
+        # Variables for redirecting the speed control in multiplayer mode
+        self.redir_speed = False
+        self.old_score = 0
+
     def GetFigureShape(self):
         shapes = [
             [[0, 0, 1], [1, 1, 1]],
@@ -115,8 +119,18 @@ class Player:
         name_module = InputName(self.screen,self.score,self.font)
         self.name = name_module.GetPlayerName(reader)
 
-    def SetSpeedControl(self, score):
+    #Called when both players are alive. The speed is proportional to the opponents score
+    def SetOpponentSpeedControl(self, score):
         self.speed_control = 1 + score * 0.5
+
+    # If one player is dead, the speed will be proportional to the players own score
+    def SetOwnSpeedControl(self, opponent_score):
+        if not self.redir_speed: # This should happen only once to save the current score of the player.
+            self.old_score = self.score
+            self.speed_control = 1 + (opponent_score + (self.score - self.old_score)) * 0.5
+            self.redir_speed = True
+        else: # Increment the speed control with the difference between the current score and the score when the opponent died
+            self.speed_control = 1 + (opponent_score + (self.score - self.old_score)) * 0.5
 
     def move(self):
 

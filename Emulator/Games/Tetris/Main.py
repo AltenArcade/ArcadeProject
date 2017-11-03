@@ -255,7 +255,7 @@ class Main:
                 self.run_game = False
             else:
                 p.move()
-                p.SetSpeedControl(p.score)
+                p.SetOpponentSpeedControl(p.score)
 
             pygame.display.flip()
             self.screen.fill(GREY)
@@ -290,13 +290,20 @@ class Main:
                 p1.GameOver()
             else:
                 p1.move()
-                p2.SetSpeedControl(p1.score)
+                if p2.CheckGameOver():
+                    p1.SetOwnSpeedControl(p2.score)
+                else:
+                    p2.SetOpponentSpeedControl(p1.score)
 
             if p2.CheckGameOver():
                 p2.GameOver()
             else:
                 p2.move()
-                p1.SetSpeedControl(p2.score)
+                if p1.CheckGameOver():
+                    p2.SetOwnSpeedControl(p1.score)
+                else:
+                    p1.SetOpponentSpeedControl(p2.score)
+
             if p1.CheckGameOver() and p2.CheckGameOver():
                 self.run_game = False
 
