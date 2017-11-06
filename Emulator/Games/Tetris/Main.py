@@ -44,8 +44,80 @@ class Main:
         #self.background = self.ScaleImage(self.background, self.board_width)
         self.input_reader = InputReader()
 
+    def start(self):
+        self.high_score = self.GetHighScore()
+        self.exit_game = False
+        players = 0
+        idx = 0
+        self.DisplayOptions("Start")
+        pygame.mixer.music.play(-1)
+
+        while not self.exit_game:
+            for event in pygame.event.get():
+                action = self.input_reader.readInput(event)
+                if action != None:
+                    if action[1] == 'back':
+                        self.exit_game = True
+                    elif action[1] == 'up':
+                        idx = self.ChangeOption(action[1], idx)
+                    elif action[1] == 'down':
+                        idx = self.ChangeOption(action[1],idx)
+                    elif action[1] == 'execute':
+                        if self.options[idx].text == "High Score":
+                            self.ShowHighScore()
+                        elif self.options[idx].text == "Exit":
+                            self.exit_game = True
+                        elif self.options[idx].text == "New Game":
+                            players = self.GetPlayers(self.logo, self.screen_center)
+                            self.run_game = True
+            if(self.run_game and players > 0):
+                if players == 2:
+                    self.TwoPlayer()
+                else:
+                    self.OnePlayer()
+                self.SaveScore()
+            #self.screen.blit(self.background, (0, self.board_height - self.background.get_height()))
+            self.screen.blit(self.logo, (self.screen_center, self.board_height * 0.15))
+            for option in self.options:
+                option.draw()
+            pygame.display.flip()
+            self.screen.fill(BLACK)
+            self.clock.tick(FPS)
+        pygame.mixer.music.stop()
+        return
+
+    def ScaleImage(self,img,width):
+
+        img_ratio = img.get_rect().size[1] / img.get_rect().size[0]
+        return pygame.transform.scale(img,(width,int(width * img_ratio)))
+
+    def ChangeOption(self,case, idx):
+        if case == 'up':
+            self.options[idx].hovered = False
+            idx -= 1
+            if idx < 0:
+                idx = len(self.options) - 1
+            self.options[idx].hovered = True
+        elif case == 'down':
+            self.options[idx].hovered = False
+            idx += 1
+            if idx > 2:
+                idx = 0
+            self.options[idx].hovered = True
+        return idx
+
+    def DisplayOptions(self, case):
+        self.options.clear()
+        if case == "Start":
+            intro_text = ["New Game", "High Score", "Exit"]
+            self.AddOptions(intro_text)
+        self.options[0].hovered = True
+
     def GetHighScore(self):
-        file = open(self.path + "high_score.txt", "r")
+        if path.isfile(self.path + "high_score.txt"):
+            file = open(self.path + "high_score.txt", "r")
+        else:
+            file = open(self.path + "high_score.txt","w+")
         lst = [l.split(":") for l in file.readlines()]
         for t in lst:
             try:
@@ -55,11 +127,6 @@ class Main:
         s = sorted(lst, key=lambda score: score[1])[::-1]
         file.close()
         return s
-
-    def ScaleImage(self,img,width):
-
-        img_ratio = img.get_rect().size[1] / img.get_rect().size[0]
-        return pygame.transform.scale(img,(width,int(width * img_ratio)))
 
     def GetPlayers(self,logo, screen_center):
         done = False
@@ -118,9 +185,11 @@ class Main:
         elif action == 'execute':
             player.down_fast()
 
-    def insert_score(self,high_score, player):
+    def InsertScore(self, high_score, player):
+        if len(high_score) == 0:
+            high_score.insert(0,[player.name, player.score])
         for i in range(len(high_score)):
-            if high_score[i][1] < player.score:
+            if high_score[i][1] < player.score or len(high_score) < 5:
                 high_score.insert(i, [player.name, player.score])
                 break
         high_score = sorted(high_score, key=lambda score: score[1])[::-1]
@@ -130,14 +199,14 @@ class Main:
 
     def SetHighScore(self,player1, player2=0):
         if player2 == 0:
-            self.high_score = self.insert_score(self.high_score, player1)
+            self.high_score = self.InsertScore(self.high_score, player1)
         else:
             if player1.score < player2.score:
-                self.high_score = self.insert_score(self.high_score, player1)
-                self.high_score = self.insert_score(self.high_score, player2)
+                self.high_score = self.InsertScore(self.high_score, player1)
+                self.high_score = self.InsertScore(self.high_score, player2)
             elif player1.score >= player2.score:
-                self.high_score = self.insert_score(self.high_score, player2)
-                self.high_score = self.insert_score(self.high_score, player1)
+                self.high_score = self.InsertScore(self.high_score, player2)
+                self.high_score = self.InsertScore(self.high_score, player1)
         return self.high_score
 
     def ShowHighScore(self):
@@ -163,69 +232,11 @@ class Main:
             file.write(item[0] + ":" + str(item[1]) + "\n")
         file.close()
 
-    def SetOptions(self, case):
-        self.options.clear()
-        if case == "Start":
-            intro_text = ["New Game", "High Score", "Exit"]
-            self.AddOptions(intro_text)
-        return 0
-
     def AddOptions(self, intro_text):
 
         pixel_offset = 70
         for i in range(len(intro_text)):
             self.options.append(Option(intro_text[i],((self.board_width - self.font.size(intro_text[i])[0]) / 2, self.board_height / 2 + (i * pixel_offset)),self.screen,self.font, RED, WHITE))
-
-    def start(self):
-        self.high_score = self.GetHighScore()
-        pygame.mixer.music.play(-1)
-        pygame.display.set_caption("Tetris")
-        self.exit_game = False
-        players = 0
-        idx = 0
-        self.SetOptions("Start")
-        self.options[idx].hovered = True
-        while not self.exit_game:
-            for event in pygame.event.get():
-                action = self.input_reader.readInput(event)
-                if action != None:
-                    if action[1] == 'back':
-                        self.exit_game = True
-                    elif action[1] == 'up':
-                        self.options[idx].hovered = False
-                        idx -= 1
-                        if idx < 0:
-                            idx = len(self.options) - 1
-                        self.options[idx].hovered = True
-                    elif action[1] == 'down':
-                        self.options[idx].hovered = False
-                        idx += 1
-                        if idx > 2:
-                            idx = 0
-                        self.options[idx].hovered = True
-                    elif action[1] == 'execute':
-                        if self.options[idx].text == "High Score":
-                            self.ShowHighScore()
-                        elif self.options[idx].text == "Exit":
-                            self.exit_game = True
-                        elif self.options[idx].text == "New Game":
-                            players = self.GetPlayers(self.logo, self.screen_center)
-                            self.run_game = True
-            if(self.run_game and players > 0):
-                if players == 2:
-                    self.TwoPlayer()
-                else:
-                    self.OnePlayer()
-                self.SaveScore()
-            #self.screen.blit(self.background, (0, self.board_height - self.background.get_height()))
-            self.screen.blit(self.logo, (self.screen_center, self.board_height * 0.15))
-            for option in self.options:
-                option.draw()
-            pygame.display.flip()
-            self.screen.fill(BLACK)
-            self.clock.tick(FPS)
-        pygame.mixer.music.stop()
-        return
 
     def OnePlayer(self):
         block_number = 10
@@ -244,7 +255,7 @@ class Main:
                 self.run_game = False
             else:
                 p.move()
-                p.SetSpeedControl(p.score)
+                p.SetOpponentSpeedControl(p.score)
 
             pygame.display.flip()
             self.screen.fill(GREY)
@@ -279,13 +290,20 @@ class Main:
                 p1.GameOver()
             else:
                 p1.move()
-                p2.SetSpeedControl(p1.score)
+                if p2.CheckGameOver():
+                    p1.SetOwnSpeedControl(p2.score)
+                else:
+                    p2.SetOpponentSpeedControl(p1.score)
 
             if p2.CheckGameOver():
                 p2.GameOver()
             else:
                 p2.move()
-                p1.SetSpeedControl(p2.score)
+                if p1.CheckGameOver():
+                    p2.SetOwnSpeedControl(p1.score)
+                else:
+                    p1.SetOpponentSpeedControl(p2.score)
+
             if p1.CheckGameOver() and p2.CheckGameOver():
                 self.run_game = False
 

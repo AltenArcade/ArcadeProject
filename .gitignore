@@ -1,1 +1,3 @@
-Emulator/Games/Tetris/high_score.txt
+*.txt
+*.pyc
+workspace.xml
