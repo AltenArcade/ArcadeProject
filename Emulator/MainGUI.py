@@ -34,7 +34,12 @@ class MainGUI:
         self.screen.fill(WHITE)
         self.option_screen = self.screen.subsurface(0, self.board_height / 2, self.board_width, self.board_height / 2)
         self.options = []
+        self.start_menu = ["Select Game", "Settings", "Exit"]
         self.games = self.GetDirs()
+        self.menu_length = 3
+        self.current_options = [0, self.menu_length]
+        self.current_source = []
+        self.arrows = []
         self.InputReader = InputReader()
         self.logo = pygame.image.load(self.path + "AltenArcadeLogo.png").convert_alpha()
         self.logo = self.ScaleImage(self.logo, self.board_width)
@@ -49,32 +54,30 @@ class MainGUI:
             if path.isdir(game_path + name):
                 ret.append(name)
         return ret
+
     def Start(self):
         self.screen.fill(WHITE)
         ret_val = ""
         done = False
         idx = 0
-        self.SetOptions("start")
-        self.options[idx].hovered = True
+        self.current_source = self.start_menu
+        idx = self.SetOptions(idx, True)
         while not done:
             for event in pygame.event.get():
                 action = self.InputReader.readInput(event)
                 if(action != None):
                     action = action[1]
                     if action == 'back':
+                        self.current_options = [0, self.menu_length]
                         done = True
                     elif action == 'down':
                         self.options[idx].hovered = False
                         idx += 1
-                        if idx >= len(self.options):
-                            idx = 0
-                        self.options[idx].hovered = True
+                        idx = self.SetOptions(idx)
                     elif action == 'up':
                         self.options[idx].hovered = False
                         idx -= 1
-                        if idx < 0:
-                            idx = len(self.options) - 1
-                        self.options[idx].hovered = True
+                        idx = self.SetOptions(idx)
                     elif action == 'execute':
                         if self.options[idx].text in self.games:
                             ret_val = self.options[idx].text
@@ -86,24 +89,46 @@ class MainGUI:
                             settings = Settings(self.option_screen,self.font, self.logo)
                             settings.show()
                         else:
-                            idx = self.SetOptions(self.options[idx].text)
-                            self.options[idx].hovered = True
+                            self.current_source = self.games
+                            idx = self.SetOptions(idx, True)
 
             self.option_screen.fill(WHITE)
             for option in self.options:
                 option.draw()
+            if self.current_options[0] > 0:
+                pygame.draw.polygon(self.option_screen, BLACK, [
+                    [self.board_width / 2 - 10, self.options[0].rect.y - 30],
+                    [self.board_width / 2 + 10, self.options[0].rect.y - 30],
+                    [self.board_width / 2, self.options[0].rect.y - 50]])
+            if self.current_options[1] < len(self.current_source):
+                pygame.draw.polygon(self.option_screen, BLACK, [
+                    [self.board_width / 2 - 10, self.options[-1].rect.y + self.options[-1].rect.height + 30],
+                    [self.board_width / 2 + 10, self.options[-1].rect.y + self.options[-1].rect.height + 30],
+                    [self.board_width / 2, self.options[-1].rect.y + self.options[-1].rect.height + 50]])
             pygame.display.flip()
             self.clock.tick(60)
         return ret_val
 
-    def SetOptions(self, case):
-        self.options.clear()
-        if case == "start":
-            intro_text = ["Select Game", "Settings", "Exit"]
-            self.DrawOptions(intro_text)
-        elif case == "Select Game":
-            self.DrawOptions(self.games)
-        return 0
+    def SetOptions(self, idx, init = False):
+
+        if idx >= self.menu_length:
+            if len(self.current_source) > self.current_options[1]:
+                self.options.clear()
+                for i in range(len(self.current_options)): self.current_options[i] += 1
+                self.DrawOptions(self.current_source[self.current_options[0]:self.current_options[1]])
+            idx = self.menu_length - 1
+        elif idx < 0:
+            if self.current_options[0] > 0:
+                self.options.clear()
+                for i in range(len(self.current_options)): self.current_options[i] -= 1
+                self.DrawOptions(self.current_source[self.current_options[0]:self.current_options[1]])
+            idx = 0
+        elif init:
+            self.options.clear()
+            self.DrawOptions(self.current_source[self.current_options[0]:self.current_options[1]])
+            idx = 0
+        self.options[idx].hovered = True
+        return idx
 
     def DrawOptions(self,intro_text):
 
