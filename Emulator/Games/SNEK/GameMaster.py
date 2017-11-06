@@ -367,7 +367,12 @@ class GameMaster:
 
 
     def getHighScore(self):
-        score_file = open(self.score_file, 'r')
+
+
+        if path.isfile(self.score_file):
+            score_file = open(self.score_file, 'r')
+        else:
+            score_file = open(self.score_file, 'w+')
         lines = score_file.readlines()
         score_file.close()
 
