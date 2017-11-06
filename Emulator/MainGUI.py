@@ -175,9 +175,9 @@ class MainLoop:
 
     def __init__(self):
         pygame.init()
-        #self.screen = pygame.display.set_mode((0,0), FULLSCREEN)
-        #self.screen.get_width() / self.screen.get_height() != 1.6: #Force the screen ratio to 16:10 to match the arcade machine screen
-        self.screen = pygame.display.set_mode([1280, 800])
+        self.screen = pygame.display.set_mode((0,0), FULLSCREEN)
+        if self.screen.get_width() / self.screen.get_height() != 1.6: #Force the screen ratio to 16:10 to match the arcade machine screen
+            self.screen = pygame.display.set_mode([1280, 800])
         environ['SDL_VIDEO_CENTERED'] = '1'
 
     def run(self):
