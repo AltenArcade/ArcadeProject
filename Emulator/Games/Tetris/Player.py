@@ -1,6 +1,8 @@
 from os import path
 from platform import system
 from random import randint
+from Option import Option
+from InputReader import InputReader
 
 import pygame
 
@@ -46,6 +48,7 @@ class Player:
         self.empty_row_effect = pygame.mixer.Sound(self.path + "Sweep5.wav")
         self.current_figure = Figure(self.GetFigureShape(),self.board_width,self.board_height,self.block_size, False)
         self.next_figure = Figure(self.GetFigureShape(),self.figure_prediction.get_size()[0],self.figure_prediction.get_size()[1],self.block_size / 2, True)
+        self.options = []
 
         # Variables for redirecting the speed control in multiplayer mode
         self.redir_speed = False
@@ -100,7 +103,7 @@ class Player:
                 return True
         return False
 
-    def UpdateScore(self):
+    def DrawScore(self):
         message = "Score: " + str(self.score)
         text = self.font.render(message, 1, WHITE)
         rec = text.get_rect(center = (self.board_width / 2, 50))
@@ -149,8 +152,56 @@ class Player:
         self.current_figure.block_list.draw(self.screen)
         self.collision_list.draw(self.screen)
 
-        self.UpdateScore()
+        self.DrawScore()
         self.frame_ctr += 1
+
+    def CheckIfExit(self):
+        idx = 0
+        x_offset = 30
+        y_offset = 50
+        text = self.font.render("Quit Game?",1,WHITE)
+        opt1 = Option("Yes",(((self.board_width - self.font.size("Yes")[0]) / 2) - x_offset, (self.board_height / 2) + y_offset),self.screen,self.font, RED, WHITE)
+        opt2 = Option("No",(((self.board_width - self.font.size("No")[0]) / 2) + x_offset, (self.board_height / 2) + y_offset),self.screen,self.font, RED, WHITE)
+        self.options = [opt1,opt2]
+        self.options[0].hovered = True
+        input_reader = InputReader()
+        while True:
+            for event in pygame.event.get():
+                action = input_reader.readInput(event)
+                if action != None:
+                    if action[1] == 'left':
+                        idx = self.ChangeOption(action[1],idx)
+                    elif action[1] == 'right':
+                        idx = self.ChangeOption(action[1],idx)
+                    elif action[1] == 'execute':
+                        if self.options[idx].text == 'Yes':
+                            return False
+                        else:
+                            return True
+            self.next_figure.block_list.draw(self.figure_prediction)
+            self.current_figure.block_list.draw(self.screen)
+            self.collision_list.draw(self.screen)
+            self.screen.blit(text,((self.board_width - text.get_size()[0]) / 2, self.board_height / 2))
+            self.DrawScore()
+            for option in self.options:
+                option.draw()
+            pygame.display.flip()
+            self.clock.tick(FPS)
+
+    def ChangeOption(self,case, idx):
+        if case == 'left':
+            self.options[idx].hovered = False
+            idx -= 1
+            if idx < 0:
+                idx = len(self.options) - 1
+            self.options[idx].hovered = True
+        elif case == 'right':
+            self.options[idx].hovered = False
+            idx += 1
+            if idx > len(self.options) - 1:
+                idx = 0
+            self.options[idx].hovered = True
+        return idx
 
     def flip(self):
         if self.current_figure.CheckCollision(self.collision_list, "left") and self.current_figure.CheckCollision(self.collision_list,"right") and self.current_figure.CheckCollision(self.collision_list,"down"):

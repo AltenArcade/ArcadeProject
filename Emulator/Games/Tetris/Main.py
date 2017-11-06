@@ -49,7 +49,7 @@ class Main:
         self.exit_game = False
         players = 0
         idx = 0
-        self.DisplayOptions("Start")
+        self.DisplayOptions("Start", self.screen)
         pygame.mixer.music.play(-1)
 
         while not self.exit_game:
@@ -75,8 +75,8 @@ class Main:
                     self.TwoPlayer()
                 else:
                     self.OnePlayer()
+                    self.DisplayOptions("Start",self.screen)
                 self.SaveScore()
-            #self.screen.blit(self.background, (0, self.board_height - self.background.get_height()))
             self.screen.blit(self.logo, (self.screen_center, self.board_height * 0.15))
             for option in self.options:
                 option.draw()
@@ -101,16 +101,19 @@ class Main:
         elif case == 'down':
             self.options[idx].hovered = False
             idx += 1
-            if idx > 2:
+            if idx > len(self.options) - 1:
                 idx = 0
             self.options[idx].hovered = True
         return idx
 
-    def DisplayOptions(self, case):
+    def DisplayOptions(self, case, screen):
         self.options.clear()
         if case == "Start":
-            intro_text = ["New Game", "High Score", "Exit"]
-            self.AddOptions(intro_text)
+            text = ["New Game", "High Score", "Exit"]
+            self.AddOptions(text, screen)
+        elif case == "Exit":
+            text = ["Yes", "No"]
+            self.AddOptions(text, screen)
         self.options[0].hovered = True
 
     def GetHighScore(self):
@@ -173,7 +176,7 @@ class Main:
 
     def KeyDown(self, action, player):
         if action == 'back':
-            self.run_game = False
+            self.run_game = player.CheckIfExit()
         elif action == 'undo':
             player.flip()
         elif action == 'left':
@@ -232,11 +235,11 @@ class Main:
             file.write(item[0] + ":" + str(item[1]) + "\n")
         file.close()
 
-    def AddOptions(self, intro_text):
+    def AddOptions(self, intro_text, screen):
 
         pixel_offset = 70
         for i in range(len(intro_text)):
-            self.options.append(Option(intro_text[i],((self.board_width - self.font.size(intro_text[i])[0]) / 2, self.board_height / 2 + (i * pixel_offset)),self.screen,self.font, RED, WHITE))
+            self.options.append(Option(intro_text[i],((screen.get_size()[0] - self.font.size(intro_text[i])[0]) / 2, screen.get_size()[1] / 2 + (i * pixel_offset)),screen,self.font, RED, WHITE))
 
     def OnePlayer(self):
         block_number = 10
