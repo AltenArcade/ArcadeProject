@@ -148,7 +148,10 @@ class Menu:
 
 # NEW ------------------------------------------------------------------------------------------------------------------
     def get_high_score(self):
-        file = open(self.path + "high_score.txt", "r")
+        if path.isfile(self.path + "high_score.txt"):
+            file = open(self.path + "high_score.txt", "r")
+        else:
+            file = open(self.path + "high_score.txt", "w+")
         lst = [l.split(":") for l in file.readlines()]
         for t in lst:
             try:
