@@ -148,10 +148,10 @@ class Player:
             self.frame_ctr = 0
             self.current_figure.move_down()
 
-        self.DrawEndPosition()
         self.next_figure.block_list.draw(self.figure_prediction)
         self.current_figure.block_list.draw(self.screen)
         self.collision_list.draw(self.screen)
+        self.DrawEndPosition()
 
         self.DrawScore()
         self.frame_ctr += 1
@@ -163,7 +163,7 @@ class Player:
             figure.move_down()
         for block in figure.block_list:
             print(block.rect.x)
-            pygame.draw.rect(self.screen,WHITE,[block.rect.x,block.rect.y,figure.block_size,figure.block_size],1)
+            pygame.draw.rect(self.screen,WHITE,[block.rect.x,block.rect.y,figure.block_size,figure.block_size])
 
     def CheckIfExit(self):
         idx = 0
