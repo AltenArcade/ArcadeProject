@@ -2,6 +2,7 @@ import pygame
 
 BLACK = (0, 0, 0)
 
+
 class Block(pygame.sprite.Sprite):
     def __init__(self, size, color):
         super().__init__()

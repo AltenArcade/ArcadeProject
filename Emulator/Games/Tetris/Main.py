@@ -1,5 +1,4 @@
 import pygame
-from pygame import joystick
 from platform import system
 from os import path
 from Games.Tetris.Player import Player
@@ -14,9 +13,9 @@ PINK = (255, 0, 142)
 PURPLE = (182, 0, 251)
 YELLOW = (251, 247, 5)
 GREY = (160, 160, 160)
-
 WALL_SIZE = 20
 FPS = 60
+
 
 class Main:
 
@@ -28,11 +27,10 @@ class Main:
         self.run_game = False
         self.screen = screen
         self.board_width = self.screen.get_size()[0]
-        self.board_height  = self.screen.get_size()[1]
+        self.board_height = self.screen.get_size()[1]
         self.logo = pygame.image.load(self.path + "Estetris_logo.png").convert_alpha()
         self.logo = self.ScaleImage(self.logo, self.board_width)
         self.screen_center = (self.board_width - self.logo.get_size()[0]) / 2
-        self.score = 0
         self.exit_game = False
         self.restart = False
         self.clock = pygame.time.Clock()
@@ -40,8 +38,6 @@ class Main:
         self.high_score = []
         self.options = []
         pygame.mixer.music.load(self.path + "tetris-sound.mp3")
-        #self.background = pygame.image.load(self.path + "tetris_background.png")
-        #self.background = self.ScaleImage(self.background, self.board_width)
         self.input_reader = InputReader()
 
     def start(self):
@@ -55,13 +51,13 @@ class Main:
         while not self.exit_game:
             for event in pygame.event.get():
                 action = self.input_reader.readInput(event)
-                if action != None:
+                if action is not None:
                     if action[1] == 'back':
                         self.exit_game = True
                     elif action[1] == 'up':
                         idx = self.ChangeOption(action[1], idx)
                     elif action[1] == 'down':
-                        idx = self.ChangeOption(action[1],idx)
+                        idx = self.ChangeOption(action[1], idx)
                     elif action[1] == 'execute':
                         if self.options[idx].text == "High Score":
                             self.ShowHighScore()
@@ -70,12 +66,12 @@ class Main:
                         elif self.options[idx].text == "New Game":
                             players = self.GetPlayers(self.logo, self.screen_center)
                             self.run_game = True
-            if(self.run_game and players > 0):
+            if self.run_game and players > 0:
                 if players == 2:
                     self.TwoPlayer()
                 else:
                     self.OnePlayer()
-                    self.DisplayOptions("Start",self.screen)
+                    self.DisplayOptions("Start", self.screen)
                 self.SaveScore()
             self.screen.blit(self.logo, (self.screen_center, self.board_height * 0.15))
             for option in self.options:
@@ -86,12 +82,12 @@ class Main:
         pygame.mixer.music.stop()
         return
 
-    def ScaleImage(self,img,width):
+    def ScaleImage(self, img, width):
 
         img_ratio = img.get_rect().size[1] / img.get_rect().size[0]
-        return pygame.transform.scale(img,(width,int(width * img_ratio)))
+        return pygame.transform.scale(img, (width, int(width * img_ratio)))
 
-    def ChangeOption(self,case, idx):
+    def ChangeOption(self, case, idx):
         if case == 'up':
             self.options[idx].hovered = False
             idx -= 1
@@ -120,7 +116,7 @@ class Main:
         if path.isfile(self.path + "high_score.txt"):
             file = open(self.path + "high_score.txt", "r")
         else:
-            file = open(self.path + "high_score.txt","w+")
+            file = open(self.path + "high_score.txt", "w+")
         lst = [l.split(":") for l in file.readlines()]
         for t in lst:
             try:
@@ -131,23 +127,22 @@ class Main:
         file.close()
         return s
 
-    def GetPlayers(self,logo, screen_center):
+    def GetPlayers(self, logo, screen_center):
         done = False
         selection_font = pygame.font.Font(self.path + "font.ttf", 32)
         selection_font.set_underline(True)
 
         one_player = True
         start_string = "Players"
-        text = self.font.render(start_string,1,WHITE)
+        text = self.font.render(start_string, 1, WHITE)
         y_offset = 50
         x_offset = 25
         while not done:
-            #self.screen.blit(background, (0, self.board_height - background.get_height()))
             self.screen.blit(logo, (screen_center, self.board_height * 0.15))
-            self.screen.blit(text, (( self.board_width - self.font.size(start_string)[0]) / 2, self.board_height * 0.5))
+            self.screen.blit(text, ((self.board_width - self.font.size(start_string)[0]) / 2, self.board_height * 0.5))
             for event in pygame.event.get():
                 action = self.input_reader.readInput(event)
-                if(action != None):
+                if action is not None:
                     action = action[1]
                     if action == 'back':
                         return 0
@@ -157,19 +152,23 @@ class Main:
                         one_player = False
                     elif action == 'left':
                         one_player = True
-            txt_x = ( self.board_width - self.font.size("1")[0])/2
-            if(one_player):
-                self.screen.blit(selection_font.render("1",1,WHITE),(txt_x - x_offset,self.board_height * 0.5 + y_offset))
-                self.screen.blit(self.font.render("2",1,WHITE), (txt_x + x_offset , self.board_height * 0.5 + y_offset))
+            txt_x = (self.board_width - self.font.size("1")[0]) / 2
+            if one_player:
+                self.screen.blit(selection_font.render("1", 1, WHITE),
+                                 (txt_x - x_offset, self.board_height * 0.5 + y_offset))
+                self.screen.blit(self.font.render("2", 1, WHITE),
+                                 (txt_x + x_offset, self.board_height * 0.5 + y_offset))
             else:
-                self.screen.blit(self.font.render("1",1,WHITE),(txt_x - x_offset, self.board_height * 0.5 + y_offset))
-                self.screen.blit(selection_font.render("2",1,WHITE), (txt_x + x_offset, self.board_height * 0.5 + y_offset))
+                self.screen.blit(self.font.render("1", 1, WHITE),
+                                 (txt_x - x_offset, self.board_height * 0.5 + y_offset))
+                self.screen.blit(selection_font.render("2", 1, WHITE),
+                                 (txt_x + x_offset, self.board_height * 0.5 + y_offset))
 
             pygame.display.flip()
             self.screen.fill(BLACK)
             self.clock.tick(FPS)
 
-        if(one_player):
+        if one_player:
             return 1
         else:
             return 2
@@ -190,7 +189,7 @@ class Main:
 
     def InsertScore(self, high_score, player):
         if len(high_score) == 0:
-            high_score.insert(0,[player.name, player.score])
+            high_score.insert(0, [player.name, player.score])
         for i in range(len(high_score)):
             if high_score[i][1] < player.score or len(high_score) < 5:
                 high_score.insert(i, [player.name, player.score])
@@ -200,8 +199,8 @@ class Main:
             high_score.remove(high_score[len(high_score) - 1])
         return high_score
 
-    def SetHighScore(self,player1, player2=0):
-        if player2 == 0:
+    def SetHighScore(self, player1, player2=None):
+        if player2 is None:
             self.high_score = self.InsertScore(self.high_score, player1)
         else:
             if player1.score < player2.score:
@@ -215,18 +214,19 @@ class Main:
     def ShowHighScore(self):
         pixel_offset = 40
         i = 0
-        #self.screen.blit(self.background, (0, self.board_height - self.background.get_height()))
         self.screen.blit(self.logo, (self.screen_center, self.board_height * 0.15))
         for score in self.high_score:
             string = score[0] + " " + str(score[1])
             txt = self.font.render(string, 1, WHITE)
-            self.screen.blit(txt, ((self.board_width - self.font.size(string)[0]) / 2,self.board_height * 0.5 + (i * pixel_offset)))
+            pos_x = (self.board_width - self.font.size(string)[0]) / 2
+            pos_y = self.board_height * 0.5 + (i * pixel_offset)
+            self.screen.blit(txt, (pos_x, pos_y))
             i += 1
         pygame.display.flip()
         while True:
             for event in pygame.event.get():
                 action = self.input_reader.readInput(event)
-                if action != None:
+                if action is not None:
                     return
 
     def SaveScore(self):
@@ -239,20 +239,23 @@ class Main:
 
         pixel_offset = 70
         for i in range(len(intro_text)):
-            self.options.append(Option(intro_text[i],((screen.get_size()[0] - self.font.size(intro_text[i])[0]) / 2, screen.get_size()[1] / 2 + (i * pixel_offset)),screen,self.font, RED, WHITE))
+            pos_x = (screen.get_size()[0] - self.font.size(intro_text[i])[0]) / 2
+            pos_y = screen.get_size()[1] / 2 + (i * pixel_offset)
+            self.options.append(Option(intro_text[i], (pos_x, pos_y), screen, self.font, RED, WHITE))
 
     def OnePlayer(self):
         block_number = 10
         subscreen_width = 500
         bottom_wall = self.board_height % (subscreen_width / block_number)
-        p_ss = self.screen.subsurface(pygame.Rect(((self.board_width - subscreen_width) / 2), 0, subscreen_width, self.board_height - bottom_wall))
-        figure_prediction = p_ss.subsurface(pygame.Rect(0,0,p_ss.get_size()[0] / 5, p_ss.get_size()[1] / 10))
+        p_ss = self.screen.subsurface(pygame.Rect(((self.board_width - subscreen_width) / 2), 0,
+                                                  subscreen_width, self.board_height - bottom_wall))
+        figure_prediction = p_ss.subsurface(pygame.Rect(0, 0, p_ss.get_size()[0] / 5, p_ss.get_size()[1] / 10))
         p = Player(self.clock, 1, self.logo, p_ss, figure_prediction, block_number)
         while self.run_game:
             for event in pygame.event.get():
                 action = self.input_reader.readInput(event)
-                if action != None:
-                    self.KeyDown(action[1],p)
+                if action is not None:
+                    self.KeyDown(action[1], p)
             if p.CheckGameOver():
                 p.GameOver()
                 self.run_game = False
@@ -275,7 +278,8 @@ class Main:
         pos_x = (self.board_width - 2 * subscreen_width - WALL_SIZE) / 2
         bottom_wall = self.board_height % (subscreen_width / block_number)
         p1_ss = self.screen.subsurface(pygame.Rect(pos_x, 0, subscreen_width, self.board_height - bottom_wall))
-        p2_ss = self.screen.subsurface(pygame.Rect(pos_x + subscreen_width + WALL_SIZE, 0, subscreen_width, self.board_height - bottom_wall))
+        p2_ss = self.screen.subsurface(pygame.Rect(pos_x + subscreen_width + WALL_SIZE,
+                                                   0, subscreen_width, self.board_height - bottom_wall))
         figure_prediction_1 = p1_ss.subsurface(pygame.Rect(0, 0, p1_ss.get_size()[0] / 5, p1_ss.get_size()[1] / 10))
         figure_prediction_2 = p2_ss.subsurface(pygame.Rect(0, 0, p2_ss.get_size()[0] / 5, p2_ss.get_size()[1] / 10))
         p1 = Player(self.clock, 1, self.logo, p1_ss, figure_prediction_1, block_number)
@@ -283,9 +287,9 @@ class Main:
         while self.run_game:
             for event in pygame.event.get():
                 action = self.input_reader.readInput(event)
-                if action != None:
+                if action is not None:
                     if action[0] == 0:
-                        self.KeyDown(action[1],p1)
+                        self.KeyDown(action[1], p1)
                     elif action[0] == 1:
                         self.KeyDown(action[1], p2)
 
@@ -322,6 +326,7 @@ class Main:
         if p2.CheckIfHighScore(self.high_score):
             p2.GetPlayerName(self.input_reader)
         self.SetHighScore(p1, p2)
+
 
 def RunTetris(screen):
     main = Main(screen)

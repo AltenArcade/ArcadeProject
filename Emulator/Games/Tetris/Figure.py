@@ -10,32 +10,45 @@ PINK = (255, 0, 142)
 PURPLE = (182, 0, 251)
 YELLOW = (251, 247, 5)
 
+
 class Figure(pygame.sprite.Sprite):
 
-    def __init__(self, struct,width,height,block,prediction):
+    def __init__(self, struct, width, height, block, prediction):
         super().__init__()
         self.board_width = width
         self.board_height = height
         self.block_size = block
-        self.color_list = [GREEN,RED,PURPLE,YELLOW,PINK]
+        self.color_list = [GREEN, RED, PURPLE, YELLOW, PINK]
         self.matrix = struct
         self.block_list = pygame.sprite.Group()
         self.is_moving = True
+        self.SetBlocklist(prediction)
+
+    def AddPos(self, fig):
+        old_x = []
+        i = 0
+        for block in fig.block_list:
+            old_x.append(block.rect.x)
+        for block in self.block_list:
+            block.rect.x = old_x[i]
+            i += 1
+
+    def SetBlocklist(self, prediction):
         if prediction:
             fig_w = len(self.matrix[0]) * self.block_size
             fig_h = len(self.matrix) * self.block_size
             for i in range(len(self.matrix)):
                 for j in range(len(self.matrix[0])):
-                    if (self.matrix[i][j] != 0):
-                        block = Block(self.block_size, color = self.color_list[randint(0,len(self.color_list)-1)])
+                    if self.matrix[i][j] != 0:
+                        block = Block(self.block_size, color=self.color_list[randint(0, len(self.color_list)-1)])
                         block.rect.x = j * self.block_size + (self.board_width - fig_w) / 2
                         block.rect.y = i * self.block_size + (self.board_height - fig_h) / 2
                         self.block_list.add(block)
         else:
             for i in range(len(self.matrix)):
                 for j in range(len(self.matrix[0])):
-                    if (self.matrix[i][j] != 0):
-                        block = Block(self.block_size, color = self.color_list[randint(0,len(self.color_list)-1)])
+                    if self.matrix[i][j] != 0:
+                        block = Block(self.block_size, color=self.color_list[randint(0, len(self.color_list)-1)])
                         block.rect.x = j * self.block_size + self.board_width / 2
                         block.rect.y = i * self.block_size
                         self.block_list.add(block)
@@ -56,7 +69,7 @@ class Figure(pygame.sprite.Sprite):
     def CheckCollision(self, collision_list, case):
 
         self.block_list.update(case)
-        if (len(pygame.sprite.groupcollide(self.block_list, collision_list, False, False)) > 0):
+        if len(pygame.sprite.groupcollide(self.block_list, collision_list, False, False)) > 0:
             self.block_list.update("reset " + case)
             if case == "down":
                 self.is_moving = False
@@ -79,8 +92,8 @@ class Figure(pygame.sprite.Sprite):
         self.matrix = [list(a) for a in zip(*self.matrix[::-1])]
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[0])):
-                if (self.matrix[i][j] != 0):
-                    block = Block(self.block_size, color = self.color_list[randint(0,len(self.color_list)-1)])
+                if self.matrix[i][j] != 0:
+                    block = Block(self.block_size, color=self.color_list[randint(0, len(self.color_list)-1)])
                     block.rect.x = j * self.block_size + old_x
                     block.rect.y = i * self.block_size + old_y
                     self.block_list.add(block)

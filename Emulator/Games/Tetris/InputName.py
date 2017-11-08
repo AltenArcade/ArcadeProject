@@ -3,7 +3,8 @@ import pygame
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
-class InputName():
+
+class InputName:
 
     def __init__(self, screen, score, font):
         pygame.init()
@@ -15,7 +16,8 @@ class InputName():
         self.font = font
 
     def GetPlayerName(self, input_reader):
-        letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+        letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+                   'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
         idx = 0
         current_letter = letters[idx]
         pixel_offset = 70
@@ -24,17 +26,17 @@ class InputName():
         while not done:
             for event in pygame.event.get():
                 action = input_reader.readInput(event)
-                if action != None:
+                if action is not None:
                     if action[1] == 'execute':
                         done = True
                     elif action[1] == 'up':
-                        if(idx == len(letters) - 1):
+                        if idx == len(letters) - 1:
                             idx = 0
                         else:
                             idx += 1
                         current_letter = letters[idx]
                     elif action[1] == 'down':
-                        if (idx == 0):
+                        if idx == 0:
                             idx = len(letters) - 1
                         else:
                             idx -= 1

@@ -1,13 +1,12 @@
+import pygame
 from os import path
 from platform import system
 from random import randint
 from Option import Option
 from InputReader import InputReader
-
-import pygame
-
 from Games.Tetris.Figure import Figure
 from Games.Tetris.InputName import InputName
+from Lib import copy
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -16,40 +15,37 @@ RED = (255, 0, 0)
 PINK = (255, 0, 142)
 PURPLE = (182, 0, 251)
 YELLOW = (251, 247, 5)
-
 FPS = 60
+
 
 class Player:
 
-    def __init__(self, clk, nr, logo, screen, pred, blocks):
+    def __init__(self, clk, nr, logo, screen, pred, block_count):
         if system() == "Windows":
             self.path = str(path.dirname(path.realpath(__file__))) + "\\"
         if system() == "Linux":
             self.path = str(path.dirname(path.realpath(__file__))) + "/"
-        self.name = ""
-        self.figure_prediction = pred
-        self.screen = screen
-        self.board_width = screen.get_size()[0]
-        self.board_height = screen.get_size()[1]
-        self.full_row = blocks
-        self.block_size = (self.board_width / blocks)
-        self.logo = logo
-        self.score = 0
-        self.font = pygame.font.Font(self.path + "/font.ttf", 17)
         self.clock = clk
         self.player_number = nr
-
+        self.figure_prediction = pred
+        self.screen = screen
+        self.logo = logo
+        self.name = ""
+        self.score = 0
+        self.board_width = screen.get_size()[0]
+        self.board_height = screen.get_size()[1]
+        self.full_row_def = block_count
+        self.block_size = (self.board_width / block_count)
+        self.font = pygame.font.Font(self.path + "/font.ttf", 17)
         self.collision_list = pygame.sprite.Group()
         self.game_over = False
-        self.run_game = True
-        self.restart = False
         self.frame_ctr = 0
         self.speed_control = 1
         self.empty_row_effect = pygame.mixer.Sound(self.path + "Sweep5.wav")
-        self.current_figure = Figure(self.GetFigureShape(),self.board_width,self.board_height,self.block_size, False)
-        self.next_figure = Figure(self.GetFigureShape(),self.figure_prediction.get_size()[0],self.figure_prediction.get_size()[1],self.block_size / 2, True)
+        self.current_figure = Figure(self.GetFigureShape(), self.board_width, self.board_height, self.block_size, False)
+        self.next_figure = Figure(self.GetFigureShape(), self.figure_prediction.get_size()[0],
+                                  self.figure_prediction.get_size()[1], self.block_size / 2, True)
         self.options = []
-
         # Variables for redirecting the speed control in multiplayer mode
         self.redir_speed = False
         self.old_score = 0
@@ -69,14 +65,12 @@ class Player:
     def CheckFullRow(self, blocklist, sound):
         y_coords = []
         delete_rows = []
-        self.empty_row = 0
         for block in blocklist:
             y_coords.append(block.rect.y)
         y_coords.sort()
         y_coords_unique = list(set(y_coords))
         for element in y_coords_unique:
-            if y_coords.count(element) == self.full_row:
-                #self.speed_control += 0.6
+            if y_coords.count(element) == self.full_row_def:
                 delete_rows.append(element)
         self.score += len(delete_rows)
 
@@ -87,7 +81,7 @@ class Player:
                     blocklist.remove(block)
 
         delete_rows.sort()
-        while(len(delete_rows) != 0):
+        while len(delete_rows) is not 0:
             sound.play()
             for block in blocklist:
                 if block.rect.y < delete_rows[0]:
@@ -97,57 +91,65 @@ class Player:
 
         return blocklist
 
-    def CheckIfGameOver(self,figure):
+    def CheckIfGameOver(self, figure):
         for block in figure.block_list:
-            if(block.rect.y == 0):
+            if block.rect.y == 0:
                 return True
         return False
 
     def DrawScore(self):
         message = "Score: " + str(self.score)
         text = self.font.render(message, 1, WHITE)
-        rec = text.get_rect(center = (self.board_width / 2, 50))
+        rec = text.get_rect(center=(self.board_width / 2, 50))
         self.screen.blit(text, rec)
 
     def GameOver(self):
         pixel_offset = 70
         self.screen.fill(BLACK)
-        text = ["GAME OVER","Press ESC to cancel..."]
+        text = ["GAME OVER", "Press ESC to cancel..."]
         for i in range(len(text)):
             txt = self.font.render(text[i], 1, WHITE)
-            self.screen.blit(txt, (((self.board_width - self.font.size(text[i])[0]) / 2), (
-            (self.board_height - self.font.size(text[i])[1] - pixel_offset) / 2) + i * pixel_offset))
+            pos_x = ((self.board_width - self.font.size(text[i])[0]) / 2)
+            pos_y = ((self.board_height - self.font.size(text[i])[1] - pixel_offset) / 2) + i * pixel_offset
+            self.screen.blit(txt, (pos_x, pos_y))
 
-    def GetPlayerName(self,reader):
-        name_module = InputName(self.screen,self.score,self.font)
+    def GetPlayerName(self, reader):
+        name_module = InputName(self.screen, self.score, self.font)
         self.name = name_module.GetPlayerName(reader)
 
-    #Called when both players are alive. The speed is proportional to the opponents score
+    # Called when both players are alive. The speed is proportional to the opponents score
     def SetOpponentSpeedControl(self, score):
         self.speed_control = 1 + score * 0.5
 
     # If one player is dead, the speed will be proportional to the players own score
     def SetOwnSpeedControl(self, opponent_score):
-        if not self.redir_speed: # This should happen only once to save the current score of the player.
+        if not self.redir_speed:  # This should happen only once to save the current score of the player.
             self.old_score = self.score
             self.speed_control = 1 + (opponent_score + (self.score - self.old_score)) * 0.5
             self.redir_speed = True
-        else: # Increment the speed control with the difference between the current score and the score when the opponent died
+        # Increment the speed control with the difference between the current score and the score when the opponent died
+        else:
             self.speed_control = 1 + (opponent_score + (self.score - self.old_score)) * 0.5
 
     def move(self):
 
         if not self.current_figure.IsMoving():
             self.collision_list.add(self.current_figure.block_list)
-            self.collision_list = self.CheckFullRow(self.collision_list,self.empty_row_effect)
+            self.collision_list = self.CheckFullRow(self.collision_list, self.empty_row_effect)
             self.game_over = self.CheckIfGameOver(self.current_figure)
-            self.current_figure = Figure(self.next_figure.GetShape(),self.board_width,self.board_height,self.block_size, False)
-            self.next_figure = Figure(self.GetFigureShape(),self.figure_prediction.get_size()[0],self.figure_prediction.get_size()[1],self.block_size / 2, True)
+            self.current_figure = Figure(self.next_figure.GetShape(), self.board_width,
+                                         self.board_height, self.block_size, False)
+            self.next_figure = Figure(self.GetFigureShape(), self.figure_prediction.get_size()[0],
+                                      self.figure_prediction.get_size()[1], self.block_size / 2, True)
 
-        if (self.frame_ctr >= (int(FPS / self.speed_control)) - 1 and self.current_figure.CheckCollision(self.collision_list, "down") and self.current_figure.CheckBottom()):
+        if self.frame_ctr >= (int(FPS / self.speed_control)) - 1 \
+                and self.current_figure.CheckCollision(self.collision_list, "down") \
+                and self.current_figure.CheckBottom():
+
             self.frame_ctr = 0
             self.current_figure.move_down()
 
+        self.DrawEndPosition()
         self.next_figure.block_list.draw(self.figure_prediction)
         self.current_figure.block_list.draw(self.screen)
         self.collision_list.draw(self.screen)
@@ -155,24 +157,37 @@ class Player:
         self.DrawScore()
         self.frame_ctr += 1
 
+    def DrawEndPosition(self):
+        figure = Figure(self.current_figure.GetShape(),self.board_width,self.board_height, self.block_size, False)
+        figure.AddPos(self.current_figure)
+        while figure.CheckCollision(self.collision_list, "down") and figure.CheckBottom():
+            figure.move_down()
+        for block in figure.block_list:
+            print(block.rect.x)
+            pygame.draw.rect(self.screen,WHITE,[block.rect.x,block.rect.y,figure.block_size,figure.block_size],1)
+
     def CheckIfExit(self):
         idx = 0
         x_offset = 30
         y_offset = 50
-        text = self.font.render("Quit Game?",1,WHITE)
-        opt1 = Option("Yes",(((self.board_width - self.font.size("Yes")[0]) / 2) - x_offset, (self.board_height / 2) + y_offset),self.screen,self.font, RED, WHITE)
-        opt2 = Option("No",(((self.board_width - self.font.size("No")[0]) / 2) + x_offset, (self.board_height / 2) + y_offset),self.screen,self.font, RED, WHITE)
-        self.options = [opt1,opt2]
+        text = self.font.render("Quit Game?", 1, WHITE)
+        pos = ((self.board_width - self.font.size("Yes")[0]) / 2) - x_offset, (self.board_height / 2) + y_offset
+        opt1 = Option("Yes", pos, self.screen, self.font, RED, WHITE)
+
+        pos = ((self.board_width - self.font.size("No")[0]) / 2) + x_offset, (self.board_height / 2) + y_offset
+        opt2 = Option("No", pos, self.screen, self.font, RED, WHITE)
+
+        self.options = [opt1, opt2]
         self.options[0].hovered = True
         input_reader = InputReader()
         while True:
             for event in pygame.event.get():
                 action = input_reader.readInput(event)
-                if action != None:
+                if action is not None:
                     if action[1] == 'left':
-                        idx = self.ChangeOption(action[1],idx)
+                        idx = self.ChangeOption(action[1], idx)
                     elif action[1] == 'right':
-                        idx = self.ChangeOption(action[1],idx)
+                        idx = self.ChangeOption(action[1], idx)
                     elif action[1] == 'execute':
                         if self.options[idx].text == 'Yes':
                             return False
@@ -181,14 +196,14 @@ class Player:
             self.next_figure.block_list.draw(self.figure_prediction)
             self.current_figure.block_list.draw(self.screen)
             self.collision_list.draw(self.screen)
-            self.screen.blit(text,((self.board_width - text.get_size()[0]) / 2, self.board_height / 2))
+            self.screen.blit(text, ((self.board_width - text.get_size()[0]) / 2, self.board_height / 2))
             self.DrawScore()
             for option in self.options:
                 option.draw()
             pygame.display.flip()
             self.clock.tick(FPS)
 
-    def ChangeOption(self,case, idx):
+    def ChangeOption(self, case, idx):
         if case == 'left':
             self.options[idx].hovered = False
             idx -= 1
@@ -204,12 +219,15 @@ class Player:
         return idx
 
     def flip(self):
-        if self.current_figure.CheckCollision(self.collision_list, "left") and self.current_figure.CheckCollision(self.collision_list,"right") and self.current_figure.CheckCollision(self.collision_list,"down"):
+        if self.current_figure.CheckCollision(self.collision_list, "left") \
+                and self.current_figure.CheckCollision(self.collision_list, "right") \
+                and self.current_figure.CheckCollision(self.collision_list, "down"):
+
             self.current_figure.flip()
             self.current_figure.CorrectSide()
 
     def left(self):
-        if self.current_figure.CheckCollision(self.collision_list,"left"):
+        if self.current_figure.CheckCollision(self.collision_list, "left"):
             self.current_figure.move_left()
 
     def right(self):
@@ -228,7 +246,7 @@ class Player:
     def CheckGameOver(self):
         return self.game_over
 
-    def CheckIfHighScore(self,high_score):
+    def CheckIfHighScore(self, high_score):
         if len(high_score) == 0:
             return True
         for score in high_score:
