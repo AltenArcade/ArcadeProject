@@ -6,7 +6,6 @@ from Option import Option
 from InputReader import InputReader
 from Games.Tetris.Figure import Figure
 from Games.Tetris.InputName import InputName
-from Lib import copy
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
