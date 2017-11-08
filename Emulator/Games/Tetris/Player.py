@@ -157,11 +157,17 @@ class Player:
         self.frame_ctr += 1
 
     def DrawEndPosition(self):
+        pos_x = []
         figure = Figure(self.current_figure.GetShape(),self.board_width,self.board_height, self.block_size, False)
         figure.AddPos(self.current_figure)
         while figure.CheckCollision(self.collision_list, "down") and figure.CheckBottom():
             figure.move_down()
-        pygame.draw.rect(self.screen, WHITE, [200, 200, figure.block_size, figure.block_size])
+        for block in figure.block_list:
+            pos_x.append(block.rect.x)
+        i = 0
+        for block in figure.block_list:
+            pygame.draw.rect(self.screen, WHITE, [pos_x[i], block.rect.y, figure.block_size, figure.block_size])
+            i += 1
         '''for block in figure.block_list:
             print(block.rect.x)
             pygame.draw.rect(self.screen,WHITE,[block.rect.x,block.rect.y,figure.block_size,figure.block_size],1)'''
