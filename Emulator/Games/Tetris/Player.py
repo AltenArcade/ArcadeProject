@@ -161,9 +161,9 @@ class Player:
         figure.AddPos(self.current_figure)
         while figure.CheckCollision(self.collision_list, "down") and figure.CheckBottom():
             figure.move_down()
-        for block in figure.block_list:
-            print(block.rect.x)
-            pygame.draw.rect(self.screen,WHITE,[block.rect.x,block.rect.y,figure.block_size,figure.block_size])
+        figure.block_list.draw(self.screen)
+        #for block in figure.block_list:
+        #    pygame.draw.rect(self.screen,WHITE,[block.rect.x,block.rect.y,figure.block_size,figure.block_size])
 
     def CheckIfExit(self):
         idx = 0
