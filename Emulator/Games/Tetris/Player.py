@@ -151,12 +151,12 @@ class Player:
         self.next_figure.block_list.draw(self.figure_prediction)
         self.current_figure.block_list.draw(self.screen)
         self.collision_list.draw(self.screen)
-        self.DrawEndPosition()
+        #self.DrawEndPosition()
 
         self.DrawScore()
         self.frame_ctr += 1
 
-    def DrawEndPosition(self):
+    '''def DrawEndPosition(self):
         pos = []
         figure = Figure(self.current_figure.GetShape(),self.board_width,self.board_height, self.block_size, False)
         figure.AddPos(self.current_figure)
@@ -168,7 +168,7 @@ class Player:
         for block in figure.block_list:
             pygame.draw.rect(self.screen, WHITE, [pos[i][0], pos[i][1], figure.block_size, figure.block_size])
             i += 1
-        '''for block in figure.block_list:
+        for block in figure.block_list:
             print(block.rect.x)
             pygame.draw.rect(self.screen,WHITE,[block.rect.x,block.rect.y,figure.block_size,figure.block_size],1)'''
 
