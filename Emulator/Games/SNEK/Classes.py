@@ -241,8 +241,7 @@ class Painter:
         self.font2 = pygame.font.SysFont('monospace', 16)
         self.font3 = pygame.font.SysFont('monospace', 20)
         self.versionFont = pygame.font.SysFont('monospace', 16)
-        if system() == "Windows":
-            font_extension = '.ttf'
+        font_extension = '.ttf'
         if system() == "Linux":
             font_extension = '.TTF'
         self.arcadeFont = pygame.font.Font(self.font_path + 'ARCADE_I' + font_extension, 30)
@@ -290,7 +289,6 @@ class Painter:
     def drawNextMove(self, screen, snake):
         pygame.draw.rect(screen, [0, 255, 0], snake.next_move)
 
-    #def drawPromptBox(self):
 
     def drawStartScreen(self, screen, start_game, selectable_positions, selectable_position_index, selectable_positions_start_game, selectable_position_index_start_game):
         '''
@@ -322,7 +320,7 @@ class Painter:
         pygame.display.flip()
 
 
-    def drawGameObjects(self, screen, sprite_list, snakes, score_window, current_highscore):
+    def drawGameObjects(self, screen, sprite_list, snakes, score_window, current_highscore, winning_score = None, snake_size = None):
         
         # Draw background
         screen.fill(self.background_color)
@@ -359,6 +357,9 @@ class Painter:
             score_window.blit(highScoreText, (score_window.get_width() - highScoreText_rect.width - 10, 10))
             score_window.blit(highScoreText2,
                              (score_window.get_width() - highScoreText2_rect.width - 10, 10 + highScoreText_rect.height))
+        else:
+            score_limit_surf = self.arcadeFontMedium.render('Score limit: {0}'.format(winning_score), 1, WHITE)
+            screen.blit(score_limit_surf, (screen.get_width() / 2 - score_limit_surf.get_width() / 2, score_window.get_height() + snake_size / 2 - score_limit_surf.get_height() / 2))
 
         # Draw score window
         screen.blit(score_window, (0, 0))
@@ -423,7 +424,15 @@ class Painter:
 
     def drawSurface(self, screen, surface, screenPos, alpha = None, tempPos = None, color = None):
 
-        """ Draws a surface at defined logical screen position """
+        '''
+        :param screen: The screen onto which rendering is done.
+        :param surface: The surface to be rendered.
+        :param screenPos: Logical position.
+        :param alpha: Transparency of the surface.
+        :param tempPos:
+        :param color: Color of the surface.
+        :return:
+        '''
 
         columnWidth = round(screen.get_size()[0] / 4)
         rowHeight = round(screen.get_size()[1] / 10)

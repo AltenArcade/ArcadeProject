@@ -13,16 +13,13 @@ class GameMaster:
 
     def __init__(self, width = 1280, height = 800, screen = None):
 
-        if system() == "Windows":
-            self.path = str(path.dirname(path.realpath(__file__))) + "\\"
-            self.sound_path = self.path + 'sound\\'
-            self.img_path = self.path + 'img\\'
-            self.font_path = self.path + 'fonts\\'
-        elif system() == "Linux":
-            self.path = str(path.dirname(path.realpath(__file__))) + "/"
-            self.sound_path = self.path + 'sound/'
-            self.img_path = self.path + 'img/'
-            self.font_path = self.path + 'fonts/'
+        extension = '\\'
+        if system() == "Linux":
+            extension = '/'
+        self.path = str(path.dirname(path.realpath(__file__))) + extension
+        self.sound_path = self.path + 'sound' + extension
+        self.img_path = self.path + 'img' + extension
+        self.font_path = self.path + 'fonts' + extension
         if screen == None:
             self.width = width
             self.height = height
@@ -45,9 +42,9 @@ class GameMaster:
         self.snake = []
         self.nx = 40
         self.ny = 25
-        self.snake_size = self.width / self.nx # 32
-        self.pellet_size = self.snake_size / 2 # 16
-        self.score_margin =  2 * self.snake_size #48
+        self.snake_size = self.width / self.nx
+        self.pellet_size = self.snake_size / 2
+        self.score_margin =  2 * self.snake_size
         self.colors = [RED, BLUE]
         self.winner = None
         self.score_win = False
@@ -96,7 +93,7 @@ class GameMaster:
                 snake.setDirection(action)
                 snake.key_registered = True
                 return True
-        elif action == 'back':
+        if action == 'back':
             return False
         else:
             return True
@@ -172,7 +169,7 @@ class GameMaster:
                     self.snake[snake].updateNextMove()
 
             # Render objects
-            self.Painter.drawGameObjects(self.screen, [self.snake_sprites, self.pellet_sprites, self.wall_sprites], self.snake, self.score_window, self.currentHighScore)
+            self.Painter.drawGameObjects(self.screen, [self.snake_sprites, self.pellet_sprites, self.wall_sprites], self.snake, self.score_window, self.currentHighScore, self.winningScore, self.snake_size)
             if(self.Painter.draw_next_move):
                 self.Painter.drawNextMove(self.screen, self.snake[0])
                 if(self.snakes == 2):
@@ -246,10 +243,6 @@ class GameMaster:
         # Play game over music
         self.DJ.playGameOverMusic()
 
-       #winnerText = None
-        #if self.winner == None:
-        #    self.highScore()
-
         if(self.snakes == 1):
             self.highScore()
         else:
@@ -264,7 +257,7 @@ class GameMaster:
                 fontColor = self.colors[self.winner - 1]
 
 
-        while 1:
+        while True:
 
             # Loop events
             for event in pygame.event.get():
@@ -293,7 +286,7 @@ class GameMaster:
 
             # Draw game objects
             self.Painter.drawGameObjects(self.screen, [self.snake_sprites, self.pellet_sprites, self.wall_sprites],
-                                         self.snake, self.score_window, self.currentHighScore)
+                                         self.snake, self.score_window, self.currentHighScore, self.winningScore, self.snake_size)
 
             # Draw game over screen
             self.Painter.drawGameOverScreen(self.screen, selectablePos, selectPosIndex, fontColor, self.score_win, self.winner)
