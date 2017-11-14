@@ -51,7 +51,6 @@ class InputReader:
 
         return actions
 
-
     def readKeyboardInput(self, input):
         actions = {}
         for i in range(len(self.keyboard_inputs)):

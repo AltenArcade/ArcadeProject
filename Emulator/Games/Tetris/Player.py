@@ -156,6 +156,8 @@ class Player:
         self.DrawScore()
         self.frame_ctr += 1
 
+        # This function draws the end position of each tetris block and works
+        # as intended on a windows machine but not on the raspberry pi
     '''def DrawEndPosition(self):
         pos = []
         figure = Figure(self.current_figure.GetShape(),self.board_width,self.board_height, self.block_size, False)
